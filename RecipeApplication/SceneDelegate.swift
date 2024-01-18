@@ -15,11 +15,63 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
        
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = UINavigationController(rootViewController: HomeViewController())
+        window = UIWindow(frame: windowScene.coordinateSpace.bounds)
+        window?.windowScene = windowScene
+        window?.rootViewController = createTabbar()
         window?.makeKeyAndVisible()
+        
+        
+        configureNavigationBar()
+    }
+
+    func createHomeViewNavigation() -> UINavigationController {
+        let homeViewController = HomeViewController()
+        homeViewController.title = "Home"
+        homeViewController.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 0)
+        
+        return UINavigationController(rootViewController: homeViewController)
+        
     }
     
+ 
+    
+    func createShoppingViewNavigation() -> UINavigationController {
+        let shoppingListViewController = ShoppingListViewController()
+        shoppingListViewController.title = "Shopping list"
+        shoppingListViewController.tabBarItem = UITabBarItem(title: "Shopping list", image: UIImage(systemName: "cart"), tag: 2)
+        
+        return UINavigationController(rootViewController: shoppingListViewController)
+    }
+    
+    func createGenerateRecipeViewNavigation() -> UINavigationController {
+        let generateRecipeViewController = GenerateRecipeViewController()
+        generateRecipeViewController.title = "Generate Recipe"
+        generateRecipeViewController.tabBarItem = UITabBarItem(title: "Generate Recipe", image: UIImage(systemName: "list.clipboard"), tag: 2)
+        
+        return UINavigationController(rootViewController: generateRecipeViewController)
+    }
+    
+    func createProfileViewNavigation() -> UINavigationController {
+        let profileViewController = ProfileViewController()
+        profileViewController.title = "Account"
+        profileViewController.tabBarItem = UITabBarItem(title: "Account", image: UIImage(systemName: "person.crop.circle"), tag: 1)
+        
+        return UINavigationController(rootViewController: profileViewController)
+    }
+    
+    func createTabbar() -> UITabBarController {
+        let tabbar = UITabBarController()
+        UITabBar.appearance().tintColor = .systemGreen
+        tabbar.viewControllers = [createHomeViewNavigation(), createShoppingViewNavigation(), createGenerateRecipeViewNavigation(), createProfileViewNavigation()]
+        
+        return tabbar
+        
+    }
+    
+    func configureNavigationBar() {
+        UINavigationBar.appearance().tintColor = .systemGreen
+        
+    }
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
         // This occurs shortly after the scene enters the background, or when its session is discarded.
