@@ -68,12 +68,20 @@
 				98AE16342B59821500AF5528 /* ProfileViewController.swift */,
 				98AE16362B59822100AF5528 /* ShoppingListViewController.swift */,
 				98AE16382B59822E00AF5528 /* GenerateRecipeViewController.swift */,
-				98AE163A2B59A6BE00AF5528 /* ColorExtension.swift */,
+				98AE163F2B59B40700AF5528 /* Extensions */,
 				98AE16292B5981D100AF5528 /* Assets.xcassets */,
 				98AE162B2B5981D100AF5528 /* LaunchScreen.storyboard */,
 				98AE162E2B5981D100AF5528 /* Info.plist */,
 			);
 			path = RecipeApplication;
+			sourceTree = "<group>";
+		};
+		98AE163F2B59B40700AF5528 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				98AE163A2B59A6BE00AF5528 /* ColorExtension.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
