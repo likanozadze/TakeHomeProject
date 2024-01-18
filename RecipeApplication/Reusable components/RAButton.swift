@@ -20,15 +20,15 @@ class RAButton: UIButton {
     
     init(backgroundColor: UIColor, title: String) {
         super.init(frame: .zero)
-        self.backgroundColor = backgroundColor
+        self.backgroundColor = UIColor.buttonBackground
         self.setTitle(title, for: .normal)
         configure()
         
     }
     
     private func configure() {
-        layer.cornerRadius = 10
-        titleLabel?.textColor = .white
+        layer.cornerRadius = 4
+        titleLabel?.textColor = UIColor.textColor
         titleLabel?.font = UIFont.preferredFont(forTextStyle: .headline)
         translatesAutoresizingMaskIntoConstraints = false
     }
