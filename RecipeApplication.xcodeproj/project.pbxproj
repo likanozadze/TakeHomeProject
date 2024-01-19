@@ -15,6 +15,7 @@
 		98AE16352B59821500AF5528 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98AE16342B59821500AF5528 /* ProfileViewController.swift */; };
 		98AE16372B59822100AF5528 /* ShoppingListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98AE16362B59822100AF5528 /* ShoppingListViewController.swift */; };
 		98AE16392B59822E00AF5528 /* GenerateRecipeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98AE16382B59822E00AF5528 /* GenerateRecipeViewController.swift */; };
+		98D2DFDF2B5ADF680062B36C /* ColorExtensionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D2DFDE2B5ADF680062B36C /* ColorExtensionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		98AE16342B59821500AF5528 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		98AE16362B59822100AF5528 /* ShoppingListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingListViewController.swift; sourceTree = "<group>"; };
 		98AE16382B59822E00AF5528 /* GenerateRecipeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateRecipeViewController.swift; sourceTree = "<group>"; };
+		98D2DFDE2B5ADF680062B36C /* ColorExtensionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtensionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,11 +68,20 @@
 				98AE16362B59822100AF5528 /* ShoppingListViewController.swift */,
 				98AE16382B59822E00AF5528 /* GenerateRecipeViewController.swift */,
 				98AE16342B59821500AF5528 /* ProfileViewController.swift */,
+				98D2DFE02B5ADF710062B36C /* Extension */,
 				98AE16292B5981D100AF5528 /* Assets.xcassets */,
 				98AE162B2B5981D100AF5528 /* LaunchScreen.storyboard */,
 				98AE162E2B5981D100AF5528 /* Info.plist */,
 			);
 			path = RecipeApplication;
+			sourceTree = "<group>";
+		};
+		98D2DFE02B5ADF710062B36C /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				98D2DFDE2B5ADF680062B36C /* ColorExtensionView.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -147,6 +158,7 @@
 				98AE16212B5981CF00AF5528 /* AppDelegate.swift in Sources */,
 				98AE16372B59822100AF5528 /* ShoppingListViewController.swift in Sources */,
 				98AE16392B59822E00AF5528 /* GenerateRecipeViewController.swift in Sources */,
+				98D2DFDF2B5ADF680062B36C /* ColorExtensionView.swift in Sources */,
 				98AE16352B59821500AF5528 /* ProfileViewController.swift in Sources */,
 				98AE16232B5981CF00AF5528 /* SceneDelegate.swift in Sources */,
 			);
