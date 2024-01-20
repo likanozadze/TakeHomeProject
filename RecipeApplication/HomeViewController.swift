@@ -7,13 +7,20 @@
 
 import UIKit
 
-class HomeViewController: UIViewController {
-
+final class HomeViewController: UIViewController {
+    
+    // MARK: - ViewLifeCycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        setup()
+
+    }
+    
+    // MARK: - Private Methods
+    
+    private func setup() {
+        view.backgroundColor = UIColor.backgroundColor
     }
 
-
-}
-
+    }
