@@ -15,22 +15,22 @@ class NavigationCoordinator {
         self.navigationController = navigationController
     }
 
-//    func start() {
-//        let loginViewController = LoginViewController()
-//        loginViewController.coordinator = self
-//        navigationController.pushViewController(loginViewController, animated: false)
-//    }
+    func start() {
+        let loginViewController = LoginViewController()
+        loginViewController.coordinator = self
+        navigationController.pushViewController(loginViewController, animated: false)
+    }
 
     func login() {
         let tabBarController = createTabbar()
         navigationController.pushViewController(tabBarController, animated: true)
     }
 
-//    func register() {
-//        let registerViewController = RegisterViewController()
-//        registerViewController.coordinator = self
-//        navigationController.pushViewController(registerViewController, animated: true)
-//    }
+    func register() {
+        let registerViewController = RegisterViewController()
+        registerViewController.coordinator = self
+        navigationController.pushViewController(registerViewController, animated: true)
+    }
 
     func createHomeViewNavigation() -> UINavigationController {
         let homeViewController = HomeViewController()
