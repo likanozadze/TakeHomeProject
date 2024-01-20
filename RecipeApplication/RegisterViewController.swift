@@ -15,8 +15,8 @@ class RegisterViewController: UIViewController {
     private let usernameField = RATextField(fieldType: .username)
     private let emailField = RATextField(fieldType: .email)
     private let passwordField = RATextField(fieldType: .password)
-    private let signUpButton = RAButton(title: "Sign up", hasBackground: true, fontSize: .big)
-    private let signInButton = RAButton(title: "Already have an account? Sign in", hasBackground: false, fontSize: .medium)
+    private let signUpButton = RAButton(title: "Sign up", hasBackground: true, fontSize: .medium)
+    private let signInButton = RAButton(title: "Already have an account? Sign in", hasBackground: false, fontSize: .small)
    
     
     
