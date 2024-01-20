@@ -7,105 +7,89 @@
 
 import UIKit
 
-class RAAlertView: UIViewController {
+class RAAlertView {
+    
+    // MARK: - Generic Alert
+    
+    private static func showGenericAlert(on viewController: UIViewController, title: String, message: String?) {
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Dismiss", style: .default, handler: nil))
+            viewController.present(alert, animated: true)
+        }
+    }
+}
 
-    // MARK: - Properties
+// MARK: - Validation Alerts
+extension RAAlertView {
     
-    let containerView = UIView()
-    
-    let titleLabel = RATitleLabel(textColor: UIColor.primaryTextColor, textAlignment: .center, fontSize: 20)
-    let messageLabel = RABodyLabel(textAlignment: .center)
-    let actionButton = RAButton(backgroundColor: .systemPink, title: "Ok", textColor: UIColor.primaryTextColor)
-    
-    var alertTitle: String?
-    var message: String?
-    var buttonTitle: String?
-    
-    let padding: CGFloat = 20
-    
-    // MARK: - Initialization
-    
-    init(title: String, message: String, buttonTitle: String) {
-        super.init(nibName: nil, bundle: nil)
-        self.alertTitle = title
-        self.message = message
-        self.buttonTitle = buttonTitle
+    public static func showInvalidEmailAlert(on vc: UIViewController) {
+        self.showGenericAlert(on: vc, title: "Invalid Email", message: "Please enter a valid email.")
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    public static func showInvalidPasswordAlert(on vc: UIViewController) {
+        self.showGenericAlert(on: vc, title: "Invalid Password", message: "Please enter a valid password.")
     }
     
-    // MARK: - View Lifecycle
+    public static func showInvalidUsernameAlert(on vc: UIViewController) {
+        self.showGenericAlert(on: vc, title: "Invalid Username", message: "Please enter a valid Username.")
+    }
+}
+
+// MARK: - Registration Error
+extension RAAlertView {
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.75)
-        configureContainerView()
-        configureTitleLabel()
-        configureActionButton()
-        configureMessageLabel()
+    public static func showRegistrationErrorAlert(on vc: UIViewController) {
+        self.showGenericAlert(on: vc, title: "Unknown Registration Error", message: nil)
     }
     
-    // MARK: - Configuration Methods
+    public static func showRegistrationErrorAlert(on vc: UIViewController, with error: String) {
+        self.showGenericAlert(on: vc, title: "Unknown Registration Error", message: "\(error)")
+    }
+}
+// MARK: - Log In Errors
+extension RAAlertView {
     
-    func configureContainerView() {
-        view.addSubview(containerView)
-        containerView.backgroundColor = .systemBackground
-        containerView.layer.cornerRadius = 16
-        containerView.layer.borderWidth = 2
-        containerView.layer.borderColor = UIColor.white.cgColor
-        containerView.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            containerView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            containerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            containerView.widthAnchor.constraint(equalToConstant: 280),
-            containerView.heightAnchor.constraint(equalToConstant: 220)
-        ])
+    public static func showSignInErrorAlert(on vc: UIViewController) {
+        self.showGenericAlert(on: vc, title: "Unknown Error Signing In", message: nil)
     }
     
-    func configureTitleLabel() {
-        containerView.addSubview(titleLabel)
-        titleLabel.text = alertTitle ?? "something went wrong"
-        
-        NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: padding),
-            titleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: padding),
-            titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -padding),
-            titleLabel.heightAnchor.constraint(equalToConstant: 28)
-        ])
+    public static func showSignInErrorAlert(on vc: UIViewController, with error: String) {
+        self.showGenericAlert(on: vc, title: "Error Signing In", message: "\(error)")
+    }
+}
+
+
+// MARK: - Logout Errors
+extension RAAlertView {
+    
+    public static func showLogoutError(on vc: UIViewController, with error: Error) {
+        self.showGenericAlert(on: vc, title: "Log Out Error", message: "\(error.localizedDescription)")
+    }
+}
+
+
+// MARK: - Forgot Password
+extension RAAlertView {
+    
+    public static func showPasswordResetSent(on vc: UIViewController) {
+        self.showGenericAlert(on: vc, title: "Password Reset Sent", message: nil)
     }
     
-    func configureActionButton() {
-        containerView.addSubview(actionButton)
-        actionButton.setTitle(buttonTitle ?? "Ok", for: .normal)
-        actionButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
-        
-        NSLayoutConstraint.activate([
-            actionButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -padding),
-            actionButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: padding),
-            actionButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -padding),
-            actionButton.heightAnchor.constraint(equalToConstant: 44)
-        ])
+    public static func showErrorSendingPasswordReset(on vc: UIViewController, with error: String) {
+        self.showGenericAlert(on: vc, title: "Error Sending Password Reset", message: "\(error)")
+    }
+}
+
+
+// MARK: - Fetching User Errors
+extension RAAlertView {
+    
+    public static func showFetchingUserError(on vc: UIViewController, with error: Error) {
+        self.showGenericAlert(on: vc, title: "Error Fetching User", message: "\(error.localizedDescription)")
     }
     
-    func configureMessageLabel() {
-        containerView.addSubview(messageLabel)
-        messageLabel.text = message ?? "Unable to complete request"
-        messageLabel.numberOfLines = 4
-        
-        NSLayoutConstraint.activate([
-            messageLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
-            messageLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: padding),
-            messageLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -padding),
-            messageLabel.bottomAnchor.constraint(equalTo: actionButton.topAnchor, constant: -12)
-        ])
-    }
-    
-    // MARK: - Action
-    
-    @objc func dismissVC() {
-        dismiss(animated: true)
+    public static func showUnknownFetchingUserError(on vc: UIViewController) {
+        self.showGenericAlert(on: vc, title: "Unknown Error Fetching User", message: nil)
     }
 }

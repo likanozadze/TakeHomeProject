@@ -8,41 +8,57 @@
 import UIKit
 
 class RATextField: UITextField {
-
+    
+    // MARK: - Enumeration for Text Field Type
+    
+    enum RATextFieldType {
+        case username
+        case email
+        case password
+    }
+    
+    // MARK: - Properties
+    
+    private let authoricationFieldType: RATextFieldType
+    
     // MARK: - Initialization
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        configure()
+    init(fieldType: RATextFieldType) {
+        self.authoricationFieldType = fieldType
+        super.init(frame: .zero)
+
+        self.backgroundColor = .white
+        self.layer.borderColor = UIColor.accentTextColor.cgColor
+        self.layer.cornerRadius = 10
+        self.layer.borderWidth = 1
+        
+        self.returnKeyType = .done
+        self.autocorrectionType = .no
+        self.autocapitalizationType = .none
+        
+        self.leftViewMode = .always
+        self.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 12, height: self.frame.size.height))
+        
+
+        switch fieldType {
+        case .username:
+            self.placeholder = "Username"
+        case .email:
+            self.placeholder = "Email Address"
+            self.keyboardType = .emailAddress
+            self.textContentType = .emailAddress
+            
+        case .password:
+            self.placeholder = "Password"
+            self.textContentType = .oneTimeCode
+            self.isSecureTextEntry = true
+        }
     }
+    
+    // MARK: - Required Initializer
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Private Methods
-    
-    private func configure() {
-        translatesAutoresizingMaskIntoConstraints = false
-        
-        layer.cornerRadius = 10
-        layer.borderWidth = 1
-        layer.borderColor = UIColor.accentTextColor.cgColor
-        textColor = UIColor.secondaryTextColor
-        textAlignment = .left
-        font = UIFont.preferredFont(forTextStyle: .body)
-        adjustsFontSizeToFitWidth = true
-        minimumFontSize = 10
-        autocorrectionType = .no
-    }
-    
-    // MARK: - Text Rect Methods
-    
-    override func textRect(forBounds bounds: CGRect) -> CGRect {
-        return bounds.inset(by: UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0))
-    }
-    
-    override func editingRect(forBounds bounds: CGRect) -> CGRect {
-        return bounds.inset(by: UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0))
-    }
 }

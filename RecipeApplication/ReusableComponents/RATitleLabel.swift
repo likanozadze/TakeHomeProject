@@ -20,11 +20,11 @@ class RATitleLabel: UILabel {
         fatalError("init(coder:) has not been implemented")
     }
 
-    init(textColor: UIColor, textAlignment: NSTextAlignment, fontSize: CGFloat) {
+    init(textColor: UIColor, textAlignment: NSTextAlignment, fontSize: CGFloat, weight: UIFont.Weight) {
         super.init(frame: .zero)
         self.textColor = textColor
         self.textAlignment = textAlignment
-        self.font = font
+        self.font = UIFont.systemFont(ofSize: fontSize, weight: weight)
         configure()
     }
 
