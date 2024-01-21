@@ -27,12 +27,11 @@ class LoginViewController: UIViewController {
         self.signInButton.addTarget(self, action: #selector(didTapSignIn), for: .touchUpInside)
         self.newUserButton.addTarget(self, action: #selector(didTapNewUser), for: .touchUpInside)
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isHidden = true
-        
-        //  RAAlertView.showInvalidEmailAlert(on: self)
-        
+    
     }
     
     // MARK: - UI Setup

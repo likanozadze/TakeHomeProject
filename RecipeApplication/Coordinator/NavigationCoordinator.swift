@@ -18,18 +18,14 @@ class NavigationCoordinator {
     
     func start() {
         checkAuthentication()
-        print("Checking authentication...")
     }
     
     public func checkAuthentication() {
-        print("Checking authentication...")
         if Auth.auth().currentUser == nil {
-            print("User is not authenticated. Presenting login screen.")
             let loginViewController = LoginViewController()
             loginViewController.coordinator = self
             navigationController.pushViewController(loginViewController, animated: false)
         } else {
-            print("User is authenticated. Presenting tab bar controller.")
             let tabBarController = createTabbar()
             navigationController.pushViewController(tabBarController, animated: true)
         }
@@ -47,14 +43,10 @@ class NavigationCoordinator {
     }
     
     public func logout() {
-        print("Logout initiated.")
         AuthService.shared.signOut { [weak self] error in
             guard let self = self else { return }
             if let error = error {
-                print("Logout error: \(error.localizedDescription)")
-                // Handle the error if needed
             } else {
-                print("Logout successful. Checking authentication...")
                 self.checkAuthentication()
             }
         }
