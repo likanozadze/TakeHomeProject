@@ -21,6 +21,7 @@
 		988DE8152B5D323300FA0ABC /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988DE8142B5D323300FA0ABC /* AuthService.swift */; };
 		988DE8182B5D335600FA0ABC /* RegisterUserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988DE8172B5D335600FA0ABC /* RegisterUserRequest.swift */; };
 		988DE81A2B5D402C00FA0ABC /* LoginUserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988DE8192B5D402C00FA0ABC /* LoginUserRequest.swift */; };
+		988DE81C2B5D439500FA0ABC /* Validator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988DE81B2B5D439500FA0ABC /* Validator.swift */; };
 		98AE16212B5981CF00AF5528 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98AE16202B5981CF00AF5528 /* AppDelegate.swift */; };
 		98AE16232B5981CF00AF5528 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98AE16222B5981CF00AF5528 /* SceneDelegate.swift */; };
 		98AE16252B5981CF00AF5528 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98AE16242B5981CF00AF5528 /* HomeViewController.swift */; };
@@ -46,6 +47,7 @@
 		988DE8142B5D323300FA0ABC /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		988DE8172B5D335600FA0ABC /* RegisterUserRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserRequest.swift; sourceTree = "<group>"; };
 		988DE8192B5D402C00FA0ABC /* LoginUserRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginUserRequest.swift; sourceTree = "<group>"; };
+		988DE81B2B5D439500FA0ABC /* Validator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validator.swift; sourceTree = "<group>"; };
 		98AE161D2B5981CF00AF5528 /* RecipeApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RecipeApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		98AE16202B5981CF00AF5528 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		98AE16222B5981CF00AF5528 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -103,6 +105,7 @@
 			children = (
 				988DE7D62B5D2C0900FA0ABC /* GoogleService-Info.plist */,
 				988DE8142B5D323300FA0ABC /* AuthService.swift */,
+				988DE81B2B5D439500FA0ABC /* Validator.swift */,
 			);
 			path = Firebase;
 			sourceTree = "<group>";
@@ -277,6 +280,7 @@
 				98AE16392B59822E00AF5528 /* GenerateRecipeViewController.swift in Sources */,
 				98D2DFDF2B5ADF680062B36C /* ColorExtensionView.swift in Sources */,
 				98D2DFE72B5AE16E0062B36C /* RATitleLabel.swift in Sources */,
+				988DE81C2B5D439500FA0ABC /* Validator.swift in Sources */,
 				9840619F2B5C5DC100A6BFAF /* RegisterViewController.swift in Sources */,
 				98AE16352B59821500AF5528 /* ProfileViewController.swift in Sources */,
 				98D2DFE52B5AE1510062B36C /* RATextField.swift in Sources */,

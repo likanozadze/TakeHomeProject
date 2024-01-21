@@ -12,6 +12,8 @@ import FirebaseFirestore
 
 class AuthService {
     
+    // MARK: - Singleton Instance
+    
     public static let shared = AuthService()
     private init() {}
     
@@ -54,7 +56,7 @@ class AuthService {
                 }
         }
     }
-    
+    // MARK: - UserSignIn
     
     public func signIn(with userRequest: LoginUserRequest, completion: @escaping (Error?)->Void) {
         Auth.auth().signIn(
@@ -69,7 +71,7 @@ class AuthService {
             }
         }
     }
-    
+    // MARK: - UserSignOut
     public func signOut(completion: @escaping (Error?)->Void) {
         do {
             try Auth.auth().signOut()
