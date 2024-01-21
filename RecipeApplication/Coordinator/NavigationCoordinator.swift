@@ -45,7 +45,7 @@ class NavigationCoordinator {
     public func logout() {
         AuthService.shared.signOut { [weak self] error in
             guard let self = self else { return }
-            if let error = error {
+            if error != nil {
             } else {
                 self.checkAuthentication()
             }

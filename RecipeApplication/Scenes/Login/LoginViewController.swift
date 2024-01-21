@@ -7,9 +7,10 @@
 
 import UIKit
 
-class LoginViewController: UIViewController {
+final class LoginViewController: UIViewController {
     
     var coordinator: NavigationCoordinator?
+    private var viewModel = LoginViewModel()
     
     // MARK: - UI Components
     private let headerView = RAHeaderView(title: "Welcome to your", subTitle: "Good Recipes App")
@@ -22,16 +23,15 @@ class LoginViewController: UIViewController {
     // MARK: - ViewLifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setupUI()
-        
-        self.signInButton.addTarget(self, action: #selector(didTapSignIn), for: .touchUpInside)
-        self.newUserButton.addTarget(self, action: #selector(didTapNewUser), for: .touchUpInside)
+        setupUI()
+        setupBindings()
+        viewModel.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.navigationBar.isHidden = true
-    
+        navigationController?.navigationBar.isHidden = true
+        
     }
     
     // MARK: - UI Setup
@@ -82,37 +82,48 @@ class LoginViewController: UIViewController {
     }
     // MARK: - Action Handlers
     @objc private func didTapSignIn() {
-        let loginRequest = LoginUserRequest(
-            email: self.emailField.text ?? "",
-            password: self.passwordField.text ?? ""
-        )
-        
-        // Email check
-        if !Validator.isValidEmail(for: loginRequest.email) {
-            RAAlertView.showInvalidEmailAlert(on: self)
+        guard let email = emailField.text, let password = passwordField.text else {
             return
         }
         
-        // Password check
-        if !Validator.isPasswordValid(for: loginRequest.password) {
-            RAAlertView.showInvalidPasswordAlert(on: self)
-            return
-        }
-        
-        AuthService.shared.signIn(with: loginRequest) { error in
+        viewModel.signIn(email: email, password: password) { [weak self] (success: Bool, error: Error?) in
+            guard let self = self else { return }
             if let error = error {
                 RAAlertView.showSignInErrorAlert(on: self, with: error.localizedDescription)
-                return
+            } else {
+                self.coordinator?.checkAuthentication()
             }
-            
-            self.coordinator?.checkAuthentication()
         }
     }
-    
     
     @objc private func didTapNewUser() {
         coordinator?.register()
     }
     
+    // MARK: - Binding
     
+    private func setupBindings() {
+        signInButton.addTarget(self, action: #selector(didTapSignIn), for: .touchUpInside)
+        newUserButton.addTarget(self, action: #selector(didTapNewUser), for: .touchUpInside)
+    }
+}
+
+// MARK: - LoginViewModelDelegate
+
+extension LoginViewController: LoginViewModelDelegate {
+    func showInvalidEmailAlert() {
+        RAAlertView.showInvalidEmailAlert(on: self)
+    }
+    
+    func showInvalidPasswordAlert() {
+        RAAlertView.showInvalidPasswordAlert(on: self)
+    }
+    
+    func showSignInErrorAlert(with error: String) {
+        RAAlertView.showSignInErrorAlert(on: self, with: error)
+    }
+    
+    func authenticationSuccessful() {
+        coordinator?.checkAuthentication()
+    }
 }
