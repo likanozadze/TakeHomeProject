@@ -17,7 +17,7 @@ class RegisterViewController: UIViewController {
     private let passwordField = RATextField(fieldType: .password)
     private let signUpButton = RAButton(title: "Sign up", hasBackground: true, fontSize: .medium)
     private let signInButton = RAButton(title: "Already have an account? Sign in", hasBackground: false, fontSize: .small)
-   
+    
     
     
     // MARK: - ViewLifeCycle
@@ -27,7 +27,7 @@ class RegisterViewController: UIViewController {
         
         self.signUpButton.addTarget(self, action: #selector(didTapSignUp), for: .touchUpInside)
         self.signInButton.addTarget(self, action: #selector(didTapSignIn), for: .touchUpInside)
-      
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -53,8 +53,8 @@ class RegisterViewController: UIViewController {
         self.passwordField.translatesAutoresizingMaskIntoConstraints = false
         self.signUpButton.translatesAutoresizingMaskIntoConstraints = false
         self.signInButton.translatesAutoresizingMaskIntoConstraints = false
-    
-
+        
+        
         NSLayoutConstraint.activate([
             
             self.headerView.topAnchor.constraint(equalTo: self.view.layoutMarginsGuide.topAnchor),
@@ -82,7 +82,7 @@ class RegisterViewController: UIViewController {
             self.signUpButton.heightAnchor.constraint(equalToConstant: 55),
             self.signUpButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.85),
             
-          
+            
             
             self.signInButton.topAnchor.constraint(equalTo: signUpButton.bottomAnchor, constant: 11),
             self.signInButton.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
@@ -94,13 +94,50 @@ class RegisterViewController: UIViewController {
     // MARK: - Action Handlers
     
     @objc func didTapSignUp() {
-        print("didtapsignup")
+        let registerUserRequest = RegisterUserRequest(
+            username: self.usernameField.text ?? "",
+            email: self.emailField.text ?? "",
+            password: self.passwordField.text ?? ""
+        )
+        
+        // Username check
+        if !Validator.isValidUsername(for: registerUserRequest.username) {
+            RAAlertView.showInvalidUsernameAlert(on: self)
+            return
+        }
+        
+        // Email check
+        if !Validator.isValidEmail(for: registerUserRequest.email) {
+            RAAlertView.showInvalidEmailAlert(on: self)
+            return
+        }
+        
+        // Password check
+        if !Validator.isPasswordValid(for: registerUserRequest.password) {
+            RAAlertView.showInvalidPasswordAlert(on: self)
+            return
+        }
+        
+        AuthService.shared.registerUser(with: registerUserRequest) { [weak self] wasRegistered, error in
+            guard let self = self else { return }
+            
+            if let error = error {
+                RAAlertView.showRegistrationErrorAlert(on: self, with: error.localizedDescription)
+                return
+            }
+            
+            if wasRegistered {
+                
+                self.coordinator?.checkAuthentication()
+            } else {
+                RAAlertView.showRegistrationErrorAlert(on: self)
+                
+            }
+        }
     }
-    
-    
     @objc private func didTapSignIn() {
         self.navigationController?.popToRootViewController(animated: true)
     }
     
-
+    
 }

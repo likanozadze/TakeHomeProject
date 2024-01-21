@@ -8,7 +8,7 @@
 import UIKit
 
 class LoginViewController: UIViewController {
-
+    
     var coordinator: NavigationCoordinator?
     
     // MARK: - UI Components
@@ -17,7 +17,7 @@ class LoginViewController: UIViewController {
     private let passwordField = RATextField(fieldType: .password)
     private let signInButton = RAButton(title: "Sign In", hasBackground: true, fontSize: .medium)
     private let newUserButton = RAButton(title: "Don't have an account, Sign up", hasBackground: false, fontSize: .small)
-     
+    
     
     // MARK: - ViewLifeCycle
     override func viewDidLoad() {
@@ -44,14 +44,14 @@ class LoginViewController: UIViewController {
         self.view.addSubview(passwordField)
         self.view.addSubview(signInButton)
         self.view.addSubview(newUserButton)
-
+        
         
         headerView.translatesAutoresizingMaskIntoConstraints = false
         emailField.translatesAutoresizingMaskIntoConstraints = false
         passwordField.translatesAutoresizingMaskIntoConstraints = false
         signInButton.translatesAutoresizingMaskIntoConstraints = false
         newUserButton.translatesAutoresizingMaskIntoConstraints = false
-
+        
         
         NSLayoutConstraint.activate([
             self.headerView.topAnchor.constraint(equalTo: self.view.layoutMarginsGuide.topAnchor),
@@ -78,17 +78,42 @@ class LoginViewController: UIViewController {
             self.newUserButton.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
             self.newUserButton.heightAnchor.constraint(equalToConstant: 44),
             self.newUserButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.85)
-        
+            
         ])
     }
     // MARK: - Action Handlers
-    @objc func didTapSignIn() {
-           coordinator?.login()
-       }
-
-       @objc private func didTapNewUser() {
-           coordinator?.register()
-       }
-
+    @objc private func didTapSignIn() {
+        let loginRequest = LoginUserRequest(
+            email: self.emailField.text ?? "",
+            password: self.passwordField.text ?? ""
+        )
+        
+        // Email check
+        if !Validator.isValidEmail(for: loginRequest.email) {
+            RAAlertView.showInvalidEmailAlert(on: self)
+            return
+        }
+        
+        // Password check
+        if !Validator.isPasswordValid(for: loginRequest.password) {
+            RAAlertView.showInvalidPasswordAlert(on: self)
+            return
+        }
+        
+        AuthService.shared.signIn(with: loginRequest) { error in
+            if let error = error {
+                RAAlertView.showSignInErrorAlert(on: self, with: error.localizedDescription)
+                return
+            }
+            
+            self.coordinator?.checkAuthentication()
+        }
+    }
+    
+    
+    @objc private func didTapNewUser() {
+        coordinator?.register()
+    }
+    
     
 }
