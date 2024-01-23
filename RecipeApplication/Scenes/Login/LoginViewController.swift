@@ -147,11 +147,11 @@ final class LoginViewController: UIViewController {
         NSLayoutConstraint.activate([
             mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            mainStackView.topAnchor.constraint(equalTo: view.topAnchor),
+            mainStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
             mainStackView.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor)
         ])
     }
-    
+
     private func setupHeaderStackViewConstraints() {
         NSLayoutConstraint.activate([
             logoImageView.heightAnchor.constraint(equalToConstant: 80),

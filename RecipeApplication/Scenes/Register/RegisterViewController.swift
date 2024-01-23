@@ -81,7 +81,7 @@ class RegisterViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
-               setupBindings()
+        setupBindings()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -145,7 +145,7 @@ class RegisterViewController: UIViewController {
                 NSLayoutConstraint.activate([
                     mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
                     mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-                    mainStackView.topAnchor.constraint(equalTo: view.topAnchor),
+                    mainStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
                     mainStackView.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor)
                 ])
             }
@@ -224,10 +224,10 @@ class RegisterViewController: UIViewController {
     @objc private func didTapSignIn() {
         self.navigationController?.popToRootViewController(animated: true)
     }
-    // MARK: - Binding
-       private func setupBindings() {
-           self.signUpButton.addTarget(self, action: #selector(didTapSignUp), for: .touchUpInside)
-           self.signInButton.addTarget(self, action: #selector(didTapSignIn), for: .touchUpInside)
-       }
     
+    // MARK: - Binding
+    private func setupBindings() {
+        self.signUpButton.addTarget(self, action: #selector(didTapSignUp), for: .touchUpInside)
+        self.signInButton.addTarget(self, action: #selector(didTapSignIn), for: .touchUpInside)
+    }
 }
