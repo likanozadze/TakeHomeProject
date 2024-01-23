@@ -69,6 +69,30 @@ class RegisterViewController: UIViewController, RegisterViewModelDelegate {
     private let passwordField = RATextField(fieldType: .password)
     
     
+    let meetsLengthRequirementLabel = RABodyLabel(title: "At least 6 characters", textColor: UIColor.black, textAlignment: .left, fontSize: 14, weight: .regular)
+    private let meetsUppercaseRequirementLabel = RABodyLabel(title: "At least one uppercase letter", textColor: UIColor.black, textAlignment: .left, fontSize: 14, weight: .regular)
+    
+    private let meetsNumberRequirementLabel = RABodyLabel(title: "At least one number", textColor: UIColor.black, textAlignment: .left, fontSize: 14, weight: .regular)
+    
+    private let meetsSpecialCharRequirementLabel = RABodyLabel(title: "At least one special character", textColor: UIColor.black, textAlignment: .left, fontSize: 14, weight: .regular)
+    
+    private let passwordRequirementsStack: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 6
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
+    private let passwordRequirementLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Password should contain"
+        label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
+        label.textColor = UIColor.black
+        return label
+    }()
+    
+    
     private let buttonStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
@@ -109,13 +133,16 @@ class RegisterViewController: UIViewController, RegisterViewModelDelegate {
         addMainSubviews()
         setupHeaderStackView()
         setupTextFieldStackView()
+        setupPasswordRequirementsStackView()
         setupButtonStackView()
+        
     }
     
     private func addMainSubviews() {
         view.addSubview(mainStackView)
         mainStackView.addArrangedSubview(headerStackView)
         mainStackView.addArrangedSubview(textFieldStackView)
+        mainStackView.addArrangedSubview(passwordRequirementsStack)
         mainStackView.addArrangedSubview(buttonStackView)
     }
     
@@ -132,6 +159,25 @@ class RegisterViewController: UIViewController, RegisterViewModelDelegate {
         textFieldStackView.addArrangedSubview(passwordField)
         
     }
+    private func setupPasswordRequirementsStackView() {
+        passwordRequirementsStack.addArrangedSubview(passwordRequirementLabel)
+        passwordRequirementsStack.addArrangedSubview(meetsLengthRequirementLabel)
+        passwordRequirementsStack.addArrangedSubview(meetsUppercaseRequirementLabel)
+        passwordRequirementsStack.addArrangedSubview(meetsNumberRequirementLabel)
+        passwordRequirementsStack.addArrangedSubview(meetsSpecialCharRequirementLabel)
+        
+    }
+    
+    private func updatePasswordRequirementsLabel(isValid: Bool) {
+        print("Update Password Requirements Called")
+        passwordRequirementLabel.text = isValid ? "Password requirements met ✓" : "Password requirements not met"
+        passwordRequirementLabel.textColor = isValid ? UIColor.green : UIColor.black
+
+        meetsLengthRequirementLabel.textColor = isValid ? UIColor.green : UIColor.black
+        meetsUppercaseRequirementLabel.textColor = isValid ? UIColor.green : UIColor.black
+        meetsNumberRequirementLabel.textColor = isValid ? UIColor.green : UIColor.black
+        meetsSpecialCharRequirementLabel.textColor = isValid ? UIColor.green : UIColor.black
+    }
     
     private func setupButtonStackView() {
         buttonStackView.addArrangedSubview(signUpButton)
@@ -142,6 +188,7 @@ class RegisterViewController: UIViewController, RegisterViewModelDelegate {
         setupMainViewConstraints()
         setupHeaderStackViewConstraints()
         setupTextFieldConstraints()
+        setupPasswordRequirementsConstraints()
         setupButtonConstraints()
     }
     
@@ -162,14 +209,18 @@ class RegisterViewController: UIViewController, RegisterViewModelDelegate {
         ])
     }
     
-    
-    
     private func setupTextFieldConstraints() {
         NSLayoutConstraint.activate([
             usernameField.heightAnchor.constraint(equalToConstant: 52),
             emailField.heightAnchor.constraint(equalToConstant: 52),
             passwordField.heightAnchor.constraint(equalToConstant: 52)
             
+        ])
+    }
+    
+    private func setupPasswordRequirementsConstraints() {
+        NSLayoutConstraint.activate([
+            passwordRequirementsStack.heightAnchor.constraint(greaterThanOrEqualToConstant: 52)
         ])
     }
     
