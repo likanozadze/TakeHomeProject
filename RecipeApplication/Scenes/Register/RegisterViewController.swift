@@ -8,7 +8,7 @@
 import UIKit
 
 class RegisterViewController: UIViewController, RegisterViewModelDelegate {
-    
+
     private var viewModel = RegisterViewModel()
     var coordinator: NavigationCoordinator?
     
@@ -69,12 +69,12 @@ class RegisterViewController: UIViewController, RegisterViewModelDelegate {
     private let passwordField = RATextField(fieldType: .password)
     
     
-    let meetsLengthRequirementLabel = RABodyLabel(title: "At least 6 characters", textColor: UIColor.black, textAlignment: .left, fontSize: 14, weight: .regular)
-    private let meetsUppercaseRequirementLabel = RABodyLabel(title: "At least one uppercase letter", textColor: UIColor.black, textAlignment: .left, fontSize: 14, weight: .regular)
+    let meetsLengthRequirementLabel = RABodyLabel(title: "At least 6 characters", textColor: .black, textAlignment: .left, fontSize: 14, weight: .regular)
+    private let meetsUppercaseRequirementLabel = RABodyLabel(title: "At least one uppercase letter", textColor: .black, textAlignment: .left, fontSize: 14, weight: .regular)
     
-    private let meetsNumberRequirementLabel = RABodyLabel(title: "At least one number", textColor: UIColor.black, textAlignment: .left, fontSize: 14, weight: .regular)
+    private let meetsNumberRequirementLabel = RABodyLabel(title: "At least one number", textColor: .black, textAlignment: .left, fontSize: 14, weight: .regular)
     
-    private let meetsSpecialCharRequirementLabel = RABodyLabel(title: "At least one special character", textColor: UIColor.black, textAlignment: .left, fontSize: 14, weight: .regular)
+    private let meetsSpecialCharRequirementLabel = RABodyLabel(title: "At least one special character", textColor: .black, textAlignment: .left, fontSize: 14, weight: .regular)
     
     private let passwordRequirementsStack: UIStackView = {
         let stackView = UIStackView()
@@ -167,18 +167,7 @@ class RegisterViewController: UIViewController, RegisterViewModelDelegate {
         passwordRequirementsStack.addArrangedSubview(meetsSpecialCharRequirementLabel)
         
     }
-    
-    private func updatePasswordRequirementsLabel(isValid: Bool) {
-        print("Update Password Requirements Called")
-        passwordRequirementLabel.text = isValid ? "Password requirements met ✓" : "Password requirements not met"
-        passwordRequirementLabel.textColor = isValid ? UIColor.green : UIColor.black
 
-        meetsLengthRequirementLabel.textColor = isValid ? UIColor.green : UIColor.black
-        meetsUppercaseRequirementLabel.textColor = isValid ? UIColor.green : UIColor.black
-        meetsNumberRequirementLabel.textColor = isValid ? UIColor.green : UIColor.black
-        meetsSpecialCharRequirementLabel.textColor = isValid ? UIColor.green : UIColor.black
-    }
-    
     private func setupButtonStackView() {
         buttonStackView.addArrangedSubview(signUpButton)
         buttonStackView.addArrangedSubview(signInButton)
@@ -238,16 +227,28 @@ class RegisterViewController: UIViewController, RegisterViewModelDelegate {
         guard let username = usernameField.text, let email = emailField.text, let password = passwordField.text else {
             return
         }
-        
-        viewModel.signUp(username: username, email: email, password: password) { [weak self] (success: Bool, error: Error?) in
-            guard let self = self else { return }
-            if let error = error {
-                RAAlertView.showRegistrationErrorAlert(on: self, with: error)
-            } else if success {
-                self.coordinator?.checkAuthentication()
-            }
+        let isPasswordValid = viewModel.validatePassword(password)
+
+        if isPasswordValid {
+             viewModel.signUp(username: username, email: email, password: password) { [weak self] (success: Bool, error: Error?) in
+                 guard let self = self else { return }
+                 if let error = error {
+                     RAAlertView.showRegistrationErrorAlert(on: self, with: error)
+                 } else if success {
+                     self.coordinator?.checkAuthentication()
+                 }
+             }
+         } else {
+            
+             print("Password does not meet requirements.")
+         }
+     }
+        private func updateAllRequirementsLabelsColor(to color: UIColor) {
+            meetsLengthRequirementLabel.textColor = color
+            meetsUppercaseRequirementLabel.textColor = color
+            meetsNumberRequirementLabel.textColor = color
+            meetsSpecialCharRequirementLabel.textColor = color
         }
-    }
     
     @objc private func didTapSignIn() {
         self.navigationController?.popToRootViewController(animated: true)
@@ -279,6 +280,18 @@ class RegisterViewController: UIViewController, RegisterViewModelDelegate {
     func checkAuthentication() {
         coordinator?.start()
     }
+    
+    // MARK: - RegisterViewModelDelegate
+    func updatePasswordValidationUI(isLengthValid: Bool, isUppercaseValid: Bool, isNumberValid: Bool, isSpecialCharValid: Bool) {
+         DispatchQueue.main.async { [weak self] in
+             guard let self = self else { return }
+
+             self.meetsLengthRequirementLabel.textColor = isLengthValid ? .green : .black
+             self.meetsUppercaseRequirementLabel.textColor = isUppercaseValid ? .green : .black
+             self.meetsNumberRequirementLabel.textColor = isNumberValid ? .green : .black
+             self.meetsSpecialCharRequirementLabel.textColor = isSpecialCharValid ? .green : .black
+         }
+     }
     
 }
 
