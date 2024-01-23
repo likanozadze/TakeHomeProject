@@ -39,14 +39,15 @@ extension RAAlertView {
 // MARK: - Registration Error
 extension RAAlertView {
     
-    public static func showRegistrationErrorAlert(on vc: UIViewController) {
-        self.showGenericAlert(on: vc, title: "Unknown Registration Error", message: nil)
+    public static func showRegistrationErrorAlert(on vc: UIViewController, with error: Error) {
+        self.showGenericAlert(on: vc, title: "Registration Error", message: "\(error.localizedDescription)")
     }
     
-    public static func showRegistrationErrorAlert(on vc: UIViewController, with error: String) {
-        self.showGenericAlert(on: vc, title: "Unknown Registration Error", message: "\(error)")
+    public static func showRegistrationErrorAlert(on vc: UIViewController, with customMessage: String) {
+        self.showGenericAlert(on: vc, title: "Registration Error", message: customMessage)
     }
 }
+
 // MARK: - Log In Errors
 extension RAAlertView {
     

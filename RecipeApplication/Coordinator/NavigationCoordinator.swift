@@ -24,7 +24,7 @@ class NavigationCoordinator {
         if Auth.auth().currentUser == nil {
             let loginViewController = LoginViewController()
             loginViewController.coordinator = self
-            navigationController.pushViewController(loginViewController, animated: false)
+            navigationController.pushViewController(loginViewController, animated: true)
         } else {
             let tabBarController = createTabbar()
             navigationController.pushViewController(tabBarController, animated: true)

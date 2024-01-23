@@ -14,7 +14,7 @@ final class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
-
+        
     }
     
     // MARK: - Private Methods
@@ -22,5 +22,5 @@ final class HomeViewController: UIViewController {
     private func setup() {
         view.backgroundColor = UIColor.backgroundColor
     }
-
-    }
+    
+}

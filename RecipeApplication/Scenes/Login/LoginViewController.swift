@@ -9,8 +9,9 @@ import UIKit
 
 final class LoginViewController: UIViewController {
     
-    var coordinator: NavigationCoordinator?
     private var viewModel = LoginViewModel()
+    var coordinator: NavigationCoordinator?
+    
     
     // MARK: - UI Components
     
@@ -151,7 +152,7 @@ final class LoginViewController: UIViewController {
             mainStackView.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor)
         ])
     }
-
+    
     private func setupHeaderStackViewConstraints() {
         NSLayoutConstraint.activate([
             logoImageView.heightAnchor.constraint(equalToConstant: 80),
