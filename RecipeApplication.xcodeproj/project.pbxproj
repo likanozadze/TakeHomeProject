@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		980BA7312B600A3800AD97E7 /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980BA7302B600A3800AD97E7 /* RegisterViewModel.swift */; };
 		984061952B5C5C7D00A6BFAF /* NavigationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 984061942B5C5C7D00A6BFAF /* NavigationCoordinator.swift */; };
 		9840619D2B5C5DA600A6BFAF /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9840619C2B5C5DA600A6BFAF /* LoginViewController.swift */; };
 		9840619F2B5C5DC100A6BFAF /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9840619E2B5C5DC100A6BFAF /* RegisterViewController.swift */; };
@@ -39,6 +40,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		980BA7302B600A3800AD97E7 /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
 		984061942B5C5C7D00A6BFAF /* NavigationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationCoordinator.swift; sourceTree = "<group>"; };
 		9840619C2B5C5DA600A6BFAF /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		9840619E2B5C5DC100A6BFAF /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
@@ -83,6 +85,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		980BA72F2B60099100AD97E7 /* Register */ = {
+			isa = PBXGroup;
+			children = (
+				9840619E2B5C5DC100A6BFAF /* RegisterViewController.swift */,
+				980BA7302B600A3800AD97E7 /* RegisterViewModel.swift */,
+			);
+			path = Register;
+			sourceTree = "<group>";
+		};
 		984061962B5C5CA300A6BFAF /* Coordinator */ = {
 			isa = PBXGroup;
 			children = (
@@ -130,7 +141,7 @@
 			isa = PBXGroup;
 			children = (
 				988DE81E2B5D876300FA0ABC /* Login */,
-				9840619E2B5C5DC100A6BFAF /* RegisterViewController.swift */,
+				980BA72F2B60099100AD97E7 /* Register */,
 				98AE16242B5981CF00AF5528 /* HomeViewController.swift */,
 				98AE16362B59822100AF5528 /* ShoppingListViewController.swift */,
 				98AE16382B59822E00AF5528 /* GenerateRecipeViewController.swift */,
@@ -300,6 +311,7 @@
 				98AE16352B59821500AF5528 /* ProfileViewController.swift in Sources */,
 				98D2DFE52B5AE1510062B36C /* RATextField.swift in Sources */,
 				988DE8152B5D323300FA0ABC /* AuthService.swift in Sources */,
+				980BA7312B600A3800AD97E7 /* RegisterViewModel.swift in Sources */,
 				988DE8182B5D335600FA0ABC /* RegisterUserRequest.swift in Sources */,
 				98D2DFEB2B5AE1BC0062B36C /* RAAlertView.swift in Sources */,
 				98AE16232B5981CF00AF5528 /* SceneDelegate.swift in Sources */,
