@@ -11,22 +11,78 @@ class RegisterViewController: UIViewController {
     var coordinator: NavigationCoordinator?
     
     // MARK: - UI Components
-    private let headerView = RAHeaderView(title: "Sign Up", subTitle: "Create your account")
+    
+    private let mainStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 16
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.isLayoutMarginsRelativeArrangement = true
+        return stackView
+    }()
+    
+    private let headerStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 5
+        stackView.alignment = .leading
+        stackView.distribution = .equalSpacing
+        return stackView
+    }()
+    
+    private let logoImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        imageView.image = UIImage(named: "logo")
+        return imageView
+        
+    }()
+    
+    private let titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Sign Up"
+        label.textColor = UIColor.secondaryTextColor
+        label.font = UIFont.systemFont(ofSize: 30, weight: .bold)
+        return label
+        
+    }()
+    
+    private let subTitleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Create your account"
+        label.textColor = UIColor.secondaryTextColor
+        label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        return label
+    }()
+    
+    private let textFieldStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 10
+        return stackView
+    }()
+    
     private let usernameField = RATextField(fieldType: .username)
     private let emailField = RATextField(fieldType: .email)
     private let passwordField = RATextField(fieldType: .password)
+    
+    
+    private let buttonStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 10
+        return stackView
+    }()
+    
     private let signUpButton = RAButton(title: "Sign up", hasBackground: true, fontSize: .medium)
     private let signInButton = RAButton(title: "Already have an account? Sign in", hasBackground: false, fontSize: .small)
-    
     
     
     // MARK: - ViewLifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setupUI()
-        
-        self.signUpButton.addTarget(self, action: #selector(didTapSignUp), for: .touchUpInside)
-        self.signInButton.addTarget(self, action: #selector(didTapSignIn), for: .touchUpInside)
+        setup()
+        setupBindings()
         
     }
     
@@ -37,57 +93,89 @@ class RegisterViewController: UIViewController {
     
     // MARK: - UI Setup
     
-    private func setupUI() {
-        self.view.backgroundColor = .systemBackground
+    private func setup() {
+        setupBackground()
+        addSubviewsToView()
+        setupConstraints()
+    }
+    
+    private func setupBackground() {
+        view.backgroundColor = .systemBackground
+    }
+    
+    private func addSubviewsToView() {
+        addMainSubviews()
+        setupHeaderStackView()
+        setupTextFieldStackView()
+        setupButtonStackView()
+    }
+    
+    private func addMainSubviews() {
+        view.addSubview(mainStackView)
+        mainStackView.addArrangedSubview(headerStackView)
+        mainStackView.addArrangedSubview(textFieldStackView)
+        mainStackView.addArrangedSubview(buttonStackView)
+    }
+    
+    private func setupHeaderStackView() {
+        headerStackView.addArrangedSubview(logoImageView)
+        headerStackView.addArrangedSubview(titleLabel)
+        headerStackView.addArrangedSubview(subTitleLabel)
         
-        self.view.addSubview(headerView)
-        self.view.addSubview(usernameField)
-        self.view.addSubview(emailField)
-        self.view.addSubview(passwordField)
-        self.view.addSubview(signUpButton)
-        self.view.addSubview(signInButton)
+    }
+    
+    private func setupTextFieldStackView() {
+        textFieldStackView.addArrangedSubview(usernameField)
+        textFieldStackView.addArrangedSubview(emailField)
+        textFieldStackView.addArrangedSubview(passwordField)
         
-        self.headerView.translatesAutoresizingMaskIntoConstraints = false
-        self.usernameField.translatesAutoresizingMaskIntoConstraints = false
-        self.emailField.translatesAutoresizingMaskIntoConstraints = false
-        self.passwordField.translatesAutoresizingMaskIntoConstraints = false
-        self.signUpButton.translatesAutoresizingMaskIntoConstraints = false
-        self.signInButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        
+    }
+    
+    private func setupButtonStackView() {
+        buttonStackView.addArrangedSubview(signUpButton)
+        buttonStackView.addArrangedSubview(signInButton)
+    }
+    
+    private func setupConstraints() {
+        setupMainViewConstraints()
+        setupHeaderStackViewConstraints()
+        setupTextFieldConstraints()
+        setupButtonConstraints()
+    }
+    
+    private func setupMainViewConstraints() {
         NSLayoutConstraint.activate([
+            mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            mainStackView.topAnchor.constraint(equalTo: view.topAnchor),
+            mainStackView.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor)
+        ])
+    }
+    private func setupHeaderStackViewConstraints() {
+        NSLayoutConstraint.activate([
+            logoImageView.heightAnchor.constraint(equalToConstant: 80),
+            logoImageView.widthAnchor.constraint(equalToConstant: 80),
+            titleLabel.heightAnchor.constraint(equalToConstant: 40),
+            subTitleLabel.heightAnchor.constraint(equalToConstant: 30)
+        ])
+    }
+    
+    
+    
+    private func setupTextFieldConstraints() {
+        NSLayoutConstraint.activate([
+            usernameField.heightAnchor.constraint(equalToConstant: 52),
+            emailField.heightAnchor.constraint(equalToConstant: 52),
+            passwordField.heightAnchor.constraint(equalToConstant: 52)
             
-            self.headerView.topAnchor.constraint(equalTo: self.view.layoutMarginsGuide.topAnchor),
-            self.headerView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
-            self.headerView.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -40),
-            self.headerView.heightAnchor.constraint(equalToConstant: 222),
+        ])
+    }
+    
+    private func setupButtonConstraints() {
+        NSLayoutConstraint.activate([
+            signUpButton.heightAnchor.constraint(equalToConstant: 46),
+            signInButton.heightAnchor.constraint(equalToConstant: 46)
             
-            self.usernameField.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 12),
-            self.usernameField.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
-            self.usernameField.heightAnchor.constraint(equalToConstant: 55),
-            self.usernameField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.85),
-            
-            self.emailField.topAnchor.constraint(equalTo: usernameField.bottomAnchor, constant: 22),
-            self.emailField.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
-            self.emailField.heightAnchor.constraint(equalToConstant: 55),
-            self.emailField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.85),
-            
-            self.passwordField.topAnchor.constraint(equalTo: emailField.bottomAnchor, constant: 22),
-            self.passwordField.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
-            self.passwordField.heightAnchor.constraint(equalToConstant: 55),
-            self.passwordField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.85),
-            
-            self.signUpButton.topAnchor.constraint(equalTo: passwordField.bottomAnchor, constant: 22),
-            self.signUpButton.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
-            self.signUpButton.heightAnchor.constraint(equalToConstant: 55),
-            self.signUpButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.85),
-            
-            
-            
-            self.signInButton.topAnchor.constraint(equalTo: signUpButton.bottomAnchor, constant: 11),
-            self.signInButton.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
-            self.signInButton.heightAnchor.constraint(equalToConstant: 44),
-            self.signInButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.85),
         ])
     }
     
@@ -138,6 +226,11 @@ class RegisterViewController: UIViewController {
     @objc private func didTapSignIn() {
         self.navigationController?.popToRootViewController(animated: true)
     }
+    // MARK: - Binding
     
+    private func setupBindings() {
+        self.signUpButton.addTarget(self, action: #selector(didTapSignUp), for: .touchUpInside)
+        self.signInButton.addTarget(self, action: #selector(didTapSignIn), for: .touchUpInside)
+    }
     
 }
