@@ -39,6 +39,7 @@
 		98D2DFEB2B5AE1BC0062B36C /* RAAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D2DFEA2B5AE1BC0062B36C /* RAAlertView.swift */; };
 		98D43DDC2B61889D00507EAD /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D43DDB2B61889D00507EAD /* HomeViewModel.swift */; };
 		98D43DDE2B6188FD00507EAD /* RecipeItemCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D43DDD2B6188FD00507EAD /* RecipeItemCollectionViewCell.swift */; };
+		98D43DE22B618A5800507EAD /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D43DE12B618A5800507EAD /* Model.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -70,6 +71,7 @@
 		98D2DFEA2B5AE1BC0062B36C /* RAAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAAlertView.swift; sourceTree = "<group>"; };
 		98D43DDB2B61889D00507EAD /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		98D43DDD2B6188FD00507EAD /* RecipeItemCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeItemCollectionViewCell.swift; sourceTree = "<group>"; };
+		98D43DE12B618A5800507EAD /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,6 +168,7 @@
 		98AE16142B5981CF00AF5528 = {
 			isa = PBXGroup;
 			children = (
+				98D43DE02B618A4300507EAD /* NetworkModel */,
 				98AE161F2B5981CF00AF5528 /* RecipeApplication */,
 				98AE161E2B5981CF00AF5528 /* Products */,
 				988DE80F2B5D2EC200FA0ABC /* Frameworks */,
@@ -233,6 +236,14 @@
 				98D43DDD2B6188FD00507EAD /* RecipeItemCollectionViewCell.swift */,
 			);
 			path = CollectionViewCell;
+			sourceTree = "<group>";
+		};
+		98D43DE02B618A4300507EAD /* NetworkModel */ = {
+			isa = PBXGroup;
+			children = (
+				98D43DE12B618A5800507EAD /* Model.swift */,
+			);
+			path = NetworkModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -332,6 +343,7 @@
 				988DE81C2B5D439500FA0ABC /* Validator.swift in Sources */,
 				9840619F2B5C5DC100A6BFAF /* RegisterViewController.swift in Sources */,
 				98AE16352B59821500AF5528 /* ProfileViewController.swift in Sources */,
+				98D43DE22B618A5800507EAD /* Model.swift in Sources */,
 				98D2DFE52B5AE1510062B36C /* RATextField.swift in Sources */,
 				988DE8152B5D323300FA0ABC /* AuthService.swift in Sources */,
 				980BA7312B600A3800AD97E7 /* RegisterViewModel.swift in Sources */,
