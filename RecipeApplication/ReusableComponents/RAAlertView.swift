@@ -69,20 +69,6 @@ extension RAAlertView {
     }
 }
 
-
-// MARK: - Forgot Password
-extension RAAlertView {
-    
-    public static func showPasswordResetSent(on vc: UIViewController) {
-        self.showGenericAlert(on: vc, title: "Password Reset Sent", message: nil)
-    }
-    
-    public static func showErrorSendingPasswordReset(on vc: UIViewController, with error: String) {
-        self.showGenericAlert(on: vc, title: "Error Sending Password Reset", message: "\(error)")
-    }
-}
-
-
 // MARK: - Fetching User Errors
 extension RAAlertView {
     
