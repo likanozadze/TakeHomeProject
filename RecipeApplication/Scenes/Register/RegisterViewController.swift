@@ -286,10 +286,10 @@ class RegisterViewController: UIViewController, RegisterViewModelDelegate {
          DispatchQueue.main.async { [weak self] in
              guard let self = self else { return }
 
-             self.meetsLengthRequirementLabel.textColor = isLengthValid ? .green : .black
-             self.meetsUppercaseRequirementLabel.textColor = isUppercaseValid ? .green : .black
-             self.meetsNumberRequirementLabel.textColor = isNumberValid ? .green : .black
-             self.meetsSpecialCharRequirementLabel.textColor = isSpecialCharValid ? .green : .black
+             self.meetsLengthRequirementLabel.textColor = isLengthValid ? UIColor.accentTextColor : .black
+             self.meetsUppercaseRequirementLabel.textColor = isUppercaseValid ? UIColor.accentTextColor : .black
+             self.meetsNumberRequirementLabel.textColor = isNumberValid ? UIColor.accentTextColor : .black
+             self.meetsSpecialCharRequirementLabel.textColor = isSpecialCharValid ? UIColor.accentTextColor : .black
          }
      }
     
