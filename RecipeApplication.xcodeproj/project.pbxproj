@@ -37,6 +37,8 @@
 		98D2DFE72B5AE16E0062B36C /* RATitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D2DFE62B5AE16E0062B36C /* RATitleLabel.swift */; };
 		98D2DFE92B5AE1850062B36C /* RABodyLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D2DFE82B5AE1850062B36C /* RABodyLabel.swift */; };
 		98D2DFEB2B5AE1BC0062B36C /* RAAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D2DFEA2B5AE1BC0062B36C /* RAAlertView.swift */; };
+		98D43DDC2B61889D00507EAD /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D43DDB2B61889D00507EAD /* HomeViewModel.swift */; };
+		98D43DDE2B6188FD00507EAD /* RecipeItemCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D43DDD2B6188FD00507EAD /* RecipeItemCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -66,6 +68,8 @@
 		98D2DFE62B5AE16E0062B36C /* RATitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RATitleLabel.swift; sourceTree = "<group>"; };
 		98D2DFE82B5AE1850062B36C /* RABodyLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RABodyLabel.swift; sourceTree = "<group>"; };
 		98D2DFEA2B5AE1BC0062B36C /* RAAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAAlertView.swift; sourceTree = "<group>"; };
+		98D43DDB2B61889D00507EAD /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		98D43DDD2B6188FD00507EAD /* RecipeItemCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeItemCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,7 +146,7 @@
 			children = (
 				988DE81E2B5D876300FA0ABC /* Login */,
 				980BA72F2B60099100AD97E7 /* Register */,
-				98AE16242B5981CF00AF5528 /* HomeViewController.swift */,
+				98D43DDA2B61888000507EAD /* Home */,
 				98AE16362B59822100AF5528 /* ShoppingListViewController.swift */,
 				98AE16382B59822E00AF5528 /* GenerateRecipeViewController.swift */,
 				98AE16342B59821500AF5528 /* ProfileViewController.swift */,
@@ -211,6 +215,24 @@
 				98D2DFEA2B5AE1BC0062B36C /* RAAlertView.swift */,
 			);
 			path = ReusableComponents;
+			sourceTree = "<group>";
+		};
+		98D43DDA2B61888000507EAD /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				98D43DDF2B61890C00507EAD /* CollectionViewCell */,
+				98AE16242B5981CF00AF5528 /* HomeViewController.swift */,
+				98D43DDB2B61889D00507EAD /* HomeViewModel.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		98D43DDF2B61890C00507EAD /* CollectionViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				98D43DDD2B6188FD00507EAD /* RecipeItemCollectionViewCell.swift */,
+			);
+			path = CollectionViewCell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -296,6 +318,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				98D2DFE22B5AE0BE0062B36C /* RAButton.swift in Sources */,
+				98D43DDC2B61889D00507EAD /* HomeViewModel.swift in Sources */,
 				98AE16252B5981CF00AF5528 /* HomeViewController.swift in Sources */,
 				9840619D2B5C5DA600A6BFAF /* LoginViewController.swift in Sources */,
 				98AE16212B5981CF00AF5528 /* AppDelegate.swift in Sources */,
@@ -315,6 +338,7 @@
 				988DE8182B5D335600FA0ABC /* RegisterUserRequest.swift in Sources */,
 				98D2DFEB2B5AE1BC0062B36C /* RAAlertView.swift in Sources */,
 				98AE16232B5981CF00AF5528 /* SceneDelegate.swift in Sources */,
+				98D43DDE2B6188FD00507EAD /* RecipeItemCollectionViewCell.swift in Sources */,
 				988DE8202B5D87A000FA0ABC /* LoginViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
