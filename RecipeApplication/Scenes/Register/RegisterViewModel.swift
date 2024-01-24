@@ -25,17 +25,17 @@ final class RegisterViewModel {
     func signUp(username: String, email: String, password: String, completion: @escaping (Bool, Error?) -> Void) {
         let registerUserRequest = RegisterUserRequest(username: username, email: email, password: password)
 
-        if !Validator.isValidUsername(for: registerUserRequest.username) {
+        guard Validator.isValidUsername(for: registerUserRequest.username) else {
             delegate?.showInvalidUsernameAlert()
             return
         }
 
-        if !Validator.isValidEmail(for: registerUserRequest.email) {
+        guard Validator.isValidEmail(for: registerUserRequest.email) else {
             delegate?.showInvalidEmailAlert()
             return
         }
 
-        if !validatePassword(password) {
+        guard validatePassword(password) else {
             delegate?.showInvalidPasswordAlert()
             return
         }
@@ -69,14 +69,12 @@ final class RegisterViewModel {
         let isNumberValid = password.rangeOfCharacter(from: .decimalDigits) != nil
         let isSpecialCharValid = password.rangeOfCharacter(from: CharacterSet(charactersIn: "!@#$%^&*()")) != nil
 
-        
         delegate?.updatePasswordValidationUI(
             isLengthValid: isLengthValid,
             isUppercaseValid: isUppercaseValid,
             isNumberValid: isNumberValid,
             isSpecialCharValid: isSpecialCharValid
         )
-
 
         return isLengthValid && isUppercaseValid && isNumberValid && isSpecialCharValid
     }
