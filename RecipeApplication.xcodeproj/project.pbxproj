@@ -40,6 +40,7 @@
 		98D43DDC2B61889D00507EAD /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D43DDB2B61889D00507EAD /* HomeViewModel.swift */; };
 		98D43DDE2B6188FD00507EAD /* RecipeItemCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D43DDD2B6188FD00507EAD /* RecipeItemCollectionViewCell.swift */; };
 		98D43DE22B618A5800507EAD /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D43DE12B618A5800507EAD /* Model.swift */; };
+		98D43DE52B6194A500507EAD /* NetworkLayer in Frameworks */ = {isa = PBXBuildFile; productRef = 98D43DE42B6194A500507EAD /* NetworkLayer */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -81,6 +82,7 @@
 			files = (
 				988DE8132B5D2ED500FA0ABC /* FirebaseAnalyticsSwift in Frameworks */,
 				988DE7F22B5D2D3200FA0ABC /* FirebaseFirestore in Frameworks */,
+				98D43DE52B6194A500507EAD /* NetworkLayer in Frameworks */,
 				988DE7F62B5D2D3200FA0ABC /* FirebaseFirestoreSwift in Frameworks */,
 				988DE7E62B5D2D3200FA0ABC /* FirebaseAuth in Frameworks */,
 				988DE8112B5D2EC200FA0ABC /* FirebaseAnalytics in Frameworks */,
@@ -269,6 +271,7 @@
 				988DE80B2B5D2D3200FA0ABC /* FirebaseStorage */,
 				988DE8102B5D2EC200FA0ABC /* FirebaseAnalytics */,
 				988DE8122B5D2ED500FA0ABC /* FirebaseAnalyticsSwift */,
+				98D43DE42B6194A500507EAD /* NetworkLayer */,
 			);
 			productName = RecipeApplication;
 			productReference = 98AE161D2B5981CF00AF5528 /* RecipeApplication.app */;
@@ -300,6 +303,7 @@
 			mainGroup = 98AE16142B5981CF00AF5528;
 			packageReferences = (
 				988DE7D82B5D2D3200FA0ABC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				98D43DE32B6194A500507EAD /* XCRemoteSwiftPackageReference "NetworkLayer" */,
 			);
 			productRefGroup = 98AE161E2B5981CF00AF5528 /* Products */;
 			projectDirPath = "";
@@ -572,6 +576,14 @@
 				minimumVersion = 10.20.0;
 			};
 		};
+		98D43DE32B6194A500507EAD /* XCRemoteSwiftPackageReference "NetworkLayer" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/likanozadze/NetworkLayer.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -604,6 +616,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 988DE7D82B5D2D3200FA0ABC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAnalyticsSwift;
+		};
+		98D43DE42B6194A500507EAD /* NetworkLayer */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 98D43DE32B6194A500507EAD /* XCRemoteSwiftPackageReference "NetworkLayer" */;
+			productName = NetworkLayer;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

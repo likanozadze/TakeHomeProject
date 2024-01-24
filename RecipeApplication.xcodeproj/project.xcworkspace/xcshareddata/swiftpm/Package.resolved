@@ -100,6 +100,15 @@
       }
     },
     {
+      "identity" : "networklayer",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/likanozadze/NetworkLayer.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "ae80dae3ea583e45463019444fd4c9c20b264f28"
+      }
+    },
+    {
       "identity" : "promises",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/promises.git",
