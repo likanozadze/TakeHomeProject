@@ -7,20 +7,12 @@
 
 import UIKit
 
-final class HomeViewController: UIViewController, UICollectionViewDelegate {
+final class HomeViewController: UIViewController {
+
+    
     
     // MARK: - Properties
-    
-    private let logoImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "logo")
-        imageView.contentMode = .scaleAspectFill
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.heightAnchor.constraint(equalToConstant: 48).isActive = true
-        imageView.widthAnchor.constraint(equalToConstant: 48).isActive = true
-        return imageView
-    }()
-    
+
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -34,7 +26,7 @@ final class HomeViewController: UIViewController, UICollectionViewDelegate {
         return collectionView
     }()
     
-    private var recipe = [Recipe] ()
+    private var recipe: [Recipe] = []
     private let viewModel = HomeViewModel()
     
     // MARK: - ViewLifeCycle
@@ -43,7 +35,7 @@ final class HomeViewController: UIViewController, UICollectionViewDelegate {
         super.viewDidLoad()
         setup()
         setupViewModelDelegate()
-        viewModel.viewDidLoad()
+        viewModel.fetchRecipes()
         
     }
     
@@ -60,8 +52,7 @@ final class HomeViewController: UIViewController, UICollectionViewDelegate {
     }
     
     private func setupNavigationBar() {
-        let logoItem = UIBarButtonItem(customView: logoImageView)
-        navigationItem.leftBarButtonItem = logoItem
+
     }
     private func setupCollectionView() {
         view.addSubview(collectionView)
@@ -77,19 +68,22 @@ final class HomeViewController: UIViewController, UICollectionViewDelegate {
         collectionView.delegate = self
     }
     private func setupViewModelDelegate() {
-      //  viewModel.delegate = self
+    viewModel.delegate = self
     }
 }
 
 // MARK: - CollectionView DataSource
 extension HomeViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        recipe.count
+        print("Number of items: \(recipe.count)")
+       return recipe.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
       
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecipeItemCell", for: indexPath) as? RecipeItemCollectionViewCell else {
+                print("Error: Unable to dequeue RecipeItemCollectionViewCell.")
+                     
                 return UICollectionViewCell()
             }
             cell.configure(with: recipe[indexPath.row])
@@ -106,18 +100,32 @@ extension HomeViewController: UICollectionViewDataSource {
             + flowLayout.sectionInset.right
             + flowLayout.minimumInteritemSpacing
             
-            let width = Int((collectionView.bounds.width - totalSpace) / 2)
-            let height = 278
-            
-            return CGSize(width: width, height: height)
+            let width = (collectionView.bounds.width - totalSpace) / 2
+               let height = width * 1.5
+
+               return CGSize(width: width, height: height)
         }
     }
     
     // MARK: - CollectionView Delegate
-//    extension HomeViewController: UICollectionViewDelegate {
-//        func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//            //viewModel.didSelectMovie(at: indexPath)
-//        }
-//    }
+    extension HomeViewController: UICollectionViewDelegate {
+        func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+            //viewModel.didSelectMovie(at: indexPath)
+        }
+    }
 
 
+// MARK: - RecipeListViewModelDelegate
+extension HomeViewController: RecipeListViewModelDelegate {
+    func recipesFetched(_ recipe: [Recipe]) {
+        self.recipe = recipe
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
+    }
+    
+    func recipeFetchError(_ error: Error) {
+        print("Error fetching recipes: \(error.localizedDescription)")
+
+    }
+}
