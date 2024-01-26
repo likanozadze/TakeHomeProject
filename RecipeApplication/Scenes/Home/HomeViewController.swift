@@ -39,7 +39,7 @@ final class HomeViewController: UIViewController {
         label.font = UIFont.systemFont(ofSize: 24, weight: .regular)
         return label
     }()
-
+    
     private let recipeTitle: UILabel = {
         let label = UILabel()
         label.text = "Popular Recipes"
@@ -49,13 +49,13 @@ final class HomeViewController: UIViewController {
         label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         return label
     }()
-
+    
     private let titleStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.spacing = 8
         stackView.alignment = .leading
-       stackView.distribution = .fillProportionally
+        stackView.distribution = .fillProportionally
         return stackView
     }()
     
@@ -64,12 +64,29 @@ final class HomeViewController: UIViewController {
         layout.scrollDirection = .horizontal
         layout.minimumInteritemSpacing = 15
         layout.minimumLineSpacing = 16
-        layout.itemSize = CGSize(width: 280, height: 240)
+      //  layout.itemSize = CGSize(width: 200, height: 180)
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = .clear
         return collectionView
+    }()
+    
+    private let logoImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.image = UIImage(named: "logo")
+        return imageView
+        
+    }()
+    
+    private let imageStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 8
+        stackView.alignment = .leading
+        stackView.distribution = .fillProportionally
+        return stackView
     }()
     
     private var recipe: [Recipe] = []
@@ -82,8 +99,8 @@ final class HomeViewController: UIViewController {
         setup()
         setupViewModelDelegate()
         viewModel.fetchRecipes()
-      
-
+        
+        
         
     }
     
@@ -93,14 +110,14 @@ final class HomeViewController: UIViewController {
         addSubviewsToView()
         setupTitleStackView()
         setupConstraints()
-        setupCollectionView()
+        setupMainView()
     }
     // MARK: - Private Methods
     
     private func setupBackground() {
         view.backgroundColor = UIColor.backgroundColor
     }
- 
+    
     private func addSubviewsToView() {
         addMainSubviews()
     }
@@ -108,7 +125,7 @@ final class HomeViewController: UIViewController {
     private func addMainSubviews() {
         view.addSubview(mainStackView)
         mainStackView.addArrangedSubview(titleStackView)
-    
+       
     }
     private func setupTitleStackView() {
         titleStackView.addArrangedSubview(mainTitleLabel)
@@ -117,14 +134,15 @@ final class HomeViewController: UIViewController {
         
     }
     private func setupConstraints() {
-        setupCollectionView()
-       
+        setupMainView()
+        
     }
     
-    private func setupCollectionView() {
+    private func setupMainView() {
         view.addSubview(mainStackView)
         view.addSubview(collectionView)
-    
+        
+        
         NSLayoutConstraint.activate([
             mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
@@ -132,22 +150,23 @@ final class HomeViewController: UIViewController {
             mainStackView.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor)
             
         ])
-
+        
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: mainStackView.bottomAnchor, constant: 20),
+            collectionView.topAnchor.constraint(equalTo: mainStackView.bottomAnchor, constant: 10),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20),
-            collectionView.heightAnchor.constraint(equalToConstant: 300)
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20)
         ])
-
+        
         collectionView.register(RecipeItemCollectionViewCell.self, forCellWithReuseIdentifier: "RecipeItemCell")
         
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.showsVerticalScrollIndicator = false
     }
-
+    
+    
+    
     private func setupViewModelDelegate() {
         viewModel.delegate = self
     }
@@ -176,9 +195,8 @@ extension HomeViewController: UICollectionViewDataSource {
 extension HomeViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
-        let width = collectionView.bounds.width - flowLayout.minimumInteritemSpacing
-           let height = collectionView.bounds.height
-           return CGSize(width: 280, height: 240)
+        let height = collectionView.bounds.height - collectionView.contentInset.top - collectionView.contentInset.bottom
+        return CGSize(width: 240, height: 280)
     }
 }
 
