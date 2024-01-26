@@ -10,14 +10,14 @@ import Foundation
 struct RecipeSearchResponse: Decodable {
     let results: [Recipe]
     let offset: Int
-    let number: Int
+    let number: Int?
     let totalResults: Int
 }
 
 struct Recipe: Decodable {
     let id: Int
     let title: String
-    let image: String
+    let image: String?
     let readyInMinutes: Int?
     let servings: Int?
     let sourceName: String?
@@ -31,13 +31,6 @@ struct Recipe: Decodable {
     let cheap: Bool?
     let veryPopular: Bool?
     let sustainable: Bool?
-    let aggregateLikes: Int?
-    let spoonacularScore: Double?
-    let healthScore: Double?
-    let creditsText: String?
-    let license: String?
-    let copyright: String?
-    let openLicense: Bool?
     let pricePerServing: Double?
     let extendedIngredients: [ExtendedIngredient]?
     let instructions: String?
@@ -49,16 +42,12 @@ struct Recipe: Decodable {
 
 struct ExtendedIngredient: Decodable {
     let id: Int
-    let aisle: String
     let image: String
-    let consistency: String
     let name: String
-    let nameClean: String
     let original: String
     let originalName: String
     let amount: Double
     let unit: String
-    let meta: [String]
     let measures: Measures
 }
 
@@ -80,10 +69,10 @@ struct Metric: Decodable {
 }
 
 struct AnalyzedInstruction: Decodable {
-    let number: Int
-    let step: String
-    let ingredients: [Ingredient]
-    let equipment: [Equipment]
+    let number: Int?
+    let step: String?
+    let ingredients: [Ingredient]?
+    let equipment: [Equipment]?
 }
 
 struct Ingredient: Decodable {
