@@ -8,11 +8,20 @@
 import UIKit
 
 final class HomeViewController: UIViewController {
-
-    
     
     // MARK: - Properties
+    
+    private let mainTitleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "What would you like to cook"
+        label.textColor = UIColor.secondaryTextColor
+        label.numberOfLines = 2
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        return label
+    }()
 
+    
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -42,7 +51,6 @@ final class HomeViewController: UIViewController {
     // MARK: - UI Setup
     private func setup() {
         setupBackground()
-        setupNavigationBar()
         setupCollectionView()
     }
     // MARK: - Private Methods
@@ -50,10 +58,7 @@ final class HomeViewController: UIViewController {
     private func setupBackground() {
         view.backgroundColor = UIColor.backgroundColor
     }
-    
-    private func setupNavigationBar() {
-
-    }
+ 
     private func setupCollectionView() {
         view.addSubview(collectionView)
         
@@ -68,7 +73,7 @@ final class HomeViewController: UIViewController {
         collectionView.delegate = self
     }
     private func setupViewModelDelegate() {
-    viewModel.delegate = self
+        viewModel.delegate = self
     }
 }
 
@@ -76,43 +81,43 @@ final class HomeViewController: UIViewController {
 extension HomeViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         print("Number of items: \(recipe.count)")
-       return recipe.count
+        return recipe.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-      
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecipeItemCell", for: indexPath) as? RecipeItemCollectionViewCell else {
-                print("Error: Unable to dequeue RecipeItemCollectionViewCell.")
-                     
-                return UICollectionViewCell()
-            }
-            cell.configure(with: recipe[indexPath.row])
-            return cell
+        
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecipeItemCell", for: indexPath) as? RecipeItemCollectionViewCell else {
+            print("Error: Unable to dequeue RecipeItemCollectionViewCell.")
             
+            return UICollectionViewCell()
         }
+        cell.configure(with: recipe[indexPath.row])
+        return cell
+        
     }
-    // MARK: - CollectionView FlowLayoutDelegate
-    extension HomeViewController: UICollectionViewDelegateFlowLayout {
-        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-            let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
-            
-            let totalSpace = flowLayout.sectionInset.left
-            + flowLayout.sectionInset.right
-            + flowLayout.minimumInteritemSpacing
-            
-            let width = (collectionView.bounds.width - totalSpace) / 2
-               let height = width * 1.5
+}
+// MARK: - CollectionView FlowLayoutDelegate
+extension HomeViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
+        
+        let totalSpace = flowLayout.sectionInset.left
+        + flowLayout.sectionInset.right
+        + flowLayout.minimumInteritemSpacing
+        
+        let width = (collectionView.bounds.width - totalSpace) / 2
+        let height = width * 1.5
+        
+        return CGSize(width: width, height: height)
+    }
+}
 
-               return CGSize(width: width, height: height)
-        }
+// MARK: - CollectionView Delegate
+extension HomeViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        //viewModel.didSelectMovie(at: indexPath)
     }
-    
-    // MARK: - CollectionView Delegate
-    extension HomeViewController: UICollectionViewDelegate {
-        func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-            //viewModel.didSelectMovie(at: indexPath)
-        }
-    }
+}
 
 
 // MARK: - RecipeListViewModelDelegate
@@ -126,6 +131,5 @@ extension HomeViewController: RecipeListViewModelDelegate {
     
     func recipeFetchError(_ error: Error) {
         print("Error fetching recipes: \(error.localizedDescription)")
-
     }
 }

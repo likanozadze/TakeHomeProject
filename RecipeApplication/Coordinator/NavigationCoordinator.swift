@@ -51,39 +51,53 @@ class NavigationCoordinator {
             }
         }
     }
-    
+
     func createHomeViewNavigation() -> UINavigationController {
         let homeViewController = HomeViewController()
-        homeViewController.title = "Home"
+        homeViewController.title = ""
         homeViewController.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 0)
-        
+        addLogoToNavigationBar(of: homeViewController)
         return UINavigationController(rootViewController: homeViewController)
     }
     
     func createShoppingViewNavigation() -> UINavigationController {
         let shoppingListViewController = ShoppingListViewController()
-        shoppingListViewController.title = "Shopping list"
+        shoppingListViewController.title = ""
         shoppingListViewController.tabBarItem = UITabBarItem(title: "Shopping list", image: UIImage(systemName: "cart"), tag: 1)
-        
+        addLogoToNavigationBar(of: shoppingListViewController)
         return UINavigationController(rootViewController: shoppingListViewController)
     }
     
     func createGenerateRecipeViewNavigation() -> UINavigationController {
         let generateRecipeViewController = GenerateRecipeViewController()
-        generateRecipeViewController.title = "Generate Recipe"
+        generateRecipeViewController.title = ""
         generateRecipeViewController.tabBarItem = UITabBarItem(title: "Generate Recipe", image: UIImage(systemName: "list.clipboard"), tag: 2)
-        
+        addLogoToNavigationBar(of: generateRecipeViewController)
         return UINavigationController(rootViewController: generateRecipeViewController)
     }
     
     func createProfileViewNavigation() -> UINavigationController {
         let profileViewController = ProfileViewController()
-        profileViewController.title = "Account"
+        profileViewController.title = ""
         profileViewController.tabBarItem = UITabBarItem(title: "Account", image: UIImage(systemName: "person.crop.circle"), tag: 3)
-        
+        addLogoToNavigationBar(of: profileViewController)
         return UINavigationController(rootViewController: profileViewController)
     }
     
+    private func addLogoToNavigationBar(of viewController: UIViewController) {
+        let logoImageView = UIImageView()
+        logoImageView.image = UIImage(named: "logo")
+        logoImageView.contentMode = .scaleAspectFill
+        logoImageView.heightAnchor.constraint(equalToConstant: 48).isActive = true
+        logoImageView.widthAnchor.constraint(equalToConstant: 48).isActive = true
+        logoImageView.translatesAutoresizingMaskIntoConstraints = false
+
+        let logoContainerView = UIView(frame: CGRect(x: 0, y: 0, width: 48, height: 48))
+        logoContainerView.addSubview(logoImageView)
+
+        let logoBarButton = UIBarButtonItem(customView: logoContainerView)
+        viewController.navigationItem.leftBarButtonItem = logoBarButton
+    }
     func createTabbar() -> UITabBarController {
         let tabbar = UITabBarController()
         UITabBar.appearance().tintColor = UIColor.accentTextColor

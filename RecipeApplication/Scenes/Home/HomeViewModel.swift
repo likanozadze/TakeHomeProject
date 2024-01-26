@@ -10,7 +10,7 @@ import NetworkLayer
 
 protocol RecipeListViewModelDelegate: AnyObject {
     func recipesFetched(_ recipes: [Recipe])
-        func recipeFetchError(_ error: Error)
+    func recipeFetchError(_ error: Error)
 }
 final class HomeViewModel {
     weak var delegate: RecipeListViewModelDelegate?
@@ -28,18 +28,22 @@ final class HomeViewModel {
     }
     
     func fetchRecipes() {
+        
+        if let savedRecipes = UserDefaults.standard.object(forKey: "recipes") as? Data {
+            let decoder = JSONDecoder()
+            if let loadedRecipes = try? decoder.decode([Recipe].self, from: savedRecipes) {
+                self.delegate?.recipesFetched(loadedRecipes)
+                return
+            }
+        }
+        
         let baseURL = "https://api.spoonacular.com"
         let apiKey = "28bf345135c7408d9307606431071aac"
         let endpoint = "/recipes/complexSearch"
         let parameters: [String: Any] = [
             "apiKey": apiKey,
             "number": 10,
-            "query": "burger",
-            "minCalories": 50,
-            "maxCalories": 800,
-            "imageSize": 200,
             "addRecipeInformation": true,
-            "addRecipeNutrition": false
         ]
         
         networkManager.request(
@@ -52,6 +56,11 @@ final class HomeViewModel {
                 case .success(let fetchedRecipes):
                     print("Data fetched successfully:", fetchedRecipes)
                     self.delegate?.recipesFetched(fetchedRecipes.results)
+                    
+                           let encoder = JSONEncoder()
+                           if let encoded = try? encoder.encode(fetchedRecipes.results) {
+                               UserDefaults.standard.set(encoded, forKey: "recipes")
+                           }
                 case .failure(let error):
                     print("Error fetching data:", error)
                     self.delegate?.recipeFetchError(error)

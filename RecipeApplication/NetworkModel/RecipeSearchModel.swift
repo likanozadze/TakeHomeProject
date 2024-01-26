@@ -7,14 +7,14 @@
 
 import Foundation
 
-struct RecipeSearchResponse: Decodable {
+struct RecipeSearchResponse: Codable {
     let results: [Recipe]
     let offset: Int
     let number: Int?
     let totalResults: Int
 }
 
-struct Recipe: Decodable {
+struct Recipe: Codable {
     let id: Int
     let title: String
     let image: String?
@@ -25,6 +25,7 @@ struct Recipe: Decodable {
     let spoonacularSourceUrl: String?
     let vegetarian: Bool?
     let vegan: Bool?
+    let dishTypes: [String]?
     let glutenFree: Bool?
     let dairyFree: Bool?
     let veryHealthy: Bool?
@@ -40,7 +41,7 @@ struct Recipe: Decodable {
     let originalImage: String?
 }
 
-struct ExtendedIngredient: Decodable {
+struct ExtendedIngredient: Codable {
     let id: Int
     let image: String
     let name: String
@@ -51,37 +52,37 @@ struct ExtendedIngredient: Decodable {
     let measures: Measures
 }
 
-struct Measures: Decodable {
+struct Measures: Codable {
     let us: Us
     let metric: Metric
 }
 
-struct Us: Decodable {
+struct Us: Codable {
     let amount: Double
     let unitShort: String
     let unitLong: String
 }
 
-struct Metric: Decodable {
+struct Metric: Codable {
     let amount: Double
     let unitShort: String
     let unitLong: String
 }
 
-struct AnalyzedInstruction: Decodable {
+struct AnalyzedInstruction: Codable {
     let number: Int?
     let step: String?
     let ingredients: [Ingredient]?
     let equipment: [Equipment]?
 }
 
-struct Ingredient: Decodable {
+struct Ingredient: Codable {
     let id: Int
     let quantity: Double
     let name: String
 }
 
-struct Equipment: Decodable {
+struct Equipment: Codable {
     let id: Int
     let name: String
 }

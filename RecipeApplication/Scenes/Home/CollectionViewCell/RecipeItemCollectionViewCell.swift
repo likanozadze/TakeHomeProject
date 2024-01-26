@@ -178,7 +178,7 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor.black
-       // label.numberOfLines = 0
+        label.numberOfLines = 2
         label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
         return label
     }()
@@ -237,7 +237,7 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
             recipeImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             recipeImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             recipeImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            recipeImageView.heightAnchor.constraint(equalToConstant: 230)
+            recipeImageView.heightAnchor.constraint(equalToConstant: 180)
         ])
 
         NSLayoutConstraint.activate([
