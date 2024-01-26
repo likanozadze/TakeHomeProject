@@ -32,11 +32,11 @@ final class HomeViewController: UIViewController {
     
     private let subMainTitleLabel: UILabel = {
         let label = UILabel()
-        label.text = "like to Cook?"
+        label.text = "Like to Cook?"
         label.textColor = UIColor.secondaryTextColor
         label.numberOfLines = 2
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 24, weight: .bold)
+        label.font = UIFont.systemFont(ofSize: 24, weight: .regular)
         return label
     }()
 
@@ -53,17 +53,18 @@ final class HomeViewController: UIViewController {
     private let titleStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.spacing = 5
+        stackView.spacing = 8
         stackView.alignment = .leading
-       // stackView.distribution = .equalSpacing
+       stackView.distribution = .fillProportionally
         return stackView
     }()
     
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
+        layout.scrollDirection = .horizontal
         layout.minimumInteritemSpacing = 15
         layout.minimumLineSpacing = 16
+        layout.itemSize = CGSize(width: 280, height: 240)
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -81,6 +82,8 @@ final class HomeViewController: UIViewController {
         setup()
         setupViewModelDelegate()
         viewModel.fetchRecipes()
+      
+
         
     }
     
@@ -125,20 +128,24 @@ final class HomeViewController: UIViewController {
         NSLayoutConstraint.activate([
             mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            mainStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 30), 
+            mainStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: -30),
             mainStackView.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor)
+            
         ])
 
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: mainStackView.bottomAnchor, constant: 20),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20)
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20),
+            collectionView.heightAnchor.constraint(equalToConstant: 300)
         ])
 
         collectionView.register(RecipeItemCollectionViewCell.self, forCellWithReuseIdentifier: "RecipeItemCell")
+        
         collectionView.dataSource = self
         collectionView.delegate = self
+        collectionView.showsVerticalScrollIndicator = false
     }
 
     private func setupViewModelDelegate() {
@@ -169,15 +176,9 @@ extension HomeViewController: UICollectionViewDataSource {
 extension HomeViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
-        
-        let totalSpace = flowLayout.sectionInset.left
-        + flowLayout.sectionInset.right
-        + flowLayout.minimumInteritemSpacing
-        
-        let width = (collectionView.bounds.width - totalSpace) / 2
-        let height = width * 1.5
-        
-        return CGSize(width: width, height: height)
+        let width = collectionView.bounds.width - flowLayout.minimumInteritemSpacing
+           let height = collectionView.bounds.height
+           return CGSize(width: 280, height: 240)
     }
 }
 

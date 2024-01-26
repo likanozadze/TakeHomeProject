@@ -195,8 +195,15 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
         button.setImage(UIImage(systemName: "heart"), for: .normal)
         return button
     }()
+    private let servingsLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.textColor = .black
+        label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        return label
+    }()
     private lazy var bottomStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [readyInMinLabel, favoriteButton])
+        let stackView = UIStackView(arrangedSubviews: [readyInMinLabel, favoriteButton, servingsLabel])
         stackView.axis = .horizontal
         stackView.spacing = 2
         stackView.distribution = .fill
@@ -204,6 +211,14 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
         return stackView
     }()
 
+    private let dishTypeLabel: UILabel = {
+            let label = UILabel()
+            label.textAlignment = .left
+            label.textColor = .black
+            label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+            return label
+        }()
+    
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -241,16 +256,16 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
         ])
 
         NSLayoutConstraint.activate([
-            recipeTitle.topAnchor.constraint(equalTo: recipeImageView.bottomAnchor, constant: 8),
-            recipeTitle.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
-            recipeTitle.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8)
+            recipeTitle.topAnchor.constraint(equalTo: recipeImageView.bottomAnchor, constant: 10),
+            recipeTitle.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            recipeTitle.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
         ])
 
         NSLayoutConstraint.activate([
-            bottomStackView.topAnchor.constraint(equalTo: recipeTitle.bottomAnchor, constant: 8),
-            bottomStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
-            bottomStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
-            bottomStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
+            bottomStackView.topAnchor.constraint(equalTo: recipeTitle.bottomAnchor, constant: 10),
+            bottomStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            bottomStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            bottomStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
         ])
     }
 
@@ -275,23 +290,39 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
          return url.replacingOccurrences(of: "http://", with: "https://")
      }
 
-     func configure(with recipe: Recipe) {
-         recipeTitle.text = recipe.title
-
-         if let imageUrl = convertToSecureURL(recipe.image) {
-             downloadImage(from: imageUrl)
-         } else {
-             
-             recipeImageView.image = UIImage(named: "placeholderImage")
-         }
-
-         if let readyInMinutes = recipe.readyInMinutes {
-             readyInMinLabel.text = "\(readyInMinutes) min"
-         } else {
-             readyInMinLabel.text = "N/A"
-         }
-     }
-
+    func configure(with recipe: Recipe) {
+        recipeTitle.text = recipe.title
+        
+        if let imageUrl = convertToSecureURL(recipe.image) {
+            downloadImage(from: imageUrl)
+        } else {
+            
+            recipeImageView.image = UIImage(named: "placeholderImage")
+        }
+        if let servings = recipe.servings {
+            let servingsString = "\(servings) servings"
+            let servingsAttachment = NSTextAttachment()
+            servingsAttachment.image = UIImage(systemName: "person")?.withTintColor(UIColor.accentTextColor)
+            let servingsAttachmentString = NSAttributedString(attachment: servingsAttachment)
+            let servingsAttributedString = NSMutableAttributedString(string: servingsString)
+            servingsAttributedString.insert(servingsAttachmentString, at: 0)
+            
+            if let readyInMinutes = recipe.readyInMinutes {
+                let timeAttachment = NSTextAttachment()
+                timeAttachment.image = UIImage(systemName: "clock")?.withTintColor(UIColor.accentTextColor)
+                let timeAttachmentString = NSAttributedString(attachment: timeAttachment)
+                let timeString = NSMutableAttributedString(string: "\(readyInMinutes) min ")
+                timeString.insert(timeAttachmentString, at: 0)
+                
+                servingsAttributedString.append(timeString)
+            }
+            
+            readyInMinLabel.attributedText = servingsAttributedString
+        } else {
+            readyInMinLabel.text = "N/A"
+        }
+        
+    }
      private func downloadImage (from url: String?) {
          guard let urlString = url, let imageUrl = URL(string: urlString) else {
              DispatchQueue.main.async {
