@@ -5,6 +5,7 @@
 //  Created by Lika Nozadze on 1/24/24.
 //
 //
+
 import Foundation
 import NetworkLayer
 
@@ -12,20 +13,28 @@ protocol RecipeListViewModelDelegate: AnyObject {
     func recipesFetched(_ recipes: [Recipe])
     func recipeFetchError(_ error: Error)
 }
+
 final class HomeViewModel {
+    
+    // MARK: - Properties
+
     weak var delegate: RecipeListViewModelDelegate?
     private let networkManager: NetworkManager
     private var recipes: [Recipe] = []
     
-    
+    // MARK: - Init
     
     init(networkManager: NetworkManager = .shared) {
         self.networkManager = networkManager
     }
+    
+    // MARK: - ViewLifecycle
+    
     func viewDidLoad() {
         fetchRecipes()
         
     }
+    // MARK: - Fetch Recipes
     
     func fetchRecipes() {
         

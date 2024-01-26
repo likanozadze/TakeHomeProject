@@ -100,8 +100,6 @@ final class HomeViewController: UIViewController {
         setupViewModelDelegate()
         viewModel.fetchRecipes()
         
-        
-        
     }
     
     // MARK: - UI Setup
@@ -164,8 +162,6 @@ final class HomeViewController: UIViewController {
         collectionView.delegate = self
         collectionView.showsVerticalScrollIndicator = false
     }
-    
-    
     
     private func setupViewModelDelegate() {
         viewModel.delegate = self

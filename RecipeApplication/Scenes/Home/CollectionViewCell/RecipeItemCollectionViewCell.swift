@@ -8,7 +8,8 @@
 import UIKit
 
 class RecipeItemCollectionViewCell: UICollectionViewCell {
-    // MARK: - Properties
+    // MARK: - UI Components
+    
     private let recipeImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -49,6 +50,7 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
     }()
 
     // MARK: - Init
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview()
@@ -116,7 +118,7 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
             contentView.layer.cornerRadius = 8
             contentView.layer.masksToBounds = false
             contentView.layer.shadowColor = UIColor.gray.cgColor
-            contentView.layer.shadowOffset = CGSize(width: 0, height: 2)
+            contentView.layer.shadowOffset = CGSize(width: 1, height: 2)
             contentView.layer.shadowOpacity = 0.2
             contentView.layer.shadowRadius = 8
         }
