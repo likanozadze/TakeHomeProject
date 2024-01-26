@@ -96,7 +96,7 @@ class NavigationCoordinator {
         logoContainerView.addSubview(logoImageView)
 
         let logoBarButton = UIBarButtonItem(customView: logoContainerView)
-        viewController.navigationItem.leftBarButtonItem = logoBarButton
+        viewController.navigationItem.rightBarButtonItem = logoBarButton
     }
     func createTabbar() -> UITabBarController {
         let tabbar = UITabBarController()
@@ -105,4 +105,5 @@ class NavigationCoordinator {
         
         return tabbar
     }
+    
 }
