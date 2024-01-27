@@ -21,7 +21,7 @@ final class HomeViewController: UIViewController {
     
     private let recipeTitle: UILabel = {
         let label = UILabel()
-        label.text = "Popular Recipes"
+        label.text = "Trending Now 🔥"
         label.textColor = UIColor.secondaryTextColor
         label.numberOfLines = 2
         label.translatesAutoresizingMaskIntoConstraints = false
