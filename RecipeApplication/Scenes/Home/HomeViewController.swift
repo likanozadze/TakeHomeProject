@@ -10,20 +10,6 @@ import UIKit
 final class HomeViewController: UIViewController {
     
     // MARK: - UI Components
-//    
-//    private let searchBar: UISearchBar = {
-//        let searchBar = UISearchBar()
-//        searchBar.placeholder = "Search Recipes"
-//        searchBar.translatesAutoresizingMaskIntoConstraints = false
-//        searchBar.searchBarStyle = .default
-//        searchBar.layer.borderWidth = 0.2
-//        searchBar.layer.cornerRadius = 8
-//        searchBar.layer.masksToBounds = true
-//        searchBar.backgroundColor = .white
-//        searchBar.tintColor = UIColor.secondaryLabel
-//        return searchBar
-//    }()
-    
     private let mainStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
@@ -82,7 +68,6 @@ final class HomeViewController: UIViewController {
         setupBackground()
         addSubviewsToView()
         setupTitleStackView()
-     //   setupConstraintSearch()
         setupConstraints()
         
     }
@@ -98,7 +83,6 @@ final class HomeViewController: UIViewController {
     
     private func addMainSubviews() {
         view.addSubview(mainStackView)
-    //    view.addSubview(searchBar)
         mainStackView.addArrangedSubview(titleStackView)
         mainStackView.addArrangedSubview(collectionView)
         
@@ -107,14 +91,6 @@ final class HomeViewController: UIViewController {
         titleStackView.addArrangedSubview(recipeTitle)
     }
     
-//    private func setupConstraintSearch() {
-//        NSLayoutConstraint.activate([
-//            searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-//            searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-//            searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -60),
-//            searchBar.heightAnchor.constraint(equalToConstant: 40)
-//        ])
-//    }
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             mainStackView.topAnchor.constraint(equalTo:view.safeAreaLayoutGuide.topAnchor),
