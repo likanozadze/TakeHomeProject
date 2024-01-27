@@ -32,9 +32,7 @@ final class HomeViewController: UIViewController {
     private let titleStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
-        // stackView.spacing = 8
         stackView.alignment = .leading
-        //  stackView.distribution = .fillProportionally
         return stackView
     }()
     
@@ -85,9 +83,10 @@ final class HomeViewController: UIViewController {
     
     private func addMainSubviews() {
         view.addSubview(mainStackView)
+        mainStackView.addArrangedSubview(categoryCollectionView)
         mainStackView.addArrangedSubview(titleStackView)
         mainStackView.addArrangedSubview(collectionView)
-        mainStackView.addArrangedSubview(categoryCollectionView)
+      
         
     }
     private func setupTitleStackView() {
@@ -101,14 +100,16 @@ final class HomeViewController: UIViewController {
             mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             mainStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20)
         ])
+        NSLayoutConstraint.activate([
+            categoryCollectionView.topAnchor.constraint(equalTo: mainStackView.bottomAnchor, constant: 10),
+                categoryCollectionView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
+                categoryCollectionView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor),
+                categoryCollectionView.heightAnchor.constraint(equalToConstant: 200),
+            ])
         
         NSLayoutConstraint.activate([
             titleStackView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
             titleStackView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor)
-        ])
-        NSLayoutConstraint.activate([
-            categoryCollectionView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
-            categoryCollectionView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor)
         ])
         
         NSLayoutConstraint.activate([
@@ -116,13 +117,12 @@ final class HomeViewController: UIViewController {
             collectionView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor)
         ])
         
-
-        
-        
         collectionView.register(RecipeItemCollectionViewCell.self, forCellWithReuseIdentifier: "RecipeItemCell")
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.showsVerticalScrollIndicator = false
+        collectionView.showsHorizontalScrollIndicator = false
+        
     }
     
     private func setupViewModelDelegate() {

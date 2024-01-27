@@ -23,7 +23,7 @@ class CategoryCollectionViewCell: UICollectionViewCell {
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor.black
-        label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
+        label.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
         return label
     }()
 
@@ -52,15 +52,13 @@ class CategoryCollectionViewCell: UICollectionViewCell {
             categoryImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             categoryImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             categoryImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            categoryImageView.heightAnchor.constraint(equalToConstant: 180)
+            categoryImageView.heightAnchor.constraint(equalToConstant: 100)
         ])
 
         NSLayoutConstraint.activate([
-            categoryTitle.topAnchor.constraint(equalTo: categoryImageView.topAnchor, constant: 65),
+            categoryTitle.topAnchor.constraint(equalTo: categoryImageView.bottomAnchor, constant: 5),
             categoryTitle.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            //categoryTitle.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
-            categoryTitle.heightAnchor.constraint(equalToConstant: 30),
-            categoryTitle.widthAnchor.constraint(equalToConstant: 160)
+
         ])
 
     }
