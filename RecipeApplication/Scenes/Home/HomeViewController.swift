@@ -61,10 +61,9 @@ final class HomeViewController: UIViewController {
     
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
+        layout.scrollDirection = .vertical
         layout.minimumInteritemSpacing = 15
         layout.minimumLineSpacing = 16
-      //  layout.itemSize = CGSize(width: 200, height: 180)
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -72,23 +71,23 @@ final class HomeViewController: UIViewController {
         return collectionView
     }()
     
-    private let logoImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
-        imageView.image = UIImage(named: "logo")
-        return imageView
-        
-    }()
-    
-    private let imageStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.spacing = 8
-        stackView.alignment = .leading
-        stackView.distribution = .fillProportionally
-        return stackView
-    }()
-    
+//    private let logoImageView: UIImageView = {
+//        let imageView = UIImageView()
+//        imageView.contentMode = .scaleAspectFill
+//        imageView.image = UIImage(named: "logo")
+//        return imageView
+//        
+//    }()
+//    
+//    private let imageStackView: UIStackView = {
+//        let stackView = UIStackView()
+//        stackView.axis = .vertical
+//        stackView.spacing = 8
+//        stackView.alignment = .leading
+//        stackView.distribution = .fillProportionally
+//        return stackView
+//    }()
+//    
     private var recipe: [Recipe] = []
     private let viewModel = HomeViewModel()
     
@@ -99,6 +98,8 @@ final class HomeViewController: UIViewController {
         setup()
         setupViewModelDelegate()
         viewModel.fetchRecipes()
+        
+        
         
     }
     
@@ -144,24 +145,25 @@ final class HomeViewController: UIViewController {
         NSLayoutConstraint.activate([
             mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            mainStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: -30),
+            mainStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 30),
             mainStackView.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor)
-            
         ])
-        
+
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: mainStackView.bottomAnchor, constant: 10),
+            collectionView.topAnchor.constraint(equalTo: mainStackView.bottomAnchor, constant: 20),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20)
         ])
+
         
         collectionView.register(RecipeItemCollectionViewCell.self, forCellWithReuseIdentifier: "RecipeItemCell")
-        
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.showsVerticalScrollIndicator = false
     }
+    
+    
     
     private func setupViewModelDelegate() {
         viewModel.delegate = self
@@ -191,8 +193,15 @@ extension HomeViewController: UICollectionViewDataSource {
 extension HomeViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
-        let height = collectionView.bounds.height - collectionView.contentInset.top - collectionView.contentInset.bottom
-        return CGSize(width: 240, height: 280)
+        
+        let totalSpace = flowLayout.sectionInset.left
+        + flowLayout.sectionInset.right
+        + flowLayout.minimumInteritemSpacing
+        
+        let width = (collectionView.bounds.width - totalSpace) / 2
+        let height = width * 1.5
+        
+        return CGSize(width: width, height: height)
     }
 }
 

@@ -84,17 +84,17 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
             recipeImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             recipeImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             recipeImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            recipeImageView.heightAnchor.constraint(equalToConstant: 220)
+            recipeImageView.heightAnchor.constraint(equalToConstant: 180)
         ])
 
         NSLayoutConstraint.activate([
-            recipeTitle.topAnchor.constraint(equalTo: recipeImageView.bottomAnchor, constant: 10),
+            recipeTitle.topAnchor.constraint(equalTo: recipeImageView.bottomAnchor, constant: 8),
             recipeTitle.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             recipeTitle.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
         ])
 
         NSLayoutConstraint.activate([
-            bottomStackView.topAnchor.constraint(equalTo: recipeTitle.bottomAnchor, constant: 10),
+            bottomStackView.topAnchor.constraint(equalTo: recipeTitle.bottomAnchor, constant: 8),
             bottomStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             bottomStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             bottomStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
