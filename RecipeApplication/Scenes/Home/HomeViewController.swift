@@ -53,6 +53,8 @@ final class HomeViewController: UIViewController {
     private var recipe: [Recipe] = []
     private let viewModel = HomeViewModel()
     
+    private var categoryCollectionView = CategoryCollectionView()
+    
     // MARK: - ViewLifeCycle
     
     override func viewDidLoad() {
@@ -85,6 +87,7 @@ final class HomeViewController: UIViewController {
         view.addSubview(mainStackView)
         mainStackView.addArrangedSubview(titleStackView)
         mainStackView.addArrangedSubview(collectionView)
+        mainStackView.addArrangedSubview(categoryCollectionView)
         
     }
     private func setupTitleStackView() {
@@ -103,11 +106,17 @@ final class HomeViewController: UIViewController {
             titleStackView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
             titleStackView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor)
         ])
+        NSLayoutConstraint.activate([
+            categoryCollectionView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
+            categoryCollectionView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor)
+        ])
         
         NSLayoutConstraint.activate([
             collectionView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor)
         ])
+        
+
         
         
         collectionView.register(RecipeItemCollectionViewCell.self, forCellWithReuseIdentifier: "RecipeItemCell")
