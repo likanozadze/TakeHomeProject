@@ -50,7 +50,7 @@ final class HomeViewController: UIViewController {
     
     private var recipe: [Recipe] = []
     private let viewModel = HomeViewModel()
-    
+    var isHomeCell: Bool = true
     private var categoryCollectionView = CategoryCollectionView()
     
     // MARK: - ViewLifeCycle
@@ -186,3 +186,13 @@ extension HomeViewController: RecipeListViewModelDelegate {
         print("Error fetching recipes: \(error.localizedDescription)")
     }
 }
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CategoryCell", for: indexPath) as? CategoryCollectionViewCell else {
+            return UICollectionViewCell()
+        }
+        cell.isHomeCell = true
+        cell.configure(with: categoryData[indexPath.row])
+        return cell
+    }
+
+

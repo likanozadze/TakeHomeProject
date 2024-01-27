@@ -9,6 +9,7 @@ import UIKit
 
 final class CategoryViewController: UIViewController, UICollectionViewDelegateFlowLayout {
     
+    
     // MARK: - UI Components
     private let mainStackView: UIStackView = {
         let stackView = UIStackView()
@@ -36,6 +37,7 @@ final class CategoryViewController: UIViewController, UICollectionViewDelegateFl
     }()
     
     private var categoryCollectionView = CategoryCollectionView()
+    var isHomeCell: Bool = true
     
     // MARK: - ViewLifeCycle
     
@@ -53,10 +55,12 @@ final class CategoryViewController: UIViewController, UICollectionViewDelegateFl
         setupConstraints()
         
         categoryCollectionView.delegate = self
-      
+        categoryCollectionView.showsVerticalScrollIndicator = true
+        categoryCollectionView.alwaysBounceVertical = true  
+        
     }
     // MARK: - Private Methods
-  
+    
     private func setupBackground() {
         view.backgroundColor = UIColor.backgroundColor
     }
@@ -74,8 +78,15 @@ final class CategoryViewController: UIViewController, UICollectionViewDelegateFl
     private func setupTitleStackView() {
         titleStackView.addArrangedSubview(mainTitle)
     }
-
+    
     private func setupConstraints() {
+        NSLayoutConstraint.activate([
+            mainStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            mainStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20)
+        ])
+        
         NSLayoutConstraint.activate([
             titleStackView.topAnchor.constraint(equalTo: mainStackView.topAnchor),
             titleStackView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
@@ -83,28 +94,39 @@ final class CategoryViewController: UIViewController, UICollectionViewDelegateFl
         ])
         
         NSLayoutConstraint.activate([
-            mainStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
-            mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            mainStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20)
-        ])
-        
-        NSLayoutConstraint.activate([
-            categoryCollectionView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
-            categoryCollectionView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor),
             categoryCollectionView.topAnchor.constraint(equalTo: titleStackView.bottomAnchor, constant: 10),
-            categoryCollectionView.bottomAnchor.constraint(equalTo: mainStackView.bottomAnchor),
+            categoryCollectionView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor, constant: 10),
+            categoryCollectionView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor, constant: -10),
+            //categoryCollectionView.centerYAnchor.constraint(equalTo: mainStackView.centerYAnchor)
         ])
     }
+    
 }
 // MARK: - UICollectionViewDelegateFlowLayout
 extension CategoryViewController {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let spacing: CGFloat = 16
-        let numberOfColumns: CGFloat = 2
-        let availableWidth = collectionView.bounds.width - (numberOfColumns + 1) * spacing
-        let cellWidth = availableWidth / numberOfColumns
-        let cellHeight = cellWidth * 1.4
+        let cellWidth: CGFloat = isHomeCell ? 150 : 240
+          let cellHeight: CGFloat = isHomeCell ? 100 : 240
         return CGSize(width: cellWidth, height: cellHeight)
+    }
+    
+}
+
+// MARK: - UICollectionViewDataSource
+extension CategoryViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return categoryData.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CategoryCell", for: indexPath) as? CategoryCollectionViewCell else {
+            print("Error: Unable to dequeue CategoryCollectionViewCell.")
+            return UICollectionViewCell()
+        }
+        
+        cell.isHomeCell = false
+        cell.configure(with: categoryData[indexPath.row])
+        
+        return cell
     }
 }
