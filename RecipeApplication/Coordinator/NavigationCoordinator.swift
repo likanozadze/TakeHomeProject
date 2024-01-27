@@ -56,7 +56,7 @@ class NavigationCoordinator {
         let homeViewController = HomeViewController()
         homeViewController.title = ""
         homeViewController.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 0)
-        addLogoToNavigationBar(of: homeViewController)
+        addLogoAndSearchBarToNavigationBar(of: homeViewController)
         return UINavigationController(rootViewController: homeViewController)
     }
     
@@ -97,6 +97,32 @@ class NavigationCoordinator {
 
         let logoBarButton = UIBarButtonItem(customView: logoContainerView)
         viewController.navigationItem.rightBarButtonItem = logoBarButton
+    }
+    
+    private func addLogoAndSearchBarToNavigationBar(of viewController: UIViewController) {
+        let logoImageView = UIImageView()
+        logoImageView.image = UIImage(named: "logo")
+        logoImageView.contentMode = .scaleAspectFill
+        logoImageView.heightAnchor.constraint(equalToConstant: 48).isActive = true
+        logoImageView.widthAnchor.constraint(equalToConstant: 48).isActive = true
+        logoImageView.translatesAutoresizingMaskIntoConstraints = false
+
+        let logoContainerView = UIView(frame: CGRect(x: 0, y: 0, width: 48, height: 48))
+        logoContainerView.addSubview(logoImageView)
+
+        let logoBarButton = UIBarButtonItem(customView: logoContainerView)
+        viewController.navigationItem.rightBarButtonItem = logoBarButton
+
+        let searchBar = UISearchBar()
+        searchBar.placeholder = "Search Recipes"
+        searchBar.translatesAutoresizingMaskIntoConstraints = false
+        searchBar.searchBarStyle = .default
+        searchBar.layer.cornerRadius = 8
+        searchBar.layer.masksToBounds = true
+        searchBar.tintColor = UIColor.secondaryLabel
+
+        viewController.navigationItem.titleView = searchBar
+    
     }
     func createTabbar() -> UITabBarController {
         let tabbar = UITabBarController()
