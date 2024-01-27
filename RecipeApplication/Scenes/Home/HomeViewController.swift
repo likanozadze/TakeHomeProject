@@ -11,33 +11,26 @@ final class HomeViewController: UIViewController {
     
     // MARK: - UI Components
     
+    private let searchBar: UISearchBar = {
+        let searchBar = UISearchBar()
+        searchBar.placeholder = "Search Recipes"
+        searchBar.translatesAutoresizingMaskIntoConstraints = false
+        searchBar.searchBarStyle = .default
+        searchBar.layer.borderWidth = 0.2
+        searchBar.layer.cornerRadius = 8
+        searchBar.layer.masksToBounds = true
+        searchBar.backgroundColor = .white
+        searchBar.tintColor = UIColor.secondaryLabel
+        return searchBar
+    }()
+    
     private let mainStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.spacing = 16
+        stackView.spacing = 10
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.isLayoutMarginsRelativeArrangement = true
         return stackView
-    }()
-    
-    private let mainTitleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "What would you"
-        label.textColor = UIColor.secondaryTextColor
-        label.numberOfLines = 2
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 30, weight: .bold)
-        return label
-    }()
-    
-    private let subMainTitleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Like to Cook?"
-        label.textColor = UIColor.secondaryTextColor
-        label.numberOfLines = 2
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 24, weight: .regular)
-        return label
     }()
     
     private let recipeTitle: UILabel = {
@@ -46,16 +39,16 @@ final class HomeViewController: UIViewController {
         label.textColor = UIColor.secondaryTextColor
         label.numberOfLines = 2
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         return label
     }()
     
     private let titleStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.spacing = 8
+        // stackView.spacing = 8
         stackView.alignment = .leading
-        stackView.distribution = .fillProportionally
+        //  stackView.distribution = .fillProportionally
         return stackView
     }()
     
@@ -71,23 +64,6 @@ final class HomeViewController: UIViewController {
         return collectionView
     }()
     
-//    private let logoImageView: UIImageView = {
-//        let imageView = UIImageView()
-//        imageView.contentMode = .scaleAspectFill
-//        imageView.image = UIImage(named: "logo")
-//        return imageView
-//        
-//    }()
-//    
-//    private let imageStackView: UIStackView = {
-//        let stackView = UIStackView()
-//        stackView.axis = .vertical
-//        stackView.spacing = 8
-//        stackView.alignment = .leading
-//        stackView.distribution = .fillProportionally
-//        return stackView
-//    }()
-//    
     private var recipe: [Recipe] = []
     private let viewModel = HomeViewModel()
     
@@ -99,8 +75,6 @@ final class HomeViewController: UIViewController {
         setupViewModelDelegate()
         viewModel.fetchRecipes()
         
-        
-        
     }
     
     // MARK: - UI Setup
@@ -108,8 +82,9 @@ final class HomeViewController: UIViewController {
         setupBackground()
         addSubviewsToView()
         setupTitleStackView()
+        setupConstraintSearch()
         setupConstraints()
-        setupMainView()
+        
     }
     // MARK: - Private Methods
     
@@ -123,47 +98,47 @@ final class HomeViewController: UIViewController {
     
     private func addMainSubviews() {
         view.addSubview(mainStackView)
+        view.addSubview(searchBar)
         mainStackView.addArrangedSubview(titleStackView)
-       
+        mainStackView.addArrangedSubview(collectionView)
+        
     }
     private func setupTitleStackView() {
-        titleStackView.addArrangedSubview(mainTitleLabel)
-        titleStackView.addArrangedSubview(subMainTitleLabel)
         titleStackView.addArrangedSubview(recipeTitle)
-        
-    }
-    private func setupConstraints() {
-        setupMainView()
-        
     }
     
-    private func setupMainView() {
-        view.addSubview(mainStackView)
-        view.addSubview(collectionView)
-        
+    private func setupConstraintSearch() {
+        NSLayoutConstraint.activate([
+            searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -60),
+            searchBar.heightAnchor.constraint(equalToConstant: 40)
+        ])
+    }
+    private func setupConstraints() {
+        NSLayoutConstraint.activate([
+            mainStackView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 16),
+            mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            mainStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20)
+        ])
         
         NSLayoutConstraint.activate([
-            mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            mainStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 30),
-            mainStackView.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor)
+            titleStackView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
+            titleStackView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor)
         ])
-
+        
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: mainStackView.bottomAnchor, constant: 20),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20)
+            collectionView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor)
         ])
-
+        
         
         collectionView.register(RecipeItemCollectionViewCell.self, forCellWithReuseIdentifier: "RecipeItemCell")
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.showsVerticalScrollIndicator = false
     }
-    
-    
     
     private func setupViewModelDelegate() {
         viewModel.delegate = self
