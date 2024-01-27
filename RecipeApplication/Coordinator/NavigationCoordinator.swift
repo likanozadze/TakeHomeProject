@@ -60,12 +60,12 @@ class NavigationCoordinator {
         return UINavigationController(rootViewController: homeViewController)
     }
     
-    func createShoppingViewNavigation() -> UINavigationController {
-        let shoppingListViewController = ShoppingListViewController()
-        shoppingListViewController.title = ""
-        shoppingListViewController.tabBarItem = UITabBarItem(title: "Shopping list", image: UIImage(systemName: "cart"), tag: 1)
-        addLogoToNavigationBar(of: shoppingListViewController)
-        return UINavigationController(rootViewController: shoppingListViewController)
+    func createCategoryViewNavigation() -> UINavigationController {
+        let categoryViewController = CategoryViewController()
+        categoryViewController.title = ""
+        categoryViewController.tabBarItem = UITabBarItem(title: "Category", image: UIImage(systemName: "list.bullet"), tag: 1)
+        addLogoToNavigationBar(of: categoryViewController)
+        return UINavigationController(rootViewController: categoryViewController)
     }
     
     func createGenerateRecipeViewNavigation() -> UINavigationController {
@@ -127,7 +127,7 @@ class NavigationCoordinator {
     func createTabbar() -> UITabBarController {
         let tabbar = UITabBarController()
         UITabBar.appearance().tintColor = UIColor.accentTextColor
-        tabbar.viewControllers = [createHomeViewNavigation(), createShoppingViewNavigation(), createGenerateRecipeViewNavigation(), createProfileViewNavigation()]
+        tabbar.viewControllers = [createHomeViewNavigation(), createCategoryViewNavigation(), createGenerateRecipeViewNavigation(), createProfileViewNavigation()]
         
         return tabbar
     }

@@ -86,7 +86,7 @@ final class HomeViewController: UIViewController {
         mainStackView.addArrangedSubview(categoryCollectionView)
         mainStackView.addArrangedSubview(titleStackView)
         mainStackView.addArrangedSubview(collectionView)
-      
+        
         
     }
     private func setupTitleStackView() {
@@ -102,10 +102,10 @@ final class HomeViewController: UIViewController {
         ])
         NSLayoutConstraint.activate([
             categoryCollectionView.topAnchor.constraint(equalTo: mainStackView.bottomAnchor, constant: 10),
-                categoryCollectionView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
-                categoryCollectionView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor),
-                categoryCollectionView.heightAnchor.constraint(equalToConstant: 200),
-            ])
+            categoryCollectionView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
+            categoryCollectionView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor),
+            categoryCollectionView.heightAnchor.constraint(equalToConstant: 200),
+        ])
         
         NSLayoutConstraint.activate([
             titleStackView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),

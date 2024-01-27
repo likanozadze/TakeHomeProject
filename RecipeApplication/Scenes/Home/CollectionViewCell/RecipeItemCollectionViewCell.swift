@@ -88,7 +88,7 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
         ])
 
         NSLayoutConstraint.activate([
-            recipeTitle.topAnchor.constraint(equalTo: recipeImageView.bottomAnchor, constant: 8),
+            recipeTitle.topAnchor.constraint(equalTo: recipeImageView.bottomAnchor, constant: 10),
             recipeTitle.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             recipeTitle.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
         ])

@@ -17,7 +17,7 @@ final class CategoryCollectionView: UICollectionView, UICollectionViewDataSource
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = .clear
         collectionView.register(CategoryCollectionViewCell.self, forCellWithReuseIdentifier: "CategoryCell")
-        collectionView.showsVerticalScrollIndicator = false
+              
         return collectionView
     }()
     
@@ -42,7 +42,7 @@ final class CategoryCollectionView: UICollectionView, UICollectionViewDataSource
 
        private func setupCollectionView() {
            self.dataSource = self
-           self.delegate = self
+           categoryCollectionView.delegate = self
        }
 
     
@@ -54,9 +54,10 @@ final class CategoryCollectionView: UICollectionView, UICollectionViewDataSource
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CategoryCell", for: indexPath) as? CategoryCollectionViewCell else {
             return UICollectionViewCell()
         }
-      cell.configure(with: categoryData[indexPath.row])
+        cell.configure(with: categoryData[indexPath.row])
         return cell
     }
+
 
     // MARK: - CollectionView FlowLayoutDelegate
 
