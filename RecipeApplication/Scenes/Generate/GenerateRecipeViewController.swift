@@ -67,69 +67,99 @@ struct Pie: Shape {
 }
 
 struct WheelView: View {
-    let colors: [Color] = [.red, .blue, .green, .yellow, .purple, .orange, .pink, .purple, .mint, .red, .blue, .green, .yellow, .purple, .orange]
-    
     @State private var spin: Double = 0
     
     var body: some View {
-        VStack {
-            Text("Don't know what to cook today?")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .padding()
-            
-                .foregroundColor(.black)
-                .cornerRadius(20)
-            
-            ZStack {
-                
-                Pie(startAngle: .degrees(0), endAngle: .degrees(360))
-                    .stroke(Color.black, lineWidth: 30)
-                    .shadow(color: .gray, radius: 5, x: 0, y: 0)
-                
-                ForEach(0..<colors.count, id: \.self) { index in
-                    Pie(startAngle: .degrees(Double(index) / Double(colors.count) * 360),
-                        endAngle: .degrees(Double(index + 1) / Double(colors.count) * 360))
-                    .fill(colors[index])
+        let uiColors: [UIColor] = [
+                UIColor(red: 0.86, green: 0.58, blue: 0.98, alpha: 1.00),
+                UIColor(red: 0.46, green: 0.87, blue: 0.77, alpha: 1.00),
+                UIColor(red: 0.99, green: 0.58, blue: 0.76, alpha: 1.00),
+                UIColor(red: 0.44, green: 0.76, blue: 0.99, alpha: 1.00),
+                UIColor(red: 1.00, green: 0.80, blue: 0.40, alpha: 1.00),
+                UIColor(red: 0.86, green: 0.58, blue: 0.98, alpha: 1.00),
+                UIColor(red: 0.46, green: 0.87, blue: 0.77, alpha: 1.00),
+                UIColor(red: 0.99, green: 0.58, blue: 0.76, alpha: 1.00),
+                UIColor(red: 0.44, green: 0.76, blue: 0.99, alpha: 1.00),
+                UIColor(red: 1.00, green: 0.80, blue: 0.40, alpha: 1.00)
+            ]
+        
+        let colors: [Color] = uiColors.map { Color($0) }
+        
+        return VStack {
+            VStack {
+                VStack {
+                    HStack {
+                        Text("What to cook today?")
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                            .foregroundColor(.black)
+                            .padding()
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.5)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        Spacer()
+                    }
+                    .padding(.top, -30)
+                    
+                    
+                    ZStack {
+                        Pie(startAngle: .degrees(0), endAngle: .degrees(360))
+                            .stroke(Color.black, lineWidth: 10)
+                            .shadow(color: .gray, radius: 5, x: 0, y: 0)
+                            .scaleEffect(0.85)
+                        Pie(startAngle: .degrees(0), endAngle: .degrees(360))
+                            .stroke(Color.white, lineWidth: 10)
+                        
+                            .scaleEffect(0.8)
+                        
+                        ForEach(0..<colors.count, id: \.self) { index in
+                            Pie(startAngle: .degrees(Double(index) / Double(colors.count) * 360),
+                                endAngle: .degrees(Double(index + 1) / Double(colors.count) * 360))
+                            .fill(colors[index])
+                            .scaleEffect(0.8)
+                        }
+                        
+                        Image("logo2")
+                            .resizable()
+                            .frame(width: 75, height: 75)
+                            .offset(y: -0)
+                            .rotationEffect(.degrees(-spin))
+                    }
+                    .rotationEffect(.degrees(spin))
+                    Spacer()
+                    
+                    VStack {
+                        Image("stopper")
+                            .resizable()
+                            .frame(width: 30, height: 40)
+                            .foregroundColor(.red)
+                            .offset(y: -50)
+                        
+                    }
+                    .rotationEffect(.degrees(0))
                 }
                 
-                Image(systemName: "fork.knife")
-                    .resizable()
-                    .frame(width: 30, height: 30)
-                    .foregroundColor(.red)
-                    .offset(y: 220)
-                    .rotationEffect(.degrees(-spin))
+                Spacer()
                 
-                Image("logo2")
-                    .resizable()
-                    .frame(width: 150, height: 150)
-                    .offset(y: -0)
-                    .rotationEffect(.degrees(-spin))
-                
-            }
-            
-            .rotationEffect(.degrees(spin))
-            
-            Spacer()
-            
-            Button {
-                withAnimation(.spring(response: 2, dampingFraction: 1.5)) {
-                    spin += 360
+                Button {
+                    withAnimation(.spring(response: 2, dampingFraction: 1.5)) {
+                        spin += 360
+                    }
+                } label: {
+                    Text("Spin")
+                        .frame(width: 200)
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .padding()
+                        .background(Color(red: 134/255, green: 191/255, blue: 62/255, opacity: 1.0))
+                        .foregroundColor(.white)
+                        .cornerRadius(20)
                 }
-            } label: {
-                Text("Spin")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .padding()
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(20)
             }
+            .padding()
         }
-        .padding()
     }
 }
-
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         WheelView()
