@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class HomeViewController: UIViewController {
+final class HomeViewController: UIViewController, UISearchBarDelegate {
     
     // MARK: - UI Components
     private let mainStackView: UIStackView = {
@@ -18,7 +18,22 @@ final class HomeViewController: UIViewController {
         stackView.isLayoutMarginsRelativeArrangement = true
         return stackView
     }()
-    
+    private let searchBar: UISearchBar = {
+        let searchBar = UISearchBar()
+        searchBar.placeholder = "Search Recipes"
+        searchBar.searchBarStyle = .default
+        searchBar.layer.cornerRadius = 8
+        searchBar.layer.masksToBounds = true
+        searchBar.tintColor = UIColor.secondaryLabel
+        searchBar.translatesAutoresizingMaskIntoConstraints = false
+        return searchBar
+    }()
+    private let tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        return tableView
+    }()
+
     private let recipeTitle: UILabel = {
         let label = UILabel()
         label.text = "Trending Now 🔥"
@@ -50,6 +65,8 @@ final class HomeViewController: UIViewController {
     
     private var recipe: [Recipe] = []
     private let viewModel = HomeViewModel()
+    private let searchViewModel = SearchViewModel()
+    private var fetchedRecipes: [Recipe] = []
     var isHomeCell: Bool = true
     private var categoryCollectionView = CategoryCollectionView()
     
@@ -60,15 +77,18 @@ final class HomeViewController: UIViewController {
         setup()
         setupViewModelDelegate()
         viewModel.fetchRecipes()
-        
+        setupSearchBar()
+        NotificationCenter.default.addObserver(self, selector: #selector(handleSearchResults(_:)), name: Notification.Name("SearchResultsFetched"), object: nil)
+     
     }
-    
+
     // MARK: - UI Setup
     private func setup() {
         setupBackground()
         addSubviewsToView()
         setupTitleStackView()
         setupConstraints()
+        tableView.isHidden = true
         
     }
     // MARK: - Private Methods
@@ -76,19 +96,36 @@ final class HomeViewController: UIViewController {
     private func setupBackground() {
         view.backgroundColor = UIColor.backgroundColor
     }
-    
+    private func setupSearchBar() {
+           searchBar.delegate = self
+           navigationItem.titleView = searchBar
+       }
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        if let searchText = searchBar.text, !searchText.isEmpty {
+            searchViewModel.searchRecipes(for: searchText)
+            tableView.isHidden = false
+        }
+    }
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+       
+        tableView.isHidden = searchText.isEmpty
+    }
+
+
     private func addSubviewsToView() {
         addMainSubviews()
     }
     
     private func addMainSubviews() {
         view.addSubview(mainStackView)
+      //  mainStackView.addArrangedSubview(searchContainerView)
+        mainStackView.addArrangedSubview(searchBar)
+        mainStackView.addArrangedSubview(tableView)
         mainStackView.addArrangedSubview(categoryCollectionView)
         mainStackView.addArrangedSubview(titleStackView)
         mainStackView.addArrangedSubview(collectionView)
-        
-        
-    }
+}
+
     private func setupTitleStackView() {
         titleStackView.addArrangedSubview(recipeTitle)
     }
@@ -101,10 +138,17 @@ final class HomeViewController: UIViewController {
             mainStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20)
         ])
         NSLayoutConstraint.activate([
+            tableView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor),
+            tableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor),
+            tableView.bottomAnchor.constraint(equalTo: categoryCollectionView.topAnchor, constant: -10)
+        ])
+
+        NSLayoutConstraint.activate([
             categoryCollectionView.topAnchor.constraint(equalTo: mainStackView.bottomAnchor, constant: 10),
             categoryCollectionView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
             categoryCollectionView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor),
-            categoryCollectionView.heightAnchor.constraint(equalToConstant: 200),
+            categoryCollectionView.heightAnchor.constraint(equalToConstant: 150),
         ])
         
         NSLayoutConstraint.activate([
@@ -127,6 +171,15 @@ final class HomeViewController: UIViewController {
     
     private func setupViewModelDelegate() {
         viewModel.delegate = self
+    }
+    @objc func handleSearchResults(_ notification: Notification) {
+        if let searchResults = notification.object as? [SearchData] {
+          
+            self.updateUIWithSearchResults(searchResults)
+        }
+    }
+    func updateUIWithSearchResults(_ searchResults: [SearchData]) {
+      
     }
 }
 
@@ -176,6 +229,7 @@ extension HomeViewController: UICollectionViewDelegate {
 // MARK: - RecipeListViewModelDelegate
 extension HomeViewController: RecipeListViewModelDelegate {
     func recipesFetched(_ recipe: [Recipe]) {
+        print("Recipes fetched:", recipe)
         self.recipe = recipe
         DispatchQueue.main.async {
             self.collectionView.reloadData()

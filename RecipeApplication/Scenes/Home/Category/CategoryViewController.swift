@@ -25,7 +25,7 @@ final class CategoryViewController: UIViewController, UICollectionViewDelegateFl
         label.textColor = UIColor.secondaryTextColor
         label.numberOfLines = 2
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         return label
     }()
     
@@ -94,10 +94,9 @@ final class CategoryViewController: UIViewController, UICollectionViewDelegateFl
         ])
         
         NSLayoutConstraint.activate([
-            categoryCollectionView.topAnchor.constraint(equalTo: titleStackView.bottomAnchor, constant: 10),
-            categoryCollectionView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor, constant: 10),
+            categoryCollectionView.topAnchor.constraint(equalTo: titleStackView.bottomAnchor),
+            categoryCollectionView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
             categoryCollectionView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor, constant: -10),
-            //categoryCollectionView.centerYAnchor.constraint(equalTo: mainStackView.centerYAnchor)
         ])
     }
     
@@ -105,11 +104,15 @@ final class CategoryViewController: UIViewController, UICollectionViewDelegateFl
 // MARK: - UICollectionViewDelegateFlowLayout
 extension CategoryViewController {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let cellWidth: CGFloat = isHomeCell ? 150 : 240
-          let cellHeight: CGFloat = isHomeCell ? 100 : 240
+        let numberOfColumns: CGFloat = 2
+        let spacing: CGFloat = 10
+        
+        let totalSpacing = (numberOfColumns - 1) * spacing
+        let cellWidth = (collectionView.bounds.width - totalSpacing) / numberOfColumns
+        
+        let cellHeight: CGFloat = isHomeCell ? 100 : 240
         return CGSize(width: cellWidth, height: cellHeight)
     }
-    
 }
 
 // MARK: - UICollectionViewDataSource

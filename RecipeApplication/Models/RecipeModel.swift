@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct RecipeSearchResponse: Codable {
+struct RecipeResponse: Codable {
     let results: [Recipe]
     let offset: Int
     let number: Int?

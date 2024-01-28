@@ -60,7 +60,7 @@ final class HomeViewModel {
             apiKey: apiKey,
             endpoint: endpoint,
             parameters: parameters,
-            completion: { (result: Result<RecipeSearchResponse, NetworkError>) in
+            completion: { (result: Result<RecipeResponse, NetworkError>) in
                 switch result {
                 case .success(let fetchedRecipes):
                     print("Data fetched successfully:", fetchedRecipes)
