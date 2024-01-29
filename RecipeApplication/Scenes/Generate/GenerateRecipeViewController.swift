@@ -81,6 +81,8 @@ struct Pie: Shape {
 struct WheelView: View {
     @State private var spin: Double = 0
     @State private var isSpinning = false
+    @State private var audioPlayer: AVAudioPlayer?
+
     
     var body: some View {
         let uiColors: [UIColor] = [
@@ -161,8 +163,18 @@ struct WheelView: View {
                     withAnimation(.spring(response: 2, dampingFraction: 2)) {
                         spin += 1440
                         isSpinning = true
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+                        guard let url = Bundle.main.url(forResource: "spinning_sound", withExtension: "mp3") else { return }
+                        do {
+                            audioPlayer = try AVAudioPlayer(contentsOf: url)
+                            audioPlayer?.prepareToPlay()
+                            audioPlayer?.play()
+                        } catch let error {
+                            print("Error playing sound. \(error.localizedDescription)")
+                        }
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
                             isSpinning = false
+                            audioPlayer?.stop()
+                            audioPlayer = nil 
                         }
                     }
                 } label: {
@@ -176,6 +188,7 @@ struct WheelView: View {
                         .cornerRadius(20)
                 }
                 .padding()
+
             }
         }
     }
