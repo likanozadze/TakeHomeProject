@@ -17,6 +17,7 @@
 		980BA7312B600A3800AD97E7 /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980BA7302B600A3800AD97E7 /* RegisterViewModel.swift */; };
 		981838332B66B48200F13797 /* WheelViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981838322B66B48200F13797 /* WheelViewWrapper.swift */; };
 		981838362B66EAD300F13797 /* RecipeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981838352B66EAD300F13797 /* RecipeDetailView.swift */; };
+		984019AA2B6802060025D5D3 /* spinning_sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 984019A92B6802060025D5D3 /* spinning_sound.mp3 */; };
 		984061952B5C5C7D00A6BFAF /* NavigationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 984061942B5C5C7D00A6BFAF /* NavigationCoordinator.swift */; };
 		9840619D2B5C5DA600A6BFAF /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9840619C2B5C5DA600A6BFAF /* LoginViewController.swift */; };
 		9840619F2B5C5DC100A6BFAF /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9840619E2B5C5DC100A6BFAF /* RegisterViewController.swift */; };
@@ -63,6 +64,7 @@
 		980BA7302B600A3800AD97E7 /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
 		981838322B66B48200F13797 /* WheelViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WheelViewWrapper.swift; sourceTree = "<group>"; };
 		981838352B66EAD300F13797 /* RecipeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeDetailView.swift; sourceTree = "<group>"; };
+		984019A92B6802060025D5D3 /* spinning_sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = spinning_sound.mp3; sourceTree = "<group>"; };
 		984061942B5C5C7D00A6BFAF /* NavigationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationCoordinator.swift; sourceTree = "<group>"; };
 		9840619C2B5C5DA600A6BFAF /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		9840619E2B5C5DC100A6BFAF /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
@@ -175,6 +177,14 @@
 			path = Profile;
 			sourceTree = "<group>";
 		};
+		984019A82B6801D70025D5D3 /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				984019A92B6802060025D5D3 /* spinning_sound.mp3 */,
+			);
+			path = Sounds;
+			sourceTree = "<group>";
+		};
 		984061962B5C5CA300A6BFAF /* Coordinator */ = {
 			isa = PBXGroup;
 			children = (
@@ -271,6 +281,7 @@
 				98D2DFE02B5ADF710062B36C /* Extension */,
 				98D2DFE32B5AE0C40062B36C /* ReusableComponents */,
 				98AE16292B5981D100AF5528 /* Assets.xcassets */,
+				984019A82B6801D70025D5D3 /* Sounds */,
 				98AE162B2B5981D100AF5528 /* LaunchScreen.storyboard */,
 				98AE162E2B5981D100AF5528 /* Info.plist */,
 			);
@@ -396,6 +407,7 @@
 			files = (
 				98AE162D2B5981D100AF5528 /* LaunchScreen.storyboard in Resources */,
 				98AE162A2B5981D100AF5528 /* Assets.xcassets in Resources */,
+				984019AA2B6802060025D5D3 /* spinning_sound.mp3 in Resources */,
 				988DE7D72B5D2C0900FA0ABC /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

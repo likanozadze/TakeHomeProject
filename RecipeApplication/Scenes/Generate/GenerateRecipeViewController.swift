@@ -44,18 +44,26 @@ final class GenerateRecipeViewController: UIViewController {
         
         hostingController.didMove(toParent: self)
     }
-    private func setupAudio() {
     
-           if let soundURL = Bundle.main.url(forResource: "spinning_sound", withExtension: "mp3") {
-               do {
-                   audioPlayer = try AVAudioPlayer(contentsOf: soundURL)
-                   audioPlayer?.prepareToPlay()
-               } catch {
-                   print("Error loading spinning sound: \(error.localizedDescription)")
-               }
-           }
-       }
+    private func setupAudio() {
+        guard let url = Bundle.main.url(forResource: "spinning_sound", withExtension: ".mp3") else { return }
+        do {
+            audioPlayer = try AVAudioPlayer(contentsOf: url)
+        } catch let error {
+            print("Error initializing audio player. \(error.localizedDescription)")
+        }
+    }
+
+    private func playAudio() {
+        audioPlayer?.prepareToPlay()
+        audioPlayer?.play()
+    }
+
+    private func stopAudio() {
+        audioPlayer?.stop()
+    }
 }
+
 
 struct Pie: Shape {
     var startAngle: Angle
@@ -82,6 +90,7 @@ struct Pie: Shape {
 struct WheelView: View {
     @State private var spin: Double = 0
     @State private var isSpinning = false
+    var onSpinComplete: (() -> Void)?
     
     var body: some View {
         let uiColors: [UIColor] = [
@@ -164,6 +173,7 @@ struct WheelView: View {
                         isSpinning = true
                         DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
                             isSpinning = false
+                            onSpinComplete?()
                         }
                     }
                 } label: {
@@ -177,6 +187,14 @@ struct WheelView: View {
                         .cornerRadius(20)
                 }
                 .padding()
+            }
+        }
+        
+        struct WheelViewWrapper: View {
+            var onSpinComplete: (() -> Void)?
+
+            var body: some View {
+                WheelView(onSpinComplete: onSpinComplete)
             }
         }
     }
