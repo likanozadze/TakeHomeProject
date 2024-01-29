@@ -7,15 +7,17 @@
 
 import UIKit
 import SwiftUI
+import AVFoundation
 
 final class GenerateRecipeViewController: UIViewController {
-    
+    private var audioPlayer: AVAudioPlayer?
     
     // MARK: - ViewLifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        setupAudio()
     }
     
     // MARK: - Private Methods
@@ -42,6 +44,17 @@ final class GenerateRecipeViewController: UIViewController {
         
         hostingController.didMove(toParent: self)
     }
+    private func setupAudio() {
+    
+           if let soundURL = Bundle.main.url(forResource: "spinning_sound", withExtension: "mp3") {
+               do {
+                   audioPlayer = try AVAudioPlayer(contentsOf: soundURL)
+                   audioPlayer?.prepareToPlay()
+               } catch {
+                   print("Error loading spinning sound: \(error.localizedDescription)")
+               }
+           }
+       }
 }
 
 struct Pie: Shape {
@@ -68,24 +81,30 @@ struct Pie: Shape {
 
 struct WheelView: View {
     @State private var spin: Double = 0
+    @State private var isSpinning = false
     
     var body: some View {
         let uiColors: [UIColor] = [
-                UIColor(red: 0.86, green: 0.58, blue: 0.98, alpha: 1.00),
-                UIColor(red: 0.46, green: 0.87, blue: 0.77, alpha: 1.00),
-                UIColor(red: 0.99, green: 0.58, blue: 0.76, alpha: 1.00),
-                UIColor(red: 0.44, green: 0.76, blue: 0.99, alpha: 1.00),
-                UIColor(red: 1.00, green: 0.80, blue: 0.40, alpha: 1.00),
-                UIColor(red: 0.86, green: 0.58, blue: 0.98, alpha: 1.00),
-                UIColor(red: 0.46, green: 0.87, blue: 0.77, alpha: 1.00),
-                UIColor(red: 0.99, green: 0.58, blue: 0.76, alpha: 1.00),
-                UIColor(red: 0.44, green: 0.76, blue: 0.99, alpha: 1.00),
-                UIColor(red: 1.00, green: 0.80, blue: 0.40, alpha: 1.00)
-            ]
+            UIColor(red: 0.86, green: 0.58, blue: 0.98, alpha: 1.00),
+            UIColor(red: 0.46, green: 0.87, blue: 0.77, alpha: 1.00),
+            UIColor(red: 0.99, green: 0.58, blue: 0.76, alpha: 1.00),
+            UIColor(red: 0.44, green: 0.76, blue: 0.99, alpha: 1.00),
+            UIColor(red: 1.00, green: 0.80, blue: 0.40, alpha: 1.00),
+            UIColor(red: 0.86, green: 0.58, blue: 0.98, alpha: 1.00),
+            UIColor(red: 0.46, green: 0.87, blue: 0.77, alpha: 1.00),
+            UIColor(red: 0.99, green: 0.58, blue: 0.76, alpha: 1.00),
+            UIColor(red: 0.44, green: 0.76, blue: 0.99, alpha: 1.00),
+            UIColor(red: 1.00, green: 0.80, blue: 0.40, alpha: 1.00)
+        ]
         
         let colors: [Color] = uiColors.map { Color($0) }
         
-        return VStack {
+        return ZStack {
+      
+            Rectangle()
+                .fill(Color.black.opacity(isSpinning ? 0.5 : 0))
+                .edgesIgnoringSafeArea(.all)
+            
             VStack {
                 VStack {
                     HStack {
@@ -101,22 +120,21 @@ struct WheelView: View {
                     }
                     .padding(.top, -30)
                     
-                    
                     ZStack {
+                       
                         Pie(startAngle: .degrees(0), endAngle: .degrees(360))
                             .stroke(Color.black, lineWidth: 10)
                             .shadow(color: .gray, radius: 5, x: 0, y: 0)
                             .scaleEffect(0.85)
                         Pie(startAngle: .degrees(0), endAngle: .degrees(360))
                             .stroke(Color.white, lineWidth: 10)
-                        
                             .scaleEffect(0.8)
                         
                         ForEach(0..<colors.count, id: \.self) { index in
                             Pie(startAngle: .degrees(Double(index) / Double(colors.count) * 360),
                                 endAngle: .degrees(Double(index + 1) / Double(colors.count) * 360))
-                            .fill(colors[index])
-                            .scaleEffect(0.8)
+                                .fill(colors[index])
+                                .scaleEffect(0.8)
                         }
                         
                         Image("logo2")
@@ -126,24 +144,27 @@ struct WheelView: View {
                             .rotationEffect(.degrees(-spin))
                     }
                     .rotationEffect(.degrees(spin))
-                    Spacer()
                     
                     VStack {
                         Image("stopper")
                             .resizable()
                             .frame(width: 30, height: 40)
                             .foregroundColor(.red)
-                            .offset(y: -50)
-                        
+                            .offset(y: -40)
                     }
                     .rotationEffect(.degrees(0))
                 }
+                .padding()
                 
                 Spacer()
                 
                 Button {
-                    withAnimation(.spring(response: 2, dampingFraction: 1.5)) {
-                        spin += 360
+                    withAnimation(.spring(response: 2, dampingFraction: 2)) {
+                        spin += 1440
+                        isSpinning = true
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+                            isSpinning = false
+                        }
                     }
                 } label: {
                     Text("Spin")
@@ -155,11 +176,12 @@ struct WheelView: View {
                         .foregroundColor(.white)
                         .cornerRadius(20)
                 }
+                .padding()
             }
-            .padding()
         }
     }
 }
+
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         WheelView()
