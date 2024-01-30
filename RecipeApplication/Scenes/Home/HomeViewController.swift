@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 final class HomeViewController: UIViewController, UISearchBarDelegate {
     
@@ -221,7 +222,13 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
 // MARK: - CollectionView Delegate
 extension HomeViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        //viewModel.didSelectMovie(at: indexPath)
+        if let recipe = viewModel.recipe(at: indexPath) {
+            let detailViewModel = RecipeDetailViewModel(recipe: recipe, selectedIngredient: recipe.extendedIngredients?[indexPath.row])
+            let detailWrapper = RecipeDetailViewWrapper(viewModel: detailViewModel)
+
+            let hostingController = UIHostingController(rootView: detailWrapper)
+            navigationController?.pushViewController(hostingController, animated: true)
+        }
     }
 }
 

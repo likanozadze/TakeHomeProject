@@ -14,8 +14,8 @@ struct RecipeResponse: Codable {
     let totalResults: Int
 }
 
-struct Recipe: Codable {
-    let id: Int
+struct Recipe: Codable, Identifiable {
+    let id: Int?
     let title: String
     let image: String?
     let readyInMinutes: Int?
@@ -33,15 +33,25 @@ struct Recipe: Codable {
     let veryPopular: Bool?
     let sustainable: Bool?
     let pricePerServing: Double?
-    let extendedIngredients: [ExtendedIngredient]?
+    var extendedIngredients: [ExtendedIngredient]?
     let instructions: String?
-    let analyzedInstructions: [AnalyzedInstruction]?
+    var analyzedInstructions: [AnalyzedInstruction]?
     let originalId: Int?
     let originalTitle: String?
     let originalImage: String?
 }
 
-struct ExtendedIngredient: Codable {
+//struct ExtendedIngredient: Codable, Identifiable {
+//    let id: Int
+//    let image: String
+//    let name: String
+//    let original: String
+//    let originalName: String
+//    let amount: Double
+//    let unit: String
+//    let measures: Measures
+//}
+struct ExtendedIngredient: Codable, Identifiable {
     let id: Int
     let image: String
     let name: String
@@ -50,6 +60,18 @@ struct ExtendedIngredient: Codable {
     let amount: Double
     let unit: String
     let measures: Measures
+
+    // Ensure that the ID is never optional
+    init(id: Int, image: String, name: String, original: String, originalName: String, amount: Double, unit: String, measures: Measures) {
+        self.id = id
+        self.image = image
+        self.name = name
+        self.original = original
+        self.originalName = originalName
+        self.amount = amount
+        self.unit = unit
+        self.measures = measures
+    }
 }
 
 struct Measures: Codable {

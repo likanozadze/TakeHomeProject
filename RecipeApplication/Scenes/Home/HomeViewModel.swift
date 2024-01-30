@@ -41,6 +41,7 @@ final class HomeViewModel {
         if let savedRecipes = UserDefaults.standard.object(forKey: "recipes") as? Data {
             let decoder = JSONDecoder()
             if let loadedRecipes = try? decoder.decode([Recipe].self, from: savedRecipes) {
+                self.recipes = loadedRecipes
                 self.delegate?.recipesFetched(loadedRecipes)
                 return
             }
@@ -64,6 +65,7 @@ final class HomeViewModel {
                 switch result {
                 case .success(let fetchedRecipes):
                     print("Data fetched successfully:", fetchedRecipes)
+                    self.recipes = fetchedRecipes.results 
                     self.delegate?.recipesFetched(fetchedRecipes.results)
                     
                            let encoder = JSONEncoder()
@@ -76,5 +78,10 @@ final class HomeViewModel {
                 }
             }
         )
+    }
+}
+extension HomeViewModel {
+    func recipe(at indexPath: IndexPath) -> Recipe? {
+        return recipes[indexPath.item]
     }
 }
