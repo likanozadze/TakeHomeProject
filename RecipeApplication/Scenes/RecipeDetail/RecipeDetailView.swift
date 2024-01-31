@@ -25,7 +25,7 @@ struct RecipeDetailView: View {
                 PickerView(selectedSegment: $selectedSegment)
                 if selectedSegment == "Ingredients" {
                     IngredientCellView(viewModel: viewModel, ingredients: viewModel.extendedIngredients)
-                    ButtonView()
+                    
                 } else {
                     StepsSectionView(steps: viewModel.analyzedInstructions)
               

@@ -47,6 +47,7 @@ struct IngredientCellView: View {
                     }
                 }
             }
+        ButtonView(isAnyItemSelected: .constant(selectedIngredients.values.contains(true)))
         }
     }
 

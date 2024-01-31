@@ -7,6 +7,7 @@
 import SwiftUI
 
 struct ButtonView: View {
+    @Binding var isAnyItemSelected: Bool
     
     // MARK: - Body
     var body: some View {
@@ -17,7 +18,7 @@ struct ButtonView: View {
                 .padding(.vertical, 15)
                 .foregroundColor(.white)
                 .font(.system(size: 16, weight: .semibold))
-                .background(Color(red: 134/255, green: 191/255, blue: 62/255))
+                .background(isAnyItemSelected ? Color(red: 134/255, green: 191/255, blue: 62/255) : Color(red: 0.89, green: 0.90, blue: 0.91))
                 .cornerRadius(10)
         })
     }
@@ -25,6 +26,6 @@ struct ButtonView: View {
 
 struct ButtonView_Previews: PreviewProvider {
     static var previews: some View {
-        ButtonView()
+        ButtonView(isAnyItemSelected: .constant(false))
     }
 }
