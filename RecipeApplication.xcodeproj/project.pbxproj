@@ -21,7 +21,6 @@
 		984019BB2B692D500025D5D3 /* RecipeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 984019BA2B692D500025D5D3 /* RecipeDetailView.swift */; };
 		984019BD2B692D8B0025D5D3 /* ProductView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 984019BC2B692D8B0025D5D3 /* ProductView.swift */; };
 		984019BF2B692D9F0025D5D3 /* IngredientCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 984019BE2B692D9F0025D5D3 /* IngredientCellView.swift */; };
-		984019C12B692DB50025D5D3 /* DirectionCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 984019C02B692DB50025D5D3 /* DirectionCellView.swift */; };
 		984019C32B692DC80025D5D3 /* ProgressBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 984019C22B692DC80025D5D3 /* ProgressBarView.swift */; };
 		984019C52B692DD80025D5D3 /* ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 984019C42B692DD80025D5D3 /* ButtonView.swift */; };
 		984019C92B692E280025D5D3 /* PickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 984019C82B692E280025D5D3 /* PickerView.swift */; };
@@ -77,7 +76,6 @@
 		984019BA2B692D500025D5D3 /* RecipeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeDetailView.swift; sourceTree = "<group>"; };
 		984019BC2B692D8B0025D5D3 /* ProductView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductView.swift; sourceTree = "<group>"; };
 		984019BE2B692D9F0025D5D3 /* IngredientCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientCellView.swift; sourceTree = "<group>"; };
-		984019C02B692DB50025D5D3 /* DirectionCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionCellView.swift; sourceTree = "<group>"; };
 		984019C22B692DC80025D5D3 /* ProgressBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBarView.swift; sourceTree = "<group>"; };
 		984019C42B692DD80025D5D3 /* ButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
 		984019C82B692E280025D5D3 /* PickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerView.swift; sourceTree = "<group>"; };
@@ -220,7 +218,6 @@
 				984019BC2B692D8B0025D5D3 /* ProductView.swift */,
 				98F669102B6A40C8009FF1EF /* StepsView.swift */,
 				984019C82B692E280025D5D3 /* PickerView.swift */,
-				984019C02B692DB50025D5D3 /* DirectionCellView.swift */,
 				984019BE2B692D9F0025D5D3 /* IngredientCellView.swift */,
 				984019C42B692DD80025D5D3 /* ButtonView.swift */,
 				984019C22B692DC80025D5D3 /* ProgressBarView.swift */,
@@ -498,7 +495,6 @@
 				98D2DFEB2B5AE1BC0062B36C /* RAAlertView.swift in Sources */,
 				98AE16232B5981CF00AF5528 /* SceneDelegate.swift in Sources */,
 				98D43DDE2B6188FD00507EAD /* RecipeItemCollectionViewCell.swift in Sources */,
-				984019C12B692DB50025D5D3 /* DirectionCellView.swift in Sources */,
 				984019C52B692DD80025D5D3 /* ButtonView.swift in Sources */,
 				98F669112B6A40C8009FF1EF /* StepsView.swift in Sources */,
 				988DE8202B5D87A000FA0ABC /* LoginViewModel.swift in Sources */,

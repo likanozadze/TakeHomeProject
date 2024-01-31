@@ -48,7 +48,7 @@ final class HomeViewModel {
         }
         
         let baseURL = "https://api.spoonacular.com"
-        let apiKey = "28bf345135c7408d9307606431071aac"
+        let apiKey = "eb79c4da71b448b4b7477dde8216b951"
         let endpoint = "/recipes/complexSearch"
         let parameters: [String: Any] = [
             "apiKey": apiKey,

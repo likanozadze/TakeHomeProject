@@ -16,7 +16,7 @@ class RecipeDetailViewModel: ObservableObject {
     @Published var analyzedInstructions: [AnalyzedInstruction] = []
     
     
-    private let apiKey = "28bf345135c7408d9307606431071aac"
+    private let apiKey = "eb79c4da71b448b4b7477dde8216b951"
     private let baseURL = "https://api.spoonacular.com/recipes/"
     
     init(recipe: Recipe, selectedIngredient: ExtendedIngredient? = nil) {

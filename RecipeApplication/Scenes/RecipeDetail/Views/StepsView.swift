@@ -6,40 +6,48 @@
 //
 
 import SwiftUI
+
 struct StepsSectionView: View {
+    
     var steps: [AnalyzedInstruction]
     
+    // MARK: - Body
+    
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Text("Steps:")
-                .font(.headline)
-                .padding(.bottom, 5)
-            
-            ForEach(steps, id: \.self) { stepSection in
-                if let steps = stepSection.steps {
-                    ForEach(steps, id: \.self) { step in
-                        StepView(step: step)
+      
+            ScrollView(showsIndicators: false) {
+                VStack(alignment: .leading) {
+                ForEach(steps, id: \.self) { stepSection in
+                    if let steps = stepSection.steps {
+                        ForEach(steps, id: \.self) { step in
+                            
+                            HStack(alignment: .top) {
+                                Image(systemName: "square")
+                                    .foregroundColor(Color(red: 134/255, green: 191/255, blue: 62/255))
+                                    .font(.system(size: 25))
+                                 
+                                StepView(step: step)
+                            }
+                            Divider().background(Color.gray.opacity(0.2))
+                        }
                     }
                 }
             }
         }
+        Spacer()
+        
+        ProgressBarView()
+            .frame(height: 20)
     }
 }
-
 
 struct StepView: View {
     var step: Step
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Step \(step.number)")
-                .font(.headline)
+        VStack(alignment: .leading) {
             Text(step.step)
                 .font(.body)
         }
-        .padding()
-        .background(Color.gray.opacity(0.2))
-        .cornerRadius(8)
-        .padding(.bottom, 8)
     }
 }
