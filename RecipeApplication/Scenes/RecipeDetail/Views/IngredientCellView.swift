@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct IngredientCellView: View {
+    var viewModel: RecipeDetailViewModel
     
     var ingredients: [ExtendedIngredient]
     
@@ -15,7 +16,8 @@ struct IngredientCellView: View {
     var body: some View {
         ScrollView(showsIndicators: false) {
             VStack(alignment: .leading) {
-                ForEach(ingredients) { ingredient in
+                ForEach(viewModel.extendedIngredients, id: \.id) { ingredient in
+
                     HStack {
                         Image(systemName: "square")
                             .foregroundColor(Color(red: 134/255, green: 191/255, blue: 62/255))

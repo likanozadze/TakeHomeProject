@@ -14,7 +14,7 @@ struct RecipeResponse: Codable {
     let totalResults: Int
 }
 
-struct Recipe: Codable, Identifiable {
+struct Recipe: Codable {
     let id: Int?
     let title: String
     let image: String?
@@ -33,24 +33,14 @@ struct Recipe: Codable, Identifiable {
     let veryPopular: Bool?
     let sustainable: Bool?
     let pricePerServing: Double?
-    var extendedIngredients: [ExtendedIngredient]?
     let instructions: String?
-    var analyzedInstructions: [AnalyzedInstruction]?
+    let analyzedInstructions: [AnalyzedInstruction]?
     let originalId: Int?
     let originalTitle: String?
     let originalImage: String?
+    var extendedIngredients: [ExtendedIngredient]?
 }
 
-//struct ExtendedIngredient: Codable, Identifiable {
-//    let id: Int
-//    let image: String
-//    let name: String
-//    let original: String
-//    let originalName: String
-//    let amount: Double
-//    let unit: String
-//    let measures: Measures
-//}
 struct ExtendedIngredient: Codable, Identifiable {
     let id: Int
     let image: String
@@ -60,8 +50,7 @@ struct ExtendedIngredient: Codable, Identifiable {
     let amount: Double
     let unit: String
     let measures: Measures
-
-    // Ensure that the ID is never optional
+    
     init(id: Int, image: String, name: String, original: String, originalName: String, amount: Double, unit: String, measures: Measures) {
         self.id = id
         self.image = image
@@ -91,20 +80,46 @@ struct Metric: Codable {
     let unitLong: String
 }
 
-struct AnalyzedInstruction: Codable {
+struct AnalyzedInstruction: Codable, Hashable {
+    let id: Int?
     let number: Int?
     let step: String?
     let ingredients: [Ingredient]?
     let equipment: [Equipment]?
+    let steps: [Step]?
 }
 
-struct Ingredient: Codable {
+
+struct Step: Identifiable, Codable, Hashable {
+    var id: UUID?
+    let number: Int
+    let step: String
+    let ingredients: [Ingredient]
+    let equipment: [Equipment]
+    
+    init(id: UUID? = nil, number: Int, step: String, ingredients: [Ingredient], equipment: [Equipment]) {
+        self.id = UUID()
+        self.number = number
+        self.step = step
+        self.ingredients = ingredients
+        self.equipment = equipment
+    }
+}
+
+
+struct Ingredient: Decodable, Hashable, Encodable {
     let id: Int
-    let quantity: Double
     let name: String
+    let localizedName: String
+    let image: String
+    let quantity: Double?
+    
+    enum CodingKeys: String, CodingKey {
+        case id, name, localizedName, image, quantity
+    }
 }
 
-struct Equipment: Codable {
+struct Equipment: Codable, Hashable {
     let id: Int
     let name: String
 }

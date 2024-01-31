@@ -4,47 +4,31 @@
 //
 //  Created by Lika Nozadze on 1/30/24.
 //
-
 import SwiftUI
-
-struct DirectionCellView: View {
-    var recipe: Recipe
-    var analyzedInstructions: [AnalyzedInstruction]
+struct InstructionView: View {
+    var instruction: AnalyzedInstruction
     
-    // MARK: - Body
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Step \(instruction.number ?? 0)")
+                .font(.headline)
+            Text(instruction.step ?? "No description")
+                .font(.body)
+        }
+        .padding()
+        .background(Color.gray.opacity(0.2))
+        .cornerRadius(8)
+        .padding(.bottom, 8)
+    }
+}
+struct ContentView: View {
+    var instructions: [AnalyzedInstruction]
 
-            ScrollView(showsIndicators: false) {
-                if let instructions = recipe.instructions {
-                    ForEach(instructions.components(separatedBy: "\n"), id: \.self) { step in
-                        HStack(alignment: .top) {
-                            Image(systemName: "square")
-                                .foregroundColor(Color(red: 134/255, green: 191/255, blue: 62/255))
-                                .font(.system(size: 25))
-
-                            Text(step)
-                        }
-                        Divider().background(Color.gray.opacity(0.2))
-                    }
-                } else {
-                    Text("No instructions available.")
-                        .foregroundColor(.gray)
-                }
+    var body: some View {
+        VStack {
+            ForEach(instructions, id: \.self) { analyzedInstruction in
+                InstructionView(instruction: analyzedInstruction)
             }
-            .padding()
-
-            Spacer()
-
-            ProgressBarView()
-                .frame(height: 20)
         }
     }
 }
-
-
-//struct DirectionCellView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        DirectionCellView(recipe: dummyRecipe)
-//    }
-//}

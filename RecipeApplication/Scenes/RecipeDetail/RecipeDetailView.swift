@@ -3,7 +3,6 @@
 //  RecipeApplication
 //
 //  Created by Lika Nozadze on 1/30/24.
-//
 
 import SwiftUI
 
@@ -11,6 +10,10 @@ struct RecipeDetailView: View {
     
     @ObservedObject var viewModel: RecipeDetailViewModel
     @State private var selectedSegment: String = "Ingredients"
+    
+    init(viewModel: RecipeDetailViewModel) {
+           self.viewModel = viewModel
+       }
     
     var body: some View {
         VStack(spacing: 10) {
@@ -21,11 +24,11 @@ struct RecipeDetailView: View {
             } else {
                 PickerView(selectedSegment: $selectedSegment)
                 if selectedSegment == "Ingredients" {
-                    IngredientCellView(ingredients: viewModel.extendedIngredients)
+                    IngredientCellView(viewModel: viewModel, ingredients: viewModel.extendedIngredients)
                     ButtonView()
                 } else {
-                    DirectionCellView(recipe: viewModel.recipe, analyzedInstructions: viewModel.analyzedInstructions)
-
+                    StepsSectionView(steps: viewModel.analyzedInstructions)
+              
                 }
             }
         }
