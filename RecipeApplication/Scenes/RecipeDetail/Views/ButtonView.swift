@@ -11,7 +11,6 @@ struct ButtonView: View {
     // MARK: - Body
     var body: some View {
         Button(action: {
-
         }, label: {
             Text("Add to shopping list")
                 .frame(maxWidth: .infinity)
