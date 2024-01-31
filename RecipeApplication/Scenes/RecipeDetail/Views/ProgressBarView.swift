@@ -10,7 +10,7 @@ import SwiftUI
 
 struct ProgressBarView: View {
     
-    var percent: CGFloat = 50
+    var percent: CGFloat
     // MARK: - Body
     
     var body: some View {
@@ -32,6 +32,7 @@ struct ProgressBarView: View {
     }
 }
 
-#Preview() {
-    ProgressBarView()
-}
+//#Preview() {
+//    
+//    ProgressBarView(percent: progress)
+//}
