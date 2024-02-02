@@ -8,8 +8,16 @@
 import UIKit
 import SwiftUI
 
-final class HomeViewController: UIViewController, UISearchBarDelegate {
-    
+protocol RecipeDelegate: AnyObject {
+    func passSelectedRecipesToProfileVC(selectedRecipes: [Recipe])
+}
+
+final class HomeViewController: UIViewController, UISearchBarDelegate, RecipeDelegate {
+    var favoriteRecipeModel = FavoriteRecipeModel()
+
+    private var selectedRecipes: [Recipe] = []
+    weak var recipeDelegate: RecipeDelegate?
+
     // MARK: - UI Components
     private let mainStackView: UIStackView = {
         let stackView = UIStackView()
@@ -70,7 +78,6 @@ final class HomeViewController: UIViewController, UISearchBarDelegate {
     private var fetchedRecipes: [Recipe] = []
     var isHomeCell: Bool = true
     private var categoryCollectionView = CategoryCollectionView()
-    
     // MARK: - ViewLifeCycle
     
     override func viewDidLoad() {
@@ -182,6 +189,14 @@ final class HomeViewController: UIViewController, UISearchBarDelegate {
     func updateUIWithSearchResults(_ searchResults: [SearchData]) {
       
     }
+    
+    func passSelectedRecipesToProfileVC(selectedRecipes: [Recipe]) {
+            let profileVC = ProfileViewController()
+            profileVC.selectedRecipes = selectedRecipes
+            profileVC.recipeDelegate = self
+            navigationController?.pushViewController(profileVC, animated: true)
+        }
+
 }
 
 // MARK: - CollectionView DataSource
@@ -198,6 +213,7 @@ extension HomeViewController: UICollectionViewDataSource {
             
             return UICollectionViewCell()
         }
+        cell.delegate = self
         cell.configure(with: recipe[indexPath.row])
         return cell
         
@@ -256,4 +272,21 @@ extension HomeViewController: RecipeListViewModelDelegate {
         return cell
     }
 
+// MARK: - CollectionView Delegate
+extension HomeViewController: RecipeItemCollectionViewCellDelegate {
+func didTapFavoriteButton(on cell: RecipeItemCollectionViewCell) {
+    guard let indexPath = collectionView.indexPath(for: cell) else { return }
+    let recipe = self.recipe[indexPath.item]
 
+    if cell.favoriteButton.isSelected {
+        favoriteRecipeModel.favoriteNewRecipes(recipe)
+        selectedRecipes.append(recipe)
+    } else {
+        favoriteRecipeModel.deleteFavoriteRecipe(recipe)
+        selectedRecipes = selectedRecipes.filter { $0.id != recipe.id }
+    }
+
+    collectionView.reloadItems(at: [indexPath])
+    recipeDelegate?.passSelectedRecipesToProfileVC(selectedRecipes: selectedRecipes)
+}
+}

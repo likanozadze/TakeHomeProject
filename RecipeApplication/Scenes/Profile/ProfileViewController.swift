@@ -5,50 +5,77 @@
 //  Created by Lika Nozadze on 1/18/24.
 //
 
+
 import UIKit
 
-final class ProfileViewController: UIViewController {
+final class ProfileViewController: UIViewController, FavoriteRecipeCollectionViewDelegate, RecipeDelegate {
     
-    var coordinator: NavigationCoordinator?
-    
-    // MARK: - UI Components
-    private let logOutButton = RAButton(title: "log out", hasBackground: true, fontSize: .medium)
-    
+   private let favoriteRecipeCollectionView = FavoriteRecipeCollectionView()
+    var favoriteRecipeModel = FavoriteRecipeModel()
+    var selectedRecipes: [Recipe] = []
+    var recipeDelegate: RecipeDelegate?
+  //  private let shoppingListTableView = ShoppingListTableView()
+
     
     // MARK: - ViewLifeCycle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setupUI()
-        self.logOutButton.addTarget(self, action: #selector(didTapLogout), for: .touchUpInside)
+        setup()
+        favoriteRecipeCollectionView.favoriteRecipeDelegate = self
     }
-    
     
     // MARK: - UI Setup
-    private func setupUI() {
-        self.view.backgroundColor = .systemBackground
-        logOutButton.translatesAutoresizingMaskIntoConstraints = false
+    private func setup() {
+        setupBackground()
+        addSubviewsToView()
+        setupConstraints()
+    }
+    
+    // MARK: - Private Methods
+    private func setupBackground() {
+        view.backgroundColor = UIColor.backgroundColor
+    }
+    
+    private func addSubviewsToView() {
+        addMainSubviews()
+    }
+    
+    private func addMainSubviews() {
+        view.addSubview(favoriteRecipeCollectionView)
+    }
+    
+    
+    
+    private func setupConstraints() {
         
-        self.view.addSubview(logOutButton)
         NSLayoutConstraint.activate([
-            self.logOutButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            self.logOutButton.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
+            favoriteRecipeCollectionView.topAnchor.constraint(equalTo:view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            favoriteRecipeCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            favoriteRecipeCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            favoriteRecipeCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20)
         ])
+//        NSLayoutConstraint.activate([
+//            shoppingListTableView.topAnchor.constraint(equalTo: favoriteRecipeCollectionView.bottomAnchor, constant: 5),
+//            //shoppingListTableView.trailingAnchor.constraint(equalTo: favoriteRecipeCollectionView.trailingAnchor),
+//        ])
     }
+
     
-    // MARK: - Selectors
-    @objc private func didTapLogout() {
-        AuthService.shared.signOut { [weak self] error in
-            guard let self = self else { return }
-            if let error = error {
-                RAAlertView.showLogoutError(on: self, with: error)
-                return
-            }
-            
-            if let sceneDelegate = self.view.window?.windowScene?.delegate as? SceneDelegate {
-                sceneDelegate.coordinator?.checkAuthentication()
-            }
-        }
+    // MARK: - FavoriteRecipeCollectionViewDelegate
+    func didTapFavoriteRecipe(recipe: Recipe) {
+        favoriteRecipeModel.favoriteNewRecipes(recipe)
+        favoriteRecipeCollectionView.reloadData()
+        selectedRecipes.append(recipe)
     }
-    
+    func passSelectedRecipesToProfileVC(selectedRecipes: [Recipe]) {
+        self.selectedRecipes = selectedRecipes
+        favoriteRecipeCollectionView.reloadData()
+    }
+    func favoriteRecipeCollectionView(_ collectionView: FavoriteRecipeCollectionView, didTapFavoriteRecipe recipe: Recipe) {
+        didTapFavoriteRecipe(recipe: recipe)
+    }
+    func didTapFavoriteButton(on cell: RecipeItemCollectionViewCell) {
+        passSelectedRecipesToProfileVC(selectedRecipes: selectedRecipes)
+    }
 }
+

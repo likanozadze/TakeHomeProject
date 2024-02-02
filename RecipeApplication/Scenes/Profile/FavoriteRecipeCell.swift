@@ -1,26 +1,15 @@
 //
-//  RecipeItemCollectionViewCell.swift
+//  FavoriteRecipeCell.swift
 //  RecipeApplication
 //
-//  Created by Lika Nozadze on 1/24/24.
+//  Created by Lika Nozadze on 2/2/24.
 //
 
 import UIKit
 
-protocol RecipeItemCollectionViewCellDelegate: AnyObject {
-    func didTapFavoriteButton(on cell: RecipeItemCollectionViewCell)
-    
-}
-
-class RecipeItemCollectionViewCell: UICollectionViewCell {
+final class FavoriteRecipeCell: UICollectionViewCell {
     
     var recipe: Recipe?
- //   weak var recipeDelegate: RecipeDelegate?
-    weak var delegate: RecipeItemCollectionViewCellDelegate?
-
-    var favoriteRecipeModel = FavoriteRecipeModel()
-    private let favoriteRecipeCollectionView = FavoriteRecipeCollectionView()
-    
     
     // MARK: - UI Components
     
@@ -32,13 +21,14 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
         imageView.layer.masksToBounds = true
         return imageView
     }()
+    
     private let recipeTitle: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor.black
         label.numberOfLines = 2
-        label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
+        label.font = UIFont.systemFont(ofSize: 12, weight: .bold)
         return label
     }()
     private let readyInMinLabel: UILabel = {
@@ -52,12 +42,12 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
         let button = UIButton(type: .system)
         button.tintColor = .red
         button.setImage(UIImage(systemName: "heart"), for: .normal)
-      //  button.setImage(UIImage(systemName: "heart.fill"), for: .selected)
-
-        button.addTarget(target, action: #selector(favoriteButtonTapped(_:)), for: .touchUpInside)
+        button.setImage(UIImage(systemName: "heart.fill"), for: .selected)
+        
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
+    
     private lazy var bottomStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [readyInMinLabel, favoriteButton])
         stackView.axis = .horizontal
@@ -67,6 +57,15 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
         return stackView
     }()
     
+    //    private lazy var favoriteStackView: UIStackView = {
+    //        let stackView = UIStackView(arrangedSubviews: [recipeImageView, recipeTitle])
+    //        stackView.axis = .vertical
+    //        stackView.spacing = 5
+    //        stackView.distribution = .fill
+    //        stackView.translatesAutoresizingMaskIntoConstraints = false
+    //        return stackView
+    //    }()
+    
     // MARK: - Init
     
     override init(frame: CGRect) {
@@ -75,7 +74,6 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
         setupConstraints()
         configureCellAppearance()
     }
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -87,6 +85,7 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
         recipeTitle.text = nil
         readyInMinLabel.text = nil
     }
+    
     
     // MARK: - Private Methods
     private func addSubview() {
@@ -101,6 +100,7 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
             recipeImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             recipeImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             recipeImageView.heightAnchor.constraint(equalToConstant: 180)
+            
         ])
         
         NSLayoutConstraint.activate([
@@ -116,39 +116,6 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
             bottomStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
         ])
     }
-    
-
-    @objc private func favoriteButtonTapped(_ sender: UIButton) {
-        print("Heart button tapped.")
-        sender.isSelected.toggle()
-          delegate?.didTapFavoriteButton(on: self)
-        
-        guard let recipe = recipe else { return }
-        
-        if sender.isSelected != true {
-            print("Heart button was not selected. Now selecting and favoriting the recipe.")
-            favoriteRecipeModel.favoriteNewRecipes(recipe)
-            DispatchQueue.main.async {
-                self.favoriteRecipeCollectionView.reloadData()
-                let indexPath = IndexPath(row: self.favoriteRecipeModel.getFavoriteRecipeList().count - 1, section: 0)
-                self.favoriteRecipeCollectionView.scrollToItem(at: indexPath, at: .right, animated: true)
-            }
-        } else {
-            print("Heart button was selected. Now deselecting and removing the recipe from favorites.")
-            favoriteRecipeModel.deleteFavoriteRecipe(recipe)
-            DispatchQueue.main.async {
-                self.favoriteRecipeCollectionView.reloadData()
-            }
-        }
-        sender.isSelected = !sender.isSelected
-        if let recipeID = recipe.id {
-            favoriteRecipeModel.setFavoriteButtonImage(button: sender, recipeID: recipeID)
-        }
-        
-    delegate?.didTapFavoriteButton(on: self)
-    }
-
-
     private func configureCellAppearance() {
         contentView.backgroundColor = .white
         contentView.layer.cornerRadius = 8
@@ -157,24 +124,25 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
         contentView.layer.shadowOffset = CGSize(width: 1, height: 2)
         contentView.layer.shadowOpacity = 0.2
         contentView.layer.shadowRadius = 8
-    }
-    
-    // MARK: - Configuration
-    func convertToSecureURL(_ url: String?) -> String? {
-        guard let url = url else {
-            return nil
-        }
-        return url.replacingOccurrences(of: "http://", with: "https://")
+        
     }
     
     func configure(with recipe: Recipe) {
-        recipeTitle.text = recipe.title
+        self.recipe = recipe
         
-        if let imageUrl = convertToSecureURL(recipe.image) {
-            downloadImage(from: imageUrl)
-        } else {
-            recipeImageView.image = UIImage(named: "placeholderImage")
+        if let imageUrl = recipe.image {
+            if let url = URL(string: imageUrl) {
+                URLSession.shared.dataTask(with: url) { data, _, error in
+                    if let data = data, error == nil {
+                        DispatchQueue.main.async {
+                            self.recipeImageView.image = UIImage(data: data)
+                        }
+                    }
+                }.resume()
+            }
         }
+        
+        recipeTitle.text = recipe.title
         
         if let readyInMinutes = recipe.readyInMinutes {
             let attachment = NSTextAttachment()
@@ -186,29 +154,5 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
         } else {
             readyInMinLabel.text = "N/A"
         }
-       
-    }
-    private func downloadImage (from url: String?) {
-        guard let urlString = url, let imageUrl = URL(string: urlString) else {
-            DispatchQueue.main.async {
-                self.recipeImageView.image = UIImage(named: "placeholderImage")
-            }
-            return
-        }
-        
-        URLSession.shared.dataTask(with: imageUrl) { (data, response, error) in
-            guard let data = data, let image = UIImage(data: data) else {
-                DispatchQueue.main.async {
-                    self.recipeImageView.image = UIImage(named: "placeholderImage")
-                }
-                return
-            }
-            
-            DispatchQueue.main.async {
-                self.recipeImageView.image = image
-            }
-        }.resume()
-
     }
 }
-
