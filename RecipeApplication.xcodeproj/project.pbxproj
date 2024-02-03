@@ -49,8 +49,8 @@
 		98AE16372B59822100AF5528 /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98AE16362B59822100AF5528 /* CategoryViewController.swift */; };
 		98AE16392B59822E00AF5528 /* GenerateRecipeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98AE16382B59822E00AF5528 /* GenerateRecipeViewController.swift */; };
 		98C152BE2B62C96E0028E72C /* RecipeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C152BD2B62C96E0028E72C /* RecipeModel.swift */; };
-		98C77A852B6D0787000CFC80 /* FavoriteRecipeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C77A842B6D0787000CFC80 /* FavoriteRecipeCell.swift */; };
 		98C77A872B6D0A60000CFC80 /* FavoriteRecipeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C77A862B6D0A60000CFC80 /* FavoriteRecipeModel.swift */; };
+		98CB2FAA2B6E480700DCC083 /* RecipeCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CB2FA92B6E480700DCC083 /* RecipeCollectionView.swift */; };
 		98D2DFDF2B5ADF680062B36C /* ColorExtensionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D2DFDE2B5ADF680062B36C /* ColorExtensionView.swift */; };
 		98D2DFE22B5AE0BE0062B36C /* RAButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D2DFE12B5AE0BE0062B36C /* RAButton.swift */; };
 		98D2DFE52B5AE1510062B36C /* RATextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D2DFE42B5AE1510062B36C /* RATextField.swift */; };
@@ -104,8 +104,8 @@
 		98AE16362B59822100AF5528 /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
 		98AE16382B59822E00AF5528 /* GenerateRecipeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateRecipeViewController.swift; sourceTree = "<group>"; };
 		98C152BD2B62C96E0028E72C /* RecipeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeModel.swift; sourceTree = "<group>"; };
-		98C77A842B6D0787000CFC80 /* FavoriteRecipeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteRecipeCell.swift; sourceTree = "<group>"; };
 		98C77A862B6D0A60000CFC80 /* FavoriteRecipeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteRecipeModel.swift; sourceTree = "<group>"; };
+		98CB2FA92B6E480700DCC083 /* RecipeCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeCollectionView.swift; sourceTree = "<group>"; };
 		98D2DFDE2B5ADF680062B36C /* ColorExtensionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtensionView.swift; sourceTree = "<group>"; };
 		98D2DFE12B5AE0BE0062B36C /* RAButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAButton.swift; sourceTree = "<group>"; };
 		98D2DFE42B5AE1510062B36C /* RATextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RATextField.swift; sourceTree = "<group>"; };
@@ -198,7 +198,6 @@
 			children = (
 				98AE16342B59821500AF5528 /* ProfileViewController.swift */,
 				98F669182B6AB1D7009FF1EF /* FavoriteRecipesCollectionView.swift */,
-				98C77A842B6D0787000CFC80 /* FavoriteRecipeCell.swift */,
 				98C77A862B6D0A60000CFC80 /* FavoriteRecipeModel.swift */,
 				98F669162B6AB1B5009FF1EF /* ShoppingListTableView.swift */,
 			);
@@ -374,6 +373,7 @@
 			isa = PBXGroup;
 			children = (
 				98D43DDD2B6188FD00507EAD /* RecipeItemCollectionViewCell.swift */,
+				98CB2FA92B6E480700DCC083 /* RecipeCollectionView.swift */,
 			);
 			path = CollectionViewCell;
 			sourceTree = "<group>";
@@ -477,11 +477,11 @@
 				988DE81A2B5D402C00FA0ABC /* LoginUserRequest.swift in Sources */,
 				9804875E2B65274C00B88519 /* CategoryCollectionViewCell.swift in Sources */,
 				98D2DFE92B5AE1850062B36C /* RABodyLabel.swift in Sources */,
+				98CB2FAA2B6E480700DCC083 /* RecipeCollectionView.swift in Sources */,
 				98AE16372B59822100AF5528 /* CategoryViewController.swift in Sources */,
 				984061952B5C5C7D00A6BFAF /* NavigationCoordinator.swift in Sources */,
 				98AE16392B59822E00AF5528 /* GenerateRecipeViewController.swift in Sources */,
 				98C152BE2B62C96E0028E72C /* RecipeModel.swift in Sources */,
-				98C77A852B6D0787000CFC80 /* FavoriteRecipeCell.swift in Sources */,
 				98D2DFDF2B5ADF680062B36C /* ColorExtensionView.swift in Sources */,
 				98D2DFE72B5AE16E0062B36C /* RATitleLabel.swift in Sources */,
 				980487602B652A2F00B88519 /* CategoryCollectionView.swift in Sources */,

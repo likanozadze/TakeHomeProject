@@ -4,7 +4,7 @@
 //
 //  Created by Lika Nozadze on 1/18/24.
 //
-
+//
 import UIKit
 import SwiftUI
 
@@ -59,25 +59,13 @@ final class HomeViewController: UIViewController, UISearchBarDelegate, RecipeDel
         stackView.alignment = .leading
         return stackView
     }()
-    
-    private let collectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        layout.minimumInteritemSpacing = 15
-        layout.minimumLineSpacing = 16
-        
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.backgroundColor = .clear
-        return collectionView
-    }()
-    
     private var recipe: [Recipe] = []
     private let viewModel = HomeViewModel()
     private let searchViewModel = SearchViewModel()
     private var fetchedRecipes: [Recipe] = []
     var isHomeCell: Bool = true
     private var categoryCollectionView = CategoryCollectionView()
+    private let recipeCollectionView = RecipeCollectionView()
     // MARK: - ViewLifeCycle
     
     override func viewDidLoad() {
@@ -86,6 +74,11 @@ final class HomeViewController: UIViewController, UISearchBarDelegate, RecipeDel
         setupViewModelDelegate()
         viewModel.fetchRecipes()
         setupSearchBar()
+        recipeCollectionView.dataSource = self
+        recipeCollectionView.delegate = self
+      //recipeCollectionView.recipeCollectionViewDelegate = self
+
+      
         NotificationCenter.default.addObserver(self, selector: #selector(handleSearchResults(_:)), name: Notification.Name("SearchResultsFetched"), object: nil)
      
     }
@@ -131,7 +124,7 @@ final class HomeViewController: UIViewController, UISearchBarDelegate, RecipeDel
         mainStackView.addArrangedSubview(tableView)
         mainStackView.addArrangedSubview(categoryCollectionView)
         mainStackView.addArrangedSubview(titleStackView)
-        mainStackView.addArrangedSubview(collectionView)
+        mainStackView.addArrangedSubview(recipeCollectionView)
 }
 
     private func setupTitleStackView() {
@@ -165,16 +158,10 @@ final class HomeViewController: UIViewController, UISearchBarDelegate, RecipeDel
         ])
         
         NSLayoutConstraint.activate([
-            collectionView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor)
+            recipeCollectionView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
+            recipeCollectionView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor)
         ])
-        
-        collectionView.register(RecipeItemCollectionViewCell.self, forCellWithReuseIdentifier: "RecipeItemCell")
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        collectionView.showsVerticalScrollIndicator = false
-        collectionView.showsHorizontalScrollIndicator = false
-        
+    
     }
     
     private func setupViewModelDelegate() {
@@ -192,8 +179,9 @@ final class HomeViewController: UIViewController, UISearchBarDelegate, RecipeDel
     
     func passSelectedRecipesToProfileVC(selectedRecipes: [Recipe]) {
             let profileVC = ProfileViewController()
-            profileVC.selectedRecipes = selectedRecipes
+          profileVC.selectedRecipes = selectedRecipes
             profileVC.recipeDelegate = self
+        print("HomeViewController is the delegate.")
             navigationController?.pushViewController(profileVC, animated: true)
         }
 
@@ -219,21 +207,6 @@ extension HomeViewController: UICollectionViewDataSource {
         
     }
 }
-// MARK: - CollectionView FlowLayoutDelegate
-extension HomeViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
-        
-        let totalSpace = flowLayout.sectionInset.left
-        + flowLayout.sectionInset.right
-        + flowLayout.minimumInteritemSpacing
-        
-        let width = (collectionView.bounds.width - totalSpace) / 2
-        let height = width * 1.5
-        
-        return CGSize(width: width, height: height)
-    }
-}
 
 // MARK: - CollectionView Delegate
 extension HomeViewController: UICollectionViewDelegate {
@@ -255,7 +228,7 @@ extension HomeViewController: RecipeListViewModelDelegate {
         print("Recipes fetched:", recipe)
         self.recipe = recipe
         DispatchQueue.main.async {
-            self.collectionView.reloadData()
+            self.recipeCollectionView.reloadData()
         }
     }
     
@@ -274,19 +247,27 @@ extension HomeViewController: RecipeListViewModelDelegate {
 
 // MARK: - CollectionView Delegate
 extension HomeViewController: RecipeItemCollectionViewCellDelegate {
-func didTapFavoriteButton(on cell: RecipeItemCollectionViewCell) {
-    guard let indexPath = collectionView.indexPath(for: cell) else { return }
-    let recipe = self.recipe[indexPath.item]
-
-    if cell.favoriteButton.isSelected {
-        favoriteRecipeModel.favoriteNewRecipes(recipe)
-        selectedRecipes.append(recipe)
-    } else {
-        favoriteRecipeModel.deleteFavoriteRecipe(recipe)
-        selectedRecipes = selectedRecipes.filter { $0.id != recipe.id }
+    func didTapFavoriteButton(on cell: RecipeItemCollectionViewCell) {
+        guard let indexPath = recipeCollectionView.indexPath(for: cell) else { return }
+        let recipe = self.recipe[indexPath.item]
+        
+        if cell.favoriteButton.isSelected {
+            favoriteRecipeModel.favoriteNewRecipes(recipe)
+            selectedRecipes.append(recipe)
+        } else {
+            favoriteRecipeModel.deleteFavoriteRecipe(recipe)
+            selectedRecipes = selectedRecipes.filter { $0.id != recipe.id }
+        }
+        
+        recipeCollectionView.reloadItems(at: [indexPath])
+        recipeDelegate?.passSelectedRecipesToProfileVC(selectedRecipes: selectedRecipes)
+        
+        if let delegate = recipeDelegate {
+                   print("Recipes selected in HomeViewController: \(selectedRecipes)")
+                   delegate.passSelectedRecipesToProfileVC(selectedRecipes: selectedRecipes)
+               } else {
+                   print("Recipe delegate is nil.")
+               }
     }
+}
 
-    collectionView.reloadItems(at: [indexPath])
-    recipeDelegate?.passSelectedRecipesToProfileVC(selectedRecipes: selectedRecipes)
-}
-}

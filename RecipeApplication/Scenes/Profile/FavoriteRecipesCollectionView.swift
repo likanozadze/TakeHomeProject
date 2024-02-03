@@ -4,7 +4,7 @@
 //
 //  Created by Lika Nozadze on 1/31/24.
 //
-
+//
 import UIKit
 protocol FavoriteRecipeCollectionViewDelegate: AnyObject {
     func didTapFavoriteRecipe(recipe: Recipe)
@@ -20,16 +20,17 @@ final class FavoriteRecipeCollectionView: UICollectionView, UICollectionViewData
     
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         let customLayout = UICollectionViewFlowLayout()
-        customLayout.scrollDirection = .horizontal
+        customLayout.scrollDirection = .vertical
+        customLayout.minimumInteritemSpacing = 15
+        customLayout.minimumLineSpacing = 16
+        
         super.init(frame: frame, collectionViewLayout: customLayout)
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .clear
         dataSource = self
         delegate = self
         setupCollectionView()
-        
     }
-    
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -38,7 +39,7 @@ final class FavoriteRecipeCollectionView: UICollectionView, UICollectionViewData
     // MARK: - Setup Collection View
     
     private func setupCollectionView() {
-        self.register(FavoriteRecipeCell.self, forCellWithReuseIdentifier: "favoriteCell")
+        self.register(RecipeItemCollectionViewCell.self, forCellWithReuseIdentifier: "RecipeItemCell")
     }
     
     
@@ -47,7 +48,7 @@ final class FavoriteRecipeCollectionView: UICollectionView, UICollectionViewData
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "favoriteCell", for: indexPath) as? FavoriteRecipeCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecipeItemCell", for: indexPath) as? RecipeItemCollectionViewCell else {
             return UICollectionViewCell()
         }
         

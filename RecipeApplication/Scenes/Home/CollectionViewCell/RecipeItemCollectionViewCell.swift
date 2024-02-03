@@ -15,13 +15,9 @@ protocol RecipeItemCollectionViewCellDelegate: AnyObject {
 class RecipeItemCollectionViewCell: UICollectionViewCell {
     
     var recipe: Recipe?
- //   weak var recipeDelegate: RecipeDelegate?
     weak var delegate: RecipeItemCollectionViewCellDelegate?
-
     var favoriteRecipeModel = FavoriteRecipeModel()
-    private let favoriteRecipeCollectionView = FavoriteRecipeCollectionView()
-    
-    
+    private let recipeCollectionView = RecipeCollectionView()
     // MARK: - UI Components
     
     private let recipeImageView: UIImageView = {
@@ -100,7 +96,8 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
             recipeImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             recipeImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             recipeImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            recipeImageView.heightAnchor.constraint(equalToConstant: 180)
+            recipeImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.5)
+
         ])
         
         NSLayoutConstraint.activate([
@@ -129,15 +126,15 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
             print("Heart button was not selected. Now selecting and favoriting the recipe.")
             favoriteRecipeModel.favoriteNewRecipes(recipe)
             DispatchQueue.main.async {
-                self.favoriteRecipeCollectionView.reloadData()
+                self.recipeCollectionView.reloadData()
                 let indexPath = IndexPath(row: self.favoriteRecipeModel.getFavoriteRecipeList().count - 1, section: 0)
-                self.favoriteRecipeCollectionView.scrollToItem(at: indexPath, at: .right, animated: true)
+                self.recipeCollectionView.scrollToItem(at: indexPath, at: .right, animated: true)
             }
         } else {
             print("Heart button was selected. Now deselecting and removing the recipe from favorites.")
             favoriteRecipeModel.deleteFavoriteRecipe(recipe)
             DispatchQueue.main.async {
-                self.favoriteRecipeCollectionView.reloadData()
+                self.recipeCollectionView.reloadData()
             }
         }
         sender.isSelected = !sender.isSelected
@@ -169,6 +166,7 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
     
     func configure(with recipe: Recipe) {
         recipeTitle.text = recipe.title
+    
         
         if let imageUrl = convertToSecureURL(recipe.image) {
             downloadImage(from: imageUrl)
@@ -186,7 +184,6 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
         } else {
             readyInMinLabel.text = "N/A"
         }
-       
     }
     private func downloadImage (from url: String?) {
         guard let urlString = url, let imageUrl = URL(string: urlString) else {
