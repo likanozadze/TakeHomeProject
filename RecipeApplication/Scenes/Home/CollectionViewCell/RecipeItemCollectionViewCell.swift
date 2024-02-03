@@ -48,7 +48,7 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
         let button = UIButton(type: .system)
         button.tintColor = .red
         button.setImage(UIImage(systemName: "heart"), for: .normal)
-      //  button.setImage(UIImage(systemName: "heart.fill"), for: .selected)
+       button.setImage(UIImage(systemName: "heart.fill"), for: .selected)
 
         button.addTarget(target, action: #selector(favoriteButtonTapped(_:)), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -96,7 +96,7 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
             recipeImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             recipeImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             recipeImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            recipeImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.5)
+            recipeImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.7)
 
         ])
         
@@ -114,35 +114,32 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
         ])
     }
     
-
     @objc private func favoriteButtonTapped(_ sender: UIButton) {
         print("Heart button tapped.")
         sender.isSelected.toggle()
-          delegate?.didTapFavoriteButton(on: self)
+        delegate?.didTapFavoriteButton(on: self)
         
-        guard let recipe = recipe else { return }
+      //  guard let recipe = recipe else { return }
         
-        if sender.isSelected != true {
-            print("Heart button was not selected. Now selecting and favoriting the recipe.")
-            favoriteRecipeModel.favoriteNewRecipes(recipe)
-            DispatchQueue.main.async {
-                self.recipeCollectionView.reloadData()
-                let indexPath = IndexPath(row: self.favoriteRecipeModel.getFavoriteRecipeList().count - 1, section: 0)
-                self.recipeCollectionView.scrollToItem(at: indexPath, at: .right, animated: true)
-            }
-        } else {
-            print("Heart button was selected. Now deselecting and removing the recipe from favorites.")
-            favoriteRecipeModel.deleteFavoriteRecipe(recipe)
-            DispatchQueue.main.async {
-                self.recipeCollectionView.reloadData()
-            }
-        }
-        sender.isSelected = !sender.isSelected
-        if let recipeID = recipe.id {
-            favoriteRecipeModel.setFavoriteButtonImage(button: sender, recipeID: recipeID)
-        }
+//        if sender.isSelected {
+//            print("Heart button was selected. Now deselecting and removing the recipe from favorites.")
+//            favoriteRecipeModel.deleteFavoriteRecipe(recipe)
+//            DispatchQueue.main.async {
+//                self.recipeCollectionView.reloadData()
+//            }
+//        } else {
+//            print("Heart button was not selected. Now selecting and favoriting the recipe.")
+//            favoriteRecipeModel.favoriteNewRecipes(recipe)
+//            DispatchQueue.main.async {
+//                self.recipeCollectionView.reloadData()
+//                let indexPath = IndexPath(row: self.favoriteRecipeModel.getFavoriteRecipeList().count - 1, section: 0)
+//                self.recipeCollectionView.scrollToItem(at: indexPath, at: .right, animated: true)
+//            }
+//        }
         
-    delegate?.didTapFavoriteButton(on: self)
+//        if let recipeID = recipe.id {
+//            favoriteRecipeModel.setFavoriteButtonImage(button: sender, recipeID: recipeID)
+        
     }
 
 

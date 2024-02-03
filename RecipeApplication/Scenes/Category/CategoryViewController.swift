@@ -25,7 +25,7 @@ final class CategoryViewController: UIViewController, UICollectionViewDelegateFl
         label.textColor = UIColor.secondaryTextColor
         label.numberOfLines = 2
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         return label
     }()
     
@@ -94,9 +94,9 @@ final class CategoryViewController: UIViewController, UICollectionViewDelegateFl
         ])
         
         NSLayoutConstraint.activate([
-            categoryCollectionView.topAnchor.constraint(equalTo: titleStackView.bottomAnchor),
+            categoryCollectionView.topAnchor.constraint(equalTo: titleStackView.bottomAnchor, constant: 40),
             categoryCollectionView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
-            categoryCollectionView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor, constant: -10),
+           // categoryCollectionView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor, constant: -10),
         ])
     }
     

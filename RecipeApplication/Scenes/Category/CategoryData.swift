@@ -20,5 +20,7 @@ let categoryData: [CategoryData] = [
     CategoryData(title: "Dessert", image: UIImage(named: "dessert")!),
     CategoryData(title: "Beverages", image: UIImage(named: "Beverages")!),
     CategoryData(title: "Soups", image: UIImage(named: "Soups")!),
+    CategoryData(title: "Bread", image: UIImage(named: "Bread")!),
+    CategoryData(title: "Bread", image: UIImage(named: "Bread")!),
     CategoryData(title: "Bread", image: UIImage(named: "Bread")!)
    ]
