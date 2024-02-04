@@ -6,7 +6,11 @@
 //
 import SwiftUI
 
+// MARK: - ButtonView
+
 struct ButtonView: View {
+    
+    // MARK: Properties
     @Binding var isAnyItemSelected: Bool
     
     // MARK: - Body
@@ -24,6 +28,7 @@ struct ButtonView: View {
     }
 }
 
+// MARK: - ButtonView_Previews
 struct ButtonView_Previews: PreviewProvider {
     static var previews: some View {
         ButtonView(isAnyItemSelected: .constant(false))

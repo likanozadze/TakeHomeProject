@@ -22,7 +22,7 @@ final class HomeViewModel {
     private let networkManager: NetworkManager
     private var recipes: [Recipe] = []
     
-    // MARK: - Init
+    // MARK: - Initialization
     
     init(networkManager: NetworkManager = .shared) {
         self.networkManager = networkManager

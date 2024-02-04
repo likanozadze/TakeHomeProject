@@ -7,6 +7,7 @@
 
 import Foundation
 
+// MARK: - RecipeResponse
 struct RecipeResponse: Codable {
     let results: [Recipe]
     let offset: Int
@@ -14,6 +15,7 @@ struct RecipeResponse: Codable {
     let totalResults: Int
 }
 
+// MARK: - Recipe
 struct Recipe: Codable {
     let id: Int?
     let title: String
@@ -41,6 +43,7 @@ struct Recipe: Codable {
     var extendedIngredients: [ExtendedIngredient]?
 }
 
+// MARK: - ExtendedIngredient
 struct ExtendedIngredient: Codable, Identifiable {
     let id: Int
     let image: String
@@ -63,23 +66,27 @@ struct ExtendedIngredient: Codable, Identifiable {
     }
 }
 
+// MARK: - Measures
 struct Measures: Codable {
     let us: Us
     let metric: Metric
 }
 
+// MARK: - Us
 struct Us: Codable {
     let amount: Double
     let unitShort: String
     let unitLong: String
 }
 
+// MARK: - Metric
 struct Metric: Codable {
     let amount: Double
     let unitShort: String
     let unitLong: String
 }
 
+// MARK: - AnalyzedInstruction
 struct AnalyzedInstruction: Codable, Hashable {
     let id: Int?
     let number: Int?
@@ -89,7 +96,7 @@ struct AnalyzedInstruction: Codable, Hashable {
     let steps: [Step]?
 }
 
-
+// MARK: - Step
 struct Step: Identifiable, Codable, Hashable {
     var id: UUID?
     let number: Int
@@ -106,7 +113,7 @@ struct Step: Identifiable, Codable, Hashable {
     }
 }
 
-
+// MARK: - Ingredient
 struct Ingredient: Decodable, Hashable, Encodable {
     let id: Int
     let name: String
@@ -119,6 +126,7 @@ struct Ingredient: Decodable, Hashable, Encodable {
     }
 }
 
+// MARK: - Equipment
 struct Equipment: Codable, Hashable {
     let id: Int
     let name: String

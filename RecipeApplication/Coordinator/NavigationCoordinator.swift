@@ -8,18 +8,24 @@
 import UIKit
 import FirebaseAuth
 
+// MARK: - NavigationCoordinator
 class NavigationCoordinator {
     
+    // MARK: Properties
     var navigationController: UINavigationController
+    
+    // MARK: Initialization
     
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
+    // MARK: Coordinator Methods
     
     func start() {
         checkAuthentication()
     }
     
+    // MARK: Authentication Methods
     public func checkAuthentication() {
         if Auth.auth().currentUser == nil {
             let loginViewController = LoginViewController()
@@ -51,6 +57,9 @@ class NavigationCoordinator {
             }
         }
     }
+    
+    
+    // MARK: Navigation Methods
     
     func createHomeViewNavigation() -> UINavigationController {
         let homeViewController = HomeViewController()
@@ -84,7 +93,7 @@ class NavigationCoordinator {
         return UINavigationController(rootViewController: profileViewController)
     }
     
-    
+    // MARK: Tab Bar Creation
     private func createTabbar() -> UITabBarController {
         let tabbar = UITabBarController()
         UITabBar.appearance().tintColor = UIColor.accentTextColor
@@ -98,6 +107,7 @@ class NavigationCoordinator {
         return tabbar
     }
     
+    // MARK: Navigation Bar Customization
     private func addLogoToNavigationBar(of viewController: UIViewController) {
         let logoImageView = UIImageView()
         logoImageView.image = UIImage(named: "logo")

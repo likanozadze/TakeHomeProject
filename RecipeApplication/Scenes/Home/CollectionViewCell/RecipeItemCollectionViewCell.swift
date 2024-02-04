@@ -7,17 +7,21 @@
 
 import UIKit
 
+// MARK: - RecipeItemCollectionViewCellDelegate
+
 protocol RecipeItemCollectionViewCellDelegate: AnyObject {
     func didTapFavoriteButton(on cell: RecipeItemCollectionViewCell)
-    
+       func didSelectRecipe(on cell: RecipeItemCollectionViewCell)
 }
-
+// MARK: - RecipeItemCollectionViewCell
 class RecipeItemCollectionViewCell: UICollectionViewCell {
     
+    // MARK: Properties
     var recipe: Recipe?
     weak var delegate: RecipeItemCollectionViewCellDelegate?
     var favoriteRecipeModel = FavoriteRecipeModel()
     private let recipeCollectionView = RecipeCollectionView()
+    
     // MARK: - UI Components
     
     private let recipeImageView: UIImageView = {
@@ -48,8 +52,8 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
         let button = UIButton(type: .system)
         button.tintColor = .red
         button.setImage(UIImage(systemName: "heart"), for: .normal)
-       button.setImage(UIImage(systemName: "heart.fill"), for: .selected)
-
+        button.setImage(UIImage(systemName: "heart.fill"), for: .selected)
+        
         button.addTarget(target, action: #selector(favoriteButtonTapped(_:)), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -63,7 +67,7 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
         return stackView
     }()
     
-    // MARK: - Init
+    // MARK: - Initialization
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -97,7 +101,7 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
             recipeImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             recipeImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             recipeImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.7)
-
+            
         ])
         
         NSLayoutConstraint.activate([
@@ -119,30 +123,8 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
         sender.isSelected.toggle()
         delegate?.didTapFavoriteButton(on: self)
         
-      //  guard let recipe = recipe else { return }
-        
-//        if sender.isSelected {
-//            print("Heart button was selected. Now deselecting and removing the recipe from favorites.")
-//            favoriteRecipeModel.deleteFavoriteRecipe(recipe)
-//            DispatchQueue.main.async {
-//                self.recipeCollectionView.reloadData()
-//            }
-//        } else {
-//            print("Heart button was not selected. Now selecting and favoriting the recipe.")
-//            favoriteRecipeModel.favoriteNewRecipes(recipe)
-//            DispatchQueue.main.async {
-//                self.recipeCollectionView.reloadData()
-//                let indexPath = IndexPath(row: self.favoriteRecipeModel.getFavoriteRecipeList().count - 1, section: 0)
-//                self.recipeCollectionView.scrollToItem(at: indexPath, at: .right, animated: true)
-//            }
-//        }
-        
-//        if let recipeID = recipe.id {
-//            favoriteRecipeModel.setFavoriteButtonImage(button: sender, recipeID: recipeID)
-        
     }
-
-
+    
     private func configureCellAppearance() {
         contentView.backgroundColor = .white
         contentView.layer.cornerRadius = 8
@@ -163,7 +145,7 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
     
     func configure(with recipe: Recipe) {
         recipeTitle.text = recipe.title
-    
+        
         
         if let imageUrl = convertToSecureURL(recipe.image) {
             downloadImage(from: imageUrl)
@@ -202,7 +184,6 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
                 self.recipeImageView.image = image
             }
         }.resume()
-
+        
     }
 }
-

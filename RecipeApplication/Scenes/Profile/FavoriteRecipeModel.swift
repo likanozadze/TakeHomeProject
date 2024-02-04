@@ -10,8 +10,11 @@ import Foundation
 import UIKit
 
 struct FavoriteRecipeModel {
+    
+    // MARK: - Properties
     static var favoriteRecipe = [Recipe]()
     
+    // MARK: - Methods
     mutating func favoriteNewRecipes(_ recipeResponse: Recipe) {
         if FavoriteRecipeModel.favoriteRecipe.isEmpty {
             FavoriteRecipeModel.favoriteRecipe = [recipeResponse]

@@ -21,7 +21,7 @@ final class CategoryCollectionView: UICollectionView, UICollectionViewDataSource
         return collectionView
     }()
     
-    // MARK: - Init
+    // MARK: - Initialization
 
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         let customLayout = UICollectionViewFlowLayout()

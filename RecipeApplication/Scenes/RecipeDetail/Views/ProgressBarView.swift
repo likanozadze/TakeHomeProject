@@ -8,8 +8,11 @@
 
 import SwiftUI
 
+// MARK: - ProgressBarView
+
 struct ProgressBarView: View {
     
+    // MARK: Properties
     var percent: CGFloat
     // MARK: - Body
     

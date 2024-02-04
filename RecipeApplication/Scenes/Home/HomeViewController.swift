@@ -5,19 +5,32 @@
 //  Created by Lika Nozadze on 1/18/24.
 //
 //
+
 import UIKit
 import SwiftUI
 
+// MARK: - RecipeDelegate
 protocol RecipeDelegate: AnyObject {
     func passSelectedRecipesToProfileVC(selectedRecipes: [Recipe])
+    func didSelectRecipe(recipe: Recipe)
 }
 
-final class HomeViewController: UIViewController, UISearchBarDelegate, RecipeDelegate {
+// MARK: - HomeViewController
+final class HomeViewController: UIViewController {
+    
+    
+    // MARK: - Properties
     var favoriteRecipeModel = FavoriteRecipeModel()
-
     private var selectedRecipes: [Recipe] = []
     weak var recipeDelegate: RecipeDelegate?
-
+    private var recipe: [Recipe] = []
+    private let viewModel = HomeViewModel()
+    private let searchViewModel = SearchViewModel()
+    private var fetchedRecipes: [Recipe] = []
+    var isHomeCell: Bool = true
+    private var categoryCollectionView = CategoryCollectionView()
+    private let recipeCollectionView = RecipeCollectionView()
+    
     // MARK: - UI Components
     private let mainStackView: UIStackView = {
         let stackView = UIStackView()
@@ -27,6 +40,7 @@ final class HomeViewController: UIViewController, UISearchBarDelegate, RecipeDel
         stackView.isLayoutMarginsRelativeArrangement = true
         return stackView
     }()
+    
     private let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.placeholder = "Search Recipes"
@@ -37,12 +51,13 @@ final class HomeViewController: UIViewController, UISearchBarDelegate, RecipeDel
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         return searchBar
     }()
+    
     private let tableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
-
+    
     private let recipeTitle: UILabel = {
         let label = UILabel()
         label.text = "Trending Now 🔥"
@@ -59,13 +74,7 @@ final class HomeViewController: UIViewController, UISearchBarDelegate, RecipeDel
         stackView.alignment = .leading
         return stackView
     }()
-    private var recipe: [Recipe] = []
-    private let viewModel = HomeViewModel()
-    private let searchViewModel = SearchViewModel()
-    private var fetchedRecipes: [Recipe] = []
-    var isHomeCell: Bool = true
-    private var categoryCollectionView = CategoryCollectionView()
-    private let recipeCollectionView = RecipeCollectionView()
+    
     // MARK: - ViewLifeCycle
     
     override func viewDidLoad() {
@@ -76,13 +85,12 @@ final class HomeViewController: UIViewController, UISearchBarDelegate, RecipeDel
         setupSearchBar()
         recipeCollectionView.dataSource = self
         recipeCollectionView.delegate = self
-      //recipeCollectionView.recipeCollectionViewDelegate = self
-
-      
+        
         NotificationCenter.default.addObserver(self, selector: #selector(handleSearchResults(_:)), name: Notification.Name("SearchResultsFetched"), object: nil)
-     
     }
-
+    
+    
+    
     // MARK: - UI Setup
     private func setup() {
         setupBackground()
@@ -90,43 +98,33 @@ final class HomeViewController: UIViewController, UISearchBarDelegate, RecipeDel
         setupTitleStackView()
         setupConstraints()
         tableView.isHidden = true
-        
     }
+    
     // MARK: - Private Methods
     
     private func setupBackground() {
         view.backgroundColor = UIColor.backgroundColor
     }
+    
     private func setupSearchBar() {
-           searchBar.delegate = self
-           navigationItem.titleView = searchBar
-       }
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        if let searchText = searchBar.text, !searchText.isEmpty {
-            searchViewModel.searchRecipes(for: searchText)
-            tableView.isHidden = false
-        }
+        searchBar.delegate = self
+        navigationItem.titleView = searchBar
     }
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-       
-        tableView.isHidden = searchText.isEmpty
-    }
-
-
+    
     private func addSubviewsToView() {
         addMainSubviews()
     }
     
     private func addMainSubviews() {
         view.addSubview(mainStackView)
-      //  mainStackView.addArrangedSubview(searchContainerView)
+        //  mainStackView.addArrangedSubview(searchContainerView)
         mainStackView.addArrangedSubview(searchBar)
         mainStackView.addArrangedSubview(tableView)
         mainStackView.addArrangedSubview(categoryCollectionView)
         mainStackView.addArrangedSubview(titleStackView)
         mainStackView.addArrangedSubview(recipeCollectionView)
-}
-
+    }
+    
     private func setupTitleStackView() {
         titleStackView.addArrangedSubview(recipeTitle)
     }
@@ -144,7 +142,7 @@ final class HomeViewController: UIViewController, UISearchBarDelegate, RecipeDel
             tableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor),
             tableView.bottomAnchor.constraint(equalTo: categoryCollectionView.topAnchor, constant: -10)
         ])
-
+        
         NSLayoutConstraint.activate([
             categoryCollectionView.topAnchor.constraint(equalTo: mainStackView.bottomAnchor, constant: 10),
             categoryCollectionView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
@@ -161,30 +159,40 @@ final class HomeViewController: UIViewController, UISearchBarDelegate, RecipeDel
             recipeCollectionView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
             recipeCollectionView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor)
         ])
-    
+        
     }
     
     private func setupViewModelDelegate() {
         viewModel.delegate = self
     }
+    // MARK: - Notifications
     @objc func handleSearchResults(_ notification: Notification) {
         if let searchResults = notification.object as? [SearchData] {
-          
+            
             self.updateUIWithSearchResults(searchResults)
         }
     }
     func updateUIWithSearchResults(_ searchResults: [SearchData]) {
-      
+        
     }
-    
-    func passSelectedRecipesToProfileVC(selectedRecipes: [Recipe]) {
-            let profileVC = ProfileViewController()
-          profileVC.selectedRecipes = selectedRecipes
-            profileVC.recipeDelegate = self
-        print("HomeViewController is the delegate.")
-            navigationController?.pushViewController(profileVC, animated: true)
-        }
+}
 
+// MARK: - RecipeDelegate
+extension HomeViewController: RecipeDelegate {
+    func passSelectedRecipesToProfileVC(selectedRecipes: [Recipe]) {
+        let profileVC = ProfileViewController()
+        profileVC.selectedRecipes = selectedRecipes
+        profileVC.recipeDelegate = self
+        print("HomeViewController is the delegate.")
+        navigationController?.pushViewController(profileVC, animated: true)
+    }
+    func didSelectRecipe(recipe: Recipe) {
+        let detailViewModel = RecipeDetailViewModel(recipe: recipe, selectedIngredient: nil)
+        let detailWrapper = RecipeDetailView(viewModel: detailViewModel)
+        
+        let hostingController = UIHostingController(rootView: detailWrapper)
+        navigationController?.pushViewController(hostingController, animated: true)
+    }
 }
 
 // MARK: - CollectionView DataSource
@@ -209,12 +217,13 @@ extension HomeViewController: UICollectionViewDataSource {
 }
 
 // MARK: - CollectionView Delegate
+
 extension HomeViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let recipe = viewModel.recipe(at: indexPath) {
             let detailViewModel = RecipeDetailViewModel(recipe: recipe, selectedIngredient: recipe.extendedIngredients?[indexPath.row])
             let detailWrapper = RecipeDetailViewWrapper(viewModel: detailViewModel)
-
+            
             let hostingController = UIHostingController(rootView: detailWrapper)
             navigationController?.pushViewController(hostingController, animated: true)
         }
@@ -223,6 +232,7 @@ extension HomeViewController: UICollectionViewDelegate {
 
 
 // MARK: - RecipeListViewModelDelegate
+
 extension HomeViewController: RecipeListViewModelDelegate {
     func recipesFetched(_ recipe: [Recipe]) {
         print("Recipes fetched:", recipe)
@@ -236,17 +246,29 @@ extension HomeViewController: RecipeListViewModelDelegate {
         print("Error fetching recipes: \(error.localizedDescription)")
     }
 }
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CategoryCell", for: indexPath) as? CategoryCollectionViewCell else {
-            return UICollectionViewCell()
-        }
-        cell.isHomeCell = true
-        cell.configure(with: categoryData[indexPath.row])
-        return cell
-    }
 
-// MARK: - CollectionView Delegate
+func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CategoryCell", for: indexPath) as? CategoryCollectionViewCell else {
+        return UICollectionViewCell()
+    }
+    cell.isHomeCell = true
+    cell.configure(with: categoryData[indexPath.row])
+    return cell
+}
+
+// MARK: - RecipeItemCollectionViewCellDelegate
+
 extension HomeViewController: RecipeItemCollectionViewCellDelegate {
+    func didSelectRecipe(on cell: RecipeItemCollectionViewCell) {
+        if let selectedRecipe = cell.recipe {
+            print("Selected Recipe: \(selectedRecipe.title)")
+            let detailViewModel = RecipeDetailViewModel(recipe: selectedRecipe, selectedIngredient: selectedRecipe.extendedIngredients?.first)
+            let detailWrapper = RecipeDetailViewWrapper(viewModel: detailViewModel)
+            let hostingController = UIHostingController(rootView: detailWrapper)
+            navigationController?.pushViewController(hostingController, animated: true)
+        }
+    }
+    
     func didTapFavoriteButton(on cell: RecipeItemCollectionViewCell) {
         guard let indexPath = recipeCollectionView.indexPath(for: cell) else { return }
         let recipe = self.recipe[indexPath.item]
@@ -263,11 +285,25 @@ extension HomeViewController: RecipeItemCollectionViewCellDelegate {
         recipeDelegate?.passSelectedRecipesToProfileVC(selectedRecipes: selectedRecipes)
         
         if let delegate = recipeDelegate {
-                   print("Recipes selected in HomeViewController: \(selectedRecipes)")
-                   delegate.passSelectedRecipesToProfileVC(selectedRecipes: selectedRecipes)
-               } else {
-                   print("Recipe delegate is nil.")
-               }
+            print("Recipes selected in HomeViewController: \(selectedRecipes)")
+            delegate.passSelectedRecipesToProfileVC(selectedRecipes: selectedRecipes)
+        } else {
+            print("Recipe delegate is nil.")
+            
+        }
     }
 }
+// MARK: - UISearchBarDelegate
 
+extension HomeViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        if let searchText = searchBar.text, !searchText.isEmpty {
+            searchViewModel.searchRecipes(for: searchText)
+            tableView.isHidden = false
+        }
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        tableView.isHidden = searchText.isEmpty
+    }
+}

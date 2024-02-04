@@ -7,21 +7,22 @@
 
 import UIKit
 
+// MARK: - RecipeCollectionViewDelegate
+
 protocol RecipeCollectionViewDelegate: AnyObject {
     func didTapFavoriteRecipe(recipe: Recipe)
 }
 
+// MARK: - RecipeCollectionView
 final class RecipeCollectionView: UICollectionView {
     
-   var selectedRecipes: [Recipe] = []
-    func didTapFavoriteButton(on cell: RecipeItemCollectionViewCell) {
-        
-    }
-
+// MARK: Properties
+    var selectedRecipes: [Recipe] = []
     var favoriteRecipeModel = FavoriteRecipeModel()
-    
     weak var recipeCollectionViewDelegate: RecipeCollectionViewDelegate?
     private var recipe: [Recipe] = []
+    
+    // MARK: - Initialization
     
     init() {
         let layout = UICollectionViewFlowLayout()
@@ -45,7 +46,7 @@ final class RecipeCollectionView: UICollectionView {
     @objc private func favoriteButtonTapped(_ sender: UIButton) {
         print("Heart button tapped.")
         
-
+        
     }
 }
 // MARK: - CollectionView FlowLayoutDelegate
@@ -70,6 +71,7 @@ extension RecipeCollectionView: RecipeCollectionViewDelegate {
         recipeCollectionViewDelegate?.didTapFavoriteRecipe(recipe: recipe)
     }
 }
+// MARK: - UICollectionViewDataSource
 extension RecipeCollectionView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return favoriteRecipeModel.getFavoriteRecipeList().count
@@ -79,7 +81,7 @@ extension RecipeCollectionView: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecipeItemCell", for: indexPath) as? RecipeItemCollectionViewCell else {
             return UICollectionViewCell()
         }
-        
+                
         let recipe = favoriteRecipeModel.getFavoriteRecipeList()[indexPath.row]
         cell.configure(with: recipe)
         

@@ -7,7 +7,10 @@
 
 import SwiftUI
 
+// MARK: - IngredientCellView
 struct IngredientCellView: View {
+    
+    // MARK: Properties
     var viewModel: RecipeDetailViewModel
     var ingredients: [ExtendedIngredient]
     
@@ -47,6 +50,8 @@ struct IngredientCellView: View {
                     }
                 }
             }
+        // MARK: - ButtonView
+        
         ButtonView(isAnyItemSelected: .constant(selectedIngredients.values.contains(true)))
         }
     }

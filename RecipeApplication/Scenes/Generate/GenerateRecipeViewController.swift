@@ -9,7 +9,10 @@ import UIKit
 import SwiftUI
 import AVFoundation
 
+// MARK: - GenerateRecipeViewController
 final class GenerateRecipeViewController: UIViewController {
+    
+    // MARK: Properties
     private var audioPlayer: AVAudioPlayer?
     
     // MARK: - ViewLifeCycle
@@ -56,6 +59,7 @@ final class GenerateRecipeViewController: UIViewController {
     }
 }
 
+// MARK: - Pie Shape
 struct Pie: Shape {
     var startAngle: Angle
     var endAngle: Angle
@@ -78,12 +82,15 @@ struct Pie: Shape {
     }
 }
 
+// MARK: - WheelView
 struct WheelView: View {
+    
+    // MARK: Properties
     @State private var spin: Double = 0
     @State private var isSpinning = false
     @State private var audioPlayer: AVAudioPlayer?
 
-    
+    // MARK: Body
     var body: some View {
         let uiColors: [UIColor] = [
             UIColor(red: 0.86, green: 0.58, blue: 0.98, alpha: 1.00),

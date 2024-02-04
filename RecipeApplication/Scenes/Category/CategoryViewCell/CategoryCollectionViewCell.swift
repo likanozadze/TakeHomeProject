@@ -29,7 +29,7 @@ class CategoryCollectionViewCell: UICollectionViewCell {
     
     var isHomeCell: Bool = true
     
-    // MARK: - Init
+    // MARK: - Initialization
     
     override init(frame: CGRect) {
         super.init(frame: frame)
