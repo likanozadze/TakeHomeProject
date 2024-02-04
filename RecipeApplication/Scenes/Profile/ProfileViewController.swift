@@ -55,7 +55,7 @@ final class ProfileViewController: UIViewController {
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             segmentedControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            segmentedControl.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            segmentedControl.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             segmentedControl.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             segmentedControl.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
         ])
@@ -71,20 +71,20 @@ final class ProfileViewController: UIViewController {
     
     private func addMainSubviews() {
         view.addSubview(favoriteRecipeCollectionView)
-        //  view.addSubview(shoppingListTableView)
+        //  view.addSubview(IngredientCellView)
     }
     
     private func setupConstraints() {
         
         NSLayoutConstraint.activate([
-            favoriteRecipeCollectionView.topAnchor.constraint(equalTo:view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            favoriteRecipeCollectionView.topAnchor.constraint(equalTo:view.safeAreaLayoutGuide.topAnchor, constant: 40),
             favoriteRecipeCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             favoriteRecipeCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             favoriteRecipeCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20)
         ])
         NSLayoutConstraint.activate([
-            // shoppingListTableView.topAnchor.constraint(equalTo: recipeCollectionView.bottomAnchor, constant: 30),
-            //shoppingListTableView.trailingAnchor.constraint(equalTo: favoriteRecipeCollectionView.trailingAnchor),
+            // IngredientCellView.topAnchor.constraint(equalTo: recipeCollectionView.bottomAnchor, constant: 30),
+            //IngredientCellView.trailingAnchor.constraint(equalTo: favoriteRecipeCollectionView.trailingAnchor),
         ])
     }
     @objc func segmentedControlValueChanged(_ sender: UISegmentedControl) {
@@ -93,10 +93,10 @@ final class ProfileViewController: UIViewController {
         switch selectedSegment {
         case "Favorite Recipes":
             favoriteRecipeCollectionView.isHidden = false
-            //   shoppingListTableView.isHidden = true
+            //   IngredientCellView.isHidden = true
         case "Shopping List":
             favoriteRecipeCollectionView.isHidden = true
-            //   shoppingListTableView.isHidden = false
+            //   IngredientCellView.isHidden = false
         default:
             break
         }
