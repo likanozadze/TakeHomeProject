@@ -15,7 +15,7 @@ final class CategoryRecipeViewController: UIViewController, UICollectionViewDele
     // MARK: Properties
 
     weak var recipeDelegate: RecipeDelegate?
-    var viewModel = CategoryViewModel()
+    var categoryViewModel = CategoryViewModel()
     var selectedCategory: String?
     var categoryRecipeCollectionView = CategoryRecipeCollectionView()
 
@@ -31,8 +31,8 @@ final class CategoryRecipeViewController: UIViewController, UICollectionViewDele
         categoryRecipeCollectionView.register(RecipeItemCollectionViewCell.self, forCellWithReuseIdentifier: "RecipeItemCell")
 
         if let selectedCategory = selectedCategory {
-            viewModel.delegate = self
-            viewModel.fetchRecipesByTag(selectedCategory)
+            categoryViewModel.delegate = self
+            categoryViewModel.fetchRecipesByTag(selectedCategory)
             categoryRecipeCollectionView.delegate = self
             categoryRecipeCollectionView.dataSource = self
         }
@@ -120,7 +120,6 @@ extension CategoryRecipeViewController: UICollectionViewDataSource {
             let detailViewModel = RecipeDetailViewModel(recipe: selectedRecipe, selectedIngredient: selectedRecipe.extendedIngredients?.first)
             let detailWrapper = RecipeDetailViewWrapper(viewModel: detailViewModel)
             
-            // Use UIHostingController to wrap the SwiftUI view
             let hostingController = UIHostingController(rootView: detailWrapper)
             navigationController?.pushViewController(hostingController, animated: true)
         }

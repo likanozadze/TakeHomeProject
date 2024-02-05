@@ -10,7 +10,7 @@ import UIKit
 final class CategoryViewController: UIViewController, UICollectionViewDelegateFlowLayout {
     
     private var selectedCategory: String?
-     var viewModel = CategoryViewModel()
+     private var categoryViewModel = CategoryViewModel()
      var recipe: [Recipe] = []
     
     // MARK: - UI Components
@@ -47,8 +47,8 @@ final class CategoryViewController: UIViewController, UICollectionViewDelegateFl
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
-        viewModel.delegate = self
-        viewModel.fetchRecipesByTag("")
+        categoryViewModel.delegate = self
+        categoryViewModel.fetchRecipesByTag("")
         
     }
     
@@ -147,8 +147,8 @@ extension CategoryViewController: UICollectionViewDataSource {
 
            
             categoryRecipeViewController.selectedCategory = selectedTag
-            categoryRecipeViewController.viewModel.fetchRecipesByTag(selectedTag)
-            categoryRecipeViewController.viewModel.recipes = viewModel.recipes
+            categoryRecipeViewController.categoryViewModel.fetchRecipesByTag(selectedTag)
+            categoryRecipeViewController.categoryViewModel.recipes = categoryViewModel.recipes
             navigationController?.pushViewController(categoryRecipeViewController, animated: true)
         }
 

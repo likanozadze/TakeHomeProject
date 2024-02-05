@@ -25,7 +25,7 @@ final class HomeViewController: UIViewController {
     weak var recipeDelegate: RecipeDelegate?
     private var recipe: [Recipe] = []
     private let viewModel = HomeViewModel()
-    private let searchViewModel = SearchViewModel()
+  //  private let searchViewModel = SearchViewModel()
     private var fetchedRecipes: [Recipe] = []
     var isHomeCell: Bool = true
     private var categoryCollectionView = CategoryCollectionView()
@@ -256,6 +256,7 @@ func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath:
     return cell
 }
 
+
 // MARK: - RecipeItemCollectionViewCellDelegate
 
 extension HomeViewController: RecipeItemCollectionViewCellDelegate {
@@ -298,7 +299,7 @@ extension HomeViewController: RecipeItemCollectionViewCellDelegate {
 extension HomeViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let searchText = searchBar.text, !searchText.isEmpty {
-            searchViewModel.searchRecipes(for: searchText)
+         //   searchViewModel.searchRecipes(for: searchText)
             tableView.isHidden = false
         }
     }

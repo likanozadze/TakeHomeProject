@@ -20,7 +20,7 @@ final class HomeViewModel {
 
     weak var delegate: RecipeListViewModelDelegate?
     private let networkManager: NetworkManager
-    private var recipes: [Recipe] = []
+    var recipes: [Recipe] = []
     
     // MARK: - Initialization
     
@@ -48,7 +48,7 @@ final class HomeViewModel {
         }
         
         let baseURL = "https://api.spoonacular.com"
-        let apiKey = "eb79c4da71b448b4b7477dde8216b951"
+        let apiKey = "50277d5ec39d40019e9bdb57e9afe6a6"
         let endpoint = "/recipes/complexSearch"
         let parameters: [String: Any] = [
             "apiKey": apiKey,

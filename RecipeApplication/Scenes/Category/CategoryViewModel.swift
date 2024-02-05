@@ -45,7 +45,7 @@ final class CategoryViewModel {
         
 
         let baseURL = "https://api.spoonacular.com"
-        let apiKey = "eb79c4da71b448b4b7477dde8216b951"
+        let apiKey = "50277d5ec39d40019e9bdb57e9afe6a6"
         let endpoint = "/recipes/complexSearch"
         let parameters: [String: Any] = [
             "apiKey": apiKey,
@@ -63,7 +63,6 @@ final class CategoryViewModel {
                 case .success(let fetchedRecipes):
                     print("Data fetched successfully:", fetchedRecipes)
                     self.recipes = fetchedRecipes.results
-                    // Update the cache
                     self.recipeCache[tag] = fetchedRecipes.results
                     self.delegate?.categoriesFetched(fetchedRecipes.results)
                     

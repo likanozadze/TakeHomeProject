@@ -133,8 +133,9 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
         contentView.layer.shadowOffset = CGSize(width: 1, height: 2)
         contentView.layer.shadowOpacity = 0.2
         contentView.layer.shadowRadius = 8
+        contentView.layer.shadowPath = UIBezierPath(roundedRect: contentView.bounds, cornerRadius: 8).cgPath
     }
-    
+
     // MARK: - Configuration
     func convertToSecureURL(_ url: String?) -> String? {
         guard let url = url else {
