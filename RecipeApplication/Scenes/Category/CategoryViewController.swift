@@ -9,6 +9,9 @@ import UIKit
 
 final class CategoryViewController: UIViewController, UICollectionViewDelegateFlowLayout {
     
+    private var selectedCategory: String?
+     var viewModel = CategoryViewModel()
+     var recipe: [Recipe] = []
     
     // MARK: - UI Components
     private let mainStackView: UIStackView = {
@@ -44,6 +47,8 @@ final class CategoryViewController: UIViewController, UICollectionViewDelegateFl
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        viewModel.delegate = self
+        viewModel.fetchRecipesByTag("")
         
     }
     
@@ -96,7 +101,7 @@ final class CategoryViewController: UIViewController, UICollectionViewDelegateFl
         NSLayoutConstraint.activate([
             categoryCollectionView.topAnchor.constraint(equalTo: titleStackView.bottomAnchor, constant: 40),
             categoryCollectionView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
-           // categoryCollectionView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor, constant: -10),
+            
         ])
     }
     
@@ -133,3 +138,34 @@ extension CategoryViewController: UICollectionViewDataSource {
         return cell
     }
 }
+// MARK: - UICollectionViewDelegate
+    extension CategoryViewController: UICollectionViewDelegate {
+        
+        func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+            let selectedTag = categoryData[indexPath.row].title.lowercased()
+            let categoryRecipeViewController = CategoryRecipeViewController()
+
+           
+            categoryRecipeViewController.selectedCategory = selectedTag
+            categoryRecipeViewController.viewModel.fetchRecipesByTag(selectedTag)
+            categoryRecipeViewController.viewModel.recipes = viewModel.recipes
+            navigationController?.pushViewController(categoryRecipeViewController, animated: true)
+        }
+
+    }
+
+    extension CategoryViewController: CategoryListViewModelDelegate {
+        func categoriesFetched(_ recipes: [Recipe]) {
+            DispatchQueue.main.async {
+                print("Recipes fetched successfully: \(recipes)")
+            }
+        
+        }
+        
+
+        func categoryFetchError(_ error: Error) {
+            DispatchQueue.main.async {
+                print("Error fetching recipes: \(error.localizedDescription)")
+            }
+        }
+    }

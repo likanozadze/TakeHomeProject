@@ -53,6 +53,7 @@
 		98CB2FAA2B6E480700DCC083 /* RecipeCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CB2FA92B6E480700DCC083 /* RecipeCollectionView.swift */; };
 		98D26B342B71260300BAA30B /* CategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D26B332B71260300BAA30B /* CategoryViewModel.swift */; };
 		98D26B362B71269900BAA30B /* CategoryRecipeCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D26B352B71269900BAA30B /* CategoryRecipeCollectionView.swift */; };
+		98D26B382B71271B00BAA30B /* CategoryRecipeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D26B372B71271B00BAA30B /* CategoryRecipeViewController.swift */; };
 		98D2DFDF2B5ADF680062B36C /* ColorExtensionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D2DFDE2B5ADF680062B36C /* ColorExtensionView.swift */; };
 		98D2DFE22B5AE0BE0062B36C /* RAButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D2DFE12B5AE0BE0062B36C /* RAButton.swift */; };
 		98D2DFE52B5AE1510062B36C /* RATextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D2DFE42B5AE1510062B36C /* RATextField.swift */; };
@@ -110,6 +111,7 @@
 		98CB2FA92B6E480700DCC083 /* RecipeCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeCollectionView.swift; sourceTree = "<group>"; };
 		98D26B332B71260300BAA30B /* CategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewModel.swift; sourceTree = "<group>"; };
 		98D26B352B71269900BAA30B /* CategoryRecipeCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryRecipeCollectionView.swift; sourceTree = "<group>"; };
+		98D26B372B71271B00BAA30B /* CategoryRecipeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryRecipeViewController.swift; sourceTree = "<group>"; };
 		98D2DFDE2B5ADF680062B36C /* ColorExtensionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtensionView.swift; sourceTree = "<group>"; };
 		98D2DFE12B5AE0BE0062B36C /* RAButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAButton.swift; sourceTree = "<group>"; };
 		98D2DFE42B5AE1510062B36C /* RATextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RATextField.swift; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 				980487642B65429F00B88519 /* CategoryViewCell */,
 				980487622B652E4D00B88519 /* CategoryData.swift */,
 				98D26B352B71269900BAA30B /* CategoryRecipeCollectionView.swift */,
+				98D26B372B71271B00BAA30B /* CategoryRecipeViewController.swift */,
 				9804875F2B652A2F00B88519 /* CategoryCollectionView.swift */,
 				98AE16362B59822100AF5528 /* CategoryViewController.swift */,
 				98D26B332B71260300BAA30B /* CategoryViewModel.swift */,
@@ -495,6 +498,7 @@
 				980487602B652A2F00B88519 /* CategoryCollectionView.swift in Sources */,
 				98C77A872B6D0A60000CFC80 /* FavoriteRecipeModel.swift in Sources */,
 				988DE81C2B5D439500FA0ABC /* Validator.swift in Sources */,
+				98D26B382B71271B00BAA30B /* CategoryRecipeViewController.swift in Sources */,
 				984019BB2B692D500025D5D3 /* RecipeDetailView.swift in Sources */,
 				9840619F2B5C5DC100A6BFAF /* RegisterViewController.swift in Sources */,
 				98AE16352B59821500AF5528 /* ProfileViewController.swift in Sources */,
