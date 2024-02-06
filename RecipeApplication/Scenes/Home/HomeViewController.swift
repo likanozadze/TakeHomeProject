@@ -86,7 +86,7 @@ final class HomeViewController: UIViewController {
         recipeCollectionView.dataSource = self
         recipeCollectionView.delegate = self
 //        categoryCollectionView.dataSource = self
-//        categoryCollectionView.delegate = self
+        categoryCollectionView.delegate = self
         NotificationCenter.default.addObserver(self, selector: #selector(handleSearchResults(_:)), name: Notification.Name("SearchResultsFetched"), object: nil)
     }
     
@@ -221,14 +221,27 @@ extension HomeViewController: UICollectionViewDataSource {
 
 extension HomeViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let recipe = viewModel.recipe(at: indexPath) {
-            let detailViewModel = RecipeDetailViewModel(recipe: recipe, selectedIngredient: recipe.extendedIngredients?[indexPath.row])
-            let detailWrapper = RecipeDetailViewWrapper(viewModel: detailViewModel)
+        if collectionView == recipeCollectionView {
+            if let recipe = viewModel.recipe(at: indexPath) {
+                let detailViewModel = RecipeDetailViewModel(recipe: recipe, selectedIngredient: recipe.extendedIngredients?[indexPath.row])
+                let detailWrapper = RecipeDetailViewWrapper(viewModel: detailViewModel)
+                
+                let hostingController = UIHostingController(rootView: detailWrapper)
+                navigationController?.pushViewController(hostingController, animated: true)
+            }
+        } else {
+            let selectedTag = categoryData[indexPath.row].title.lowercased()
+            let categoryRecipeViewController = CategoryRecipeViewController()
+
+           
+            categoryRecipeViewController.selectedCategory = selectedTag
+            categoryRecipeViewController.categoryViewModel.fetchRecipesByTag(selectedTag)
+            categoryRecipeViewController.categoryViewModel.recipes = recipe
+            navigationController?.pushViewController(categoryRecipeViewController, animated: true)
             
-            let hostingController = UIHostingController(rootView: detailWrapper)
-            navigationController?.pushViewController(hostingController, animated: true)
         }
     }
+
 }
 
 
@@ -248,14 +261,14 @@ extension HomeViewController: RecipeListViewModelDelegate {
     }
 }
 
-func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CategoryCell", for: indexPath) as? CategoryCollectionViewCell else {
-        return UICollectionViewCell()
-    }
-    cell.isHomeCell = true
-    cell.configure(with: categoryData[indexPath.row])
-    return cell
-}
+//func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CategoryCell", for: indexPath) as? CategoryCollectionViewCell else {
+//        return UICollectionViewCell()
+//    }
+//    cell.isHomeCell = true
+//    cell.configure(with: categoryData[indexPath.row])
+//    return cell
+//}
 
 
 // MARK: - RecipeItemCollectionViewCellDelegate
