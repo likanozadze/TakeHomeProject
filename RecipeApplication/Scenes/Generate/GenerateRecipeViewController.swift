@@ -13,14 +13,15 @@ import AVFoundation
 final class GenerateRecipeViewController: UIViewController {
     
     // MARK: Properties
-    private var audioPlayer: AVAudioPlayer?
     
+    private var audioPlayer: AVAudioPlayer?
     // MARK: - ViewLifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
         setupAudio()
+        
     }
     
     // MARK: - Private Methods
@@ -47,7 +48,6 @@ final class GenerateRecipeViewController: UIViewController {
         
         hostingController.didMove(toParent: self)
     }
-    
     private func setupAudio() {
         guard let url = Bundle.main.url(forResource: "spinning_sound", withExtension: ".mp3") else { return }
         do {
@@ -86,120 +86,141 @@ struct Pie: Shape {
 struct WheelView: View {
     
     // MARK: Properties
+    
     @State private var spin: Double = 0
     @State private var isSpinning = false
+    @State private var recipes = dummyRecipes.map { $0.title }
+    @State private var selectedRecipe: DRecipe?
+    @State private var showingRecipe = false
     @State private var audioPlayer: AVAudioPlayer?
-
+    
     // MARK: Body
     var body: some View {
-        let uiColors: [UIColor] = [
-            UIColor(red: 0.86, green: 0.58, blue: 0.98, alpha: 1.00),
-            UIColor(red: 0.46, green: 0.87, blue: 0.77, alpha: 1.00),
-            UIColor(red: 0.99, green: 0.58, blue: 0.76, alpha: 1.00),
-            UIColor(red: 0.44, green: 0.76, blue: 0.99, alpha: 1.00),
-            UIColor(red: 1.00, green: 0.80, blue: 0.40, alpha: 1.00),
-            UIColor(red: 0.86, green: 0.58, blue: 0.98, alpha: 1.00),
-            UIColor(red: 0.46, green: 0.87, blue: 0.77, alpha: 1.00),
-            UIColor(red: 0.99, green: 0.58, blue: 0.76, alpha: 1.00),
-            UIColor(red: 0.44, green: 0.76, blue: 0.99, alpha: 1.00),
-            UIColor(red: 1.00, green: 0.80, blue: 0.40, alpha: 1.00)
-        ]
         
-        let colors: [Color] = uiColors.map { Color($0) }
-        
-        return ZStack {
-      
-            Rectangle()
-                .fill(Color.black.opacity(isSpinning ? 0.5 : 0))
-                .edgesIgnoringSafeArea(.all)
-            
+        if let recipe = selectedRecipe {
+            DummyRecipeView(recipe: recipe)
+        } else {
             VStack {
-                VStack {
-                    HStack {
-                        Text("What to cook today?")
-                            .font(.largeTitle)
-                            .fontWeight(.bold)
-                            .foregroundColor(.black)
-                            .padding()
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.5)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        Spacer()
-                    }
-                    .padding(.top, -30)
+                
+                let uiColors: [UIColor] = [
+                    UIColor(red: 0.86, green: 0.58, blue: 0.98, alpha: 1.00),
+                    UIColor(red: 0.46, green: 0.87, blue: 0.77, alpha: 1.00),
+                    UIColor(red: 0.99, green: 0.58, blue: 0.76, alpha: 1.00),
+                    UIColor(red: 0.44, green: 0.76, blue: 0.99, alpha: 1.00),
+                    UIColor(red: 1.00, green: 0.80, blue: 0.40, alpha: 1.00),
+                    UIColor(red: 0.86, green: 0.58, blue: 0.98, alpha: 1.00),
+                    UIColor(red: 0.46, green: 0.87, blue: 0.77, alpha: 1.00),
+                    UIColor(red: 0.99, green: 0.58, blue: 0.76, alpha: 1.00),
+                    UIColor(red: 0.44, green: 0.76, blue: 0.99, alpha: 1.00),
+                    UIColor(red: 1.00, green: 0.80, blue: 0.40, alpha: 1.00)
+                ]
+                
+                let colors: [Color] = uiColors.map { Color($0) }
+                
+                ZStack {
                     
-                    ZStack {
-                       
-                        Pie(startAngle: .degrees(0), endAngle: .degrees(360))
-                            .stroke(Color.black, lineWidth: 10)
-                            .shadow(color: .gray, radius: 5, x: 0, y: 0)
-                            .scaleEffect(0.85)
-                        Pie(startAngle: .degrees(0), endAngle: .degrees(360))
-                            .stroke(Color.white, lineWidth: 10)
-                            .scaleEffect(0.8)
-                        
-                        ForEach(0..<colors.count, id: \.self) { index in
-                            Pie(startAngle: .degrees(Double(index) / Double(colors.count) * 360),
-                                endAngle: .degrees(Double(index + 1) / Double(colors.count) * 360))
-                                .fill(colors[index])
-                                .scaleEffect(0.8)
-                        }
-                        
-                        Image("logo2")
-                            .resizable()
-                            .frame(width: 75, height: 75)
-                            .offset(y: -0)
-                            .rotationEffect(.degrees(-spin))
-                    }
-                    .rotationEffect(.degrees(spin))
+                    Rectangle()
+                        .fill(Color.black.opacity(isSpinning ? 0.5 : 0))
+                        .edgesIgnoringSafeArea(.all)
                     
                     VStack {
-                        Image("stopper")
-                            .resizable()
-                            .frame(width: 30, height: 40)
-                            .foregroundColor(.red)
-                            .offset(y: -40)
-                    }
-                    .rotationEffect(.degrees(0))
-                }
-                .padding()
-                
-                Spacer()
-                
-                Button {
-                    withAnimation(.spring(response: 2, dampingFraction: 2)) {
-                        spin += 1440
-                        isSpinning = true
-                        guard let url = Bundle.main.url(forResource: "spinning_sound", withExtension: "mp3") else { return }
-                        do {
-                            audioPlayer = try AVAudioPlayer(contentsOf: url)
-                            audioPlayer?.prepareToPlay()
-                            audioPlayer?.play()
-                        } catch let error {
-                            print("Error playing sound. \(error.localizedDescription)")
+                        VStack {
+                            HStack {
+                                Text("What to cook today?")
+                                    .font(.largeTitle)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.black)
+                                    .padding()
+                                    .lineLimit(1)
+                                    .minimumScaleFactor(0.5)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                Spacer()
+                            }
+                            .padding(.top, -30)
+                            
+                            ZStack {
+                                
+                                Pie(startAngle: .degrees(0), endAngle: .degrees(360))
+                                    .stroke(Color.black, lineWidth: 10)
+                                    .shadow(color: .gray, radius: 5, x: 0, y: 0)
+                                    .scaleEffect(0.85)
+                                Pie(startAngle: .degrees(0), endAngle: .degrees(360))
+                                    .stroke(Color.white, lineWidth: 10)
+                                    .scaleEffect(0.8)
+                                
+                                ForEach(0..<colors.count, id: \.self) { index in
+                                    Pie(startAngle: .degrees(Double(index) / Double(colors.count) * 360),
+                                        endAngle: .degrees(Double(index + 1) / Double(colors.count) * 360))
+                                    .fill(colors[index])
+                                    .scaleEffect(0.8)
+                                }
+                                
+                                Image("logo2")
+                                    .resizable()
+                                    .frame(width: 75, height: 75)
+                                    .offset(y: -0)
+                                    .rotationEffect(.degrees(-spin))
+                            }
+                            .rotationEffect(.degrees(spin))
+                            
+                            VStack {
+                                Image("stopper")
+                                    .resizable()
+                                    .frame(width: 30, height: 40)
+                                    .foregroundColor(.red)
+                                    .offset(y: -40)
+                            }
+                            .rotationEffect(.degrees(0))
                         }
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
-                            isSpinning = false
-                            audioPlayer?.stop()
-                            audioPlayer = nil 
-                        }
-                    }
-                } label: {
-                    Text("Spin")
-                        .frame(width: 200)
-                        .font(.title)
-                        .fontWeight(.bold)
                         .padding()
-                        .background(Color(red: 134/255, green: 191/255, blue: 62/255, opacity: 1.0))
-                        .foregroundColor(.white)
-                        .cornerRadius(20)
+                        
+                        Spacer()
+                        
+                        Button {
+                            withAnimation(.spring(response: 2, dampingFraction: 2)) {
+                                spin += 1440
+                                isSpinning = true
+                                guard let url = Bundle.main.url(forResource: "spinning_sound", withExtension: "mp3") else { return }
+                                do {
+                                    audioPlayer = try AVAudioPlayer(contentsOf: url)
+                                    audioPlayer?.prepareToPlay()
+                                    audioPlayer?.play()
+                                } catch let error {
+                                    print("Error playing sound. \(error.localizedDescription)")
+                                }
+                                
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
+                                    isSpinning = false
+                                    audioPlayer?.stop()
+                                    audioPlayer = nil
+                                    selectedRecipe = dummyRecipes.randomElement()
+                                    showingRecipe = true
+                                }
+                            }
+                        } label: {
+                            Text("Spin")
+                                .frame(width: 200)
+                                .font(.title)
+                                .fontWeight(.bold)
+                                .padding()
+                                .background(Color(red: 134/255, green: 191/255, blue: 62/255, opacity: 1.0))
+                                .foregroundColor(.white)
+                                .cornerRadius(20)
+                        }
+                        .padding()
+                        .sheet(isPresented: $showingRecipe) {
+                            if let recipe = selectedRecipe {
+                                DummyRecipeView(recipe: recipe)
+                            }
+                        }
+                        
+                    }
                 }
-                .padding()
-
             }
         }
     }
 }
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {

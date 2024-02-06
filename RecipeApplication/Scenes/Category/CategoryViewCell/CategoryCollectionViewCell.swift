@@ -80,10 +80,10 @@ class CategoryCollectionViewCell: UICollectionViewCell {
         
         if isHomeCell {
             categoryImageView.heightAnchor.constraint(equalToConstant: 100).isActive = true
-            categoryImageView.widthAnchor.constraint(equalToConstant: 150).isActive = true
+            categoryImageView.widthAnchor.constraint(equalToConstant: 100).isActive = true
         } else {
-            categoryImageView.heightAnchor.constraint(equalToConstant: 240).isActive = true
-            categoryImageView.widthAnchor.constraint(equalToConstant: 240).isActive = true
+            categoryImageView.heightAnchor.constraint(equalToConstant: 175).isActive = true
+            categoryImageView.widthAnchor.constraint(equalToConstant: 100).isActive = true
         }
     
         self.categoryImageView.setNeedsLayout()

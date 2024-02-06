@@ -81,7 +81,7 @@ final class HomeViewController: UIViewController {
         super.viewDidLoad()
         setup()
         setupViewModelDelegate()
-        viewModel.fetchRecipes()
+        viewModel.viewDidLoad()
         setupSearchBar()
         recipeCollectionView.dataSource = self
         recipeCollectionView.delegate = self

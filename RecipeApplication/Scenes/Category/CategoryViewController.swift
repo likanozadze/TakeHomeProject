@@ -10,7 +10,7 @@ import UIKit
 final class CategoryViewController: UIViewController, UICollectionViewDelegateFlowLayout {
     
     private var selectedCategory: String?
-     private var categoryViewModel = CategoryViewModel()
+     var categoryViewModel = CategoryViewModel()
      var recipe: [Recipe] = []
     
     // MARK: - UI Components

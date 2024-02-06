@@ -21,4 +21,6 @@ let categoryData: [CategoryData] = [
     CategoryData(title: "Beverages", image: UIImage(named: "Beverages")!),
     CategoryData(title: "Soups", image: UIImage(named: "Soups")!),
     CategoryData(title: "Bread", image: UIImage(named: "Bread")!),
+    CategoryData(title: "Burgers", image: UIImage(named: "Burger")!),
+    CategoryData(title: "Pizza", image: UIImage(named: "pizza")!)
    ]

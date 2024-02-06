@@ -14,7 +14,7 @@ protocol RecipeListViewModelDelegate: AnyObject {
     func recipeFetchError(_ error: Error)
 }
 
-final class HomeViewModel {
+final class HomeViewModel: ObservableObject {
     
     // MARK: - Properties
 
@@ -48,7 +48,7 @@ final class HomeViewModel {
         }
         
         let baseURL = "https://api.spoonacular.com"
-        let apiKey = "50277d5ec39d40019e9bdb57e9afe6a6"
+        let apiKey = Configuration.apiKey
         let endpoint = "/recipes/complexSearch"
         let parameters: [String: Any] = [
             "apiKey": apiKey,

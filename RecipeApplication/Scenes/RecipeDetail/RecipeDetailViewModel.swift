@@ -20,17 +20,47 @@ class RecipeDetailViewModel: ObservableObject {
     
     
     // MARK: Private Properties
-    private let apiKey = "eb79c4da71b448b4b7477dde8216b951"
+    private let apiKey = Configuration.apiKey
     private let baseURL = "https://api.spoonacular.com/recipes/"
+    private let cache = NSCache<NSString, NSData>()
+
     
     // MARK: Initialization
     init(recipe: Recipe, selectedIngredient: ExtendedIngredient? = nil) {
         self.recipe = recipe
         self.selectedIngredient = selectedIngredient
+        fetchIngredientsFromCache()
+               fetchInstructionsFromCache()
         fetchIngredients()
         fetchInstructions()
     }
+    // MARK: Data Fetching
+       func fetchIngredientsFromCache() {
+           guard let recipeId = recipe.id else { return }
 
+           if let cachedData = cache.object(forKey: "\(recipeId)-ingredients" as NSString) as Data? {
+               do {
+                   let recipe = try JSONDecoder().decode(Recipe.self, from: cachedData)
+                   self.recipe.extendedIngredients = recipe.extendedIngredients
+                   self.extendedIngredients = recipe.extendedIngredients ?? []
+               } catch {
+                   print("Error decoding cached recipe: \(error)")
+               }
+           }
+       }
+
+       func fetchInstructionsFromCache() {
+           guard let recipeId = recipe.id else { return }
+
+           if let cachedData = cache.object(forKey: "\(recipeId)-instructions" as NSString) as Data? {
+               do {
+                   let decodedInstructions = try JSONDecoder().decode([AnalyzedInstruction].self, from: cachedData)
+                   self.analyzedInstructions = decodedInstructions
+               } catch {
+                   print("Error decoding cached instructions: \(error)")
+               }
+           }
+       }
     // MARK: Data Fetching
     func fetchIngredients() {
         guard let recipeId = recipe.id else { return }
@@ -88,7 +118,12 @@ class RecipeDetailViewModel: ObservableObject {
             }
         }.resume()
     }
-}
+    func cacheData(_ data: Data, forKey key: String) {
+          cache.setObject(data as NSData, forKey: key as NSString)
+      }
+  }
+
+
 // MARK: - IngredientDetailView
 struct IngredientDetailView: View {
     
