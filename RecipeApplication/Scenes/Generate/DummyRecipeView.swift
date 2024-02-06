@@ -10,7 +10,7 @@ import SwiftUI
 struct DummyRecipeView: View {
     
     var recipe: DRecipe
-    @Environment(\.presentationMode) var presentationMode
+    @Binding var showingRecipe: Bool
     
     
     // MARK: - Body
@@ -84,7 +84,7 @@ struct DummyRecipeView: View {
                         .frame(height: 20)
                         .background(Color.white)
                         Divider().background(Color(red: 134/255, green: 191/255, blue: 62/255, opacity: 1.0))
-
+                        
                     }
                     
                 }
@@ -115,22 +115,14 @@ struct DummyRecipeView: View {
                         Divider().background(Color(red: 134/255, green: 191/255, blue: 62/255, opacity: 1.0))
                         
                     }
-                    
-                    Spacer()
                 }
             }
-            .padding()
-            .gesture(DragGesture().onEnded { value in
-                if value.translation.height > 50 {
-                    presentationMode.wrappedValue.dismiss()
-                }
-            })
         }
-        
+        .padding()
     }
 }
-struct DummyRecipeView_Previews: PreviewProvider {
-    static var previews: some View {
-        DummyRecipeView(recipe: dummyRecipes[1])
-    }
-}
+//struct DummyRecipeView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        DummyRecipeView(recipe: dummyRecipes[1])
+//    }
+//}

@@ -96,10 +96,7 @@ struct WheelView: View {
     
     // MARK: Body
     var body: some View {
-        
-        if let recipe = selectedRecipe {
-            DummyRecipeView(recipe: recipe)
-        } else {
+    
             VStack {
                 
                 let uiColors: [UIColor] = [
@@ -210,8 +207,9 @@ struct WheelView: View {
                         .padding()
                         .sheet(isPresented: $showingRecipe) {
                             if let recipe = selectedRecipe {
-                                DummyRecipeView(recipe: recipe)
+                                DummyRecipeView(recipe: recipe, showingRecipe: $showingRecipe)
                             }
+                        
                         }
                         
                     }
@@ -219,7 +217,6 @@ struct WheelView: View {
             }
         }
     }
-}
 
 
 struct ContentView_Previews: PreviewProvider {
