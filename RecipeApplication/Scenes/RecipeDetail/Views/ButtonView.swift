@@ -12,10 +12,18 @@ struct ButtonView: View {
     
     // MARK: Properties
     @Binding var isAnyItemSelected: Bool
+    @Binding var selectedIngredients: [Int: Bool]
+       let ingredients: [ExtendedIngredient]
+       @Binding var shoppingList: [ExtendedIngredient]
     
     // MARK: - Body
     var body: some View {
         Button(action: {
+            for (id, isSelected) in selectedIngredients {
+                    if isSelected, let ingredient = ingredients.first(where: { $0.id == id }) {
+                        shoppingList.append(ingredient)
+                    }
+                }
         }, label: {
             Text("Add to shopping list")
                 .frame(maxWidth: .infinity)
@@ -29,8 +37,8 @@ struct ButtonView: View {
 }
 
 // MARK: - ButtonView_Previews
-struct ButtonView_Previews: PreviewProvider {
-    static var previews: some View {
-        ButtonView(isAnyItemSelected: .constant(false))
-    }
-}
+//struct ButtonView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ButtonView(isAnyItemSelected: .constant(false))
+//    }
+//}

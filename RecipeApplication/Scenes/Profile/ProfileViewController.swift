@@ -19,6 +19,8 @@ final class ProfileViewController: UIViewController {
     var selectedRecipes: [Recipe] = []
     var recipeDelegate: RecipeDelegate?
     private let shoppingListTableView = ShoppingListTableView()
+    var shoppingList: [ExtendedIngredient] = []
+
     
     
     var segmentedControl: UISegmentedControl!
@@ -109,6 +111,8 @@ final class ProfileViewController: UIViewController {
             } else {
                 favoriteRecipeCollectionView.isHidden = true
                 shoppingListTableView.isHidden = false
+             //   shoppingListTableView.shoppingList = shoppingList
+                shoppingListTableView.reloadData()
             }
         }
     }

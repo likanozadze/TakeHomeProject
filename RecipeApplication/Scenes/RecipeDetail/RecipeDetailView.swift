@@ -12,6 +12,7 @@ struct RecipeDetailView: View {
     // MARK: - Properties
     @ObservedObject var viewModel: RecipeDetailViewModel
     @State private var selectedSegment: String = "Ingredients"
+    @State private var shoppingList: [ExtendedIngredient] = []
     
     
     // MARK: - Initializer
@@ -33,7 +34,7 @@ struct RecipeDetailView: View {
                 PickerView(selectedSegment: $selectedSegment)
                 if selectedSegment == "Ingredients" {
                     // MARK: - IngredientCellView
-                    IngredientCellView(viewModel: viewModel, ingredients: viewModel.extendedIngredients)
+                    IngredientCellView(viewModel: viewModel, ingredients: viewModel.extendedIngredients, shoppingList: $shoppingList)
                 } else {
                     // MARK: - StepsSectionView
                     StepsSectionView(steps: viewModel.analyzedInstructions)

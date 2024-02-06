@@ -8,12 +8,13 @@
 import UIKit
 
 class ShoppingListTableView: UITableView {
-    
+    var shoppingList: [ExtendedIngredient] = []
+
     override init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: frame, style: style)
         
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = .red
+      //  backgroundColor = .red
         register(UITableViewCell.self, forCellReuseIdentifier: "ShoppingListCell")
         dataSource = self
         delegate = self
@@ -27,12 +28,13 @@ class ShoppingListTableView: UITableView {
 extension ShoppingListTableView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     
-        return 10
+        return shoppingList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ShoppingListCell", for: indexPath)
-        cell.textLabel?.text = "Row \(indexPath.row)"
+        let ingredient = shoppingList[indexPath.row]
+        cell.textLabel?.text = "\(ingredient.name) - \(String(format: "%.0f", ingredient.amount)) \(ingredient.unit)"
     
         return cell
     }
