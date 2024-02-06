@@ -69,25 +69,8 @@ final class CategoryRecipeViewController: UIViewController, UICollectionViewDele
             categoryRecipeCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20)
         ])
     }
-}
 
-// MARK: - UICollectionViewDataSource
 
-extension CategoryRecipeViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print("Number of items: \(recipe.count)")
-        return recipe.count
-    }
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecipeItemCell", for: indexPath) as? RecipeItemCollectionViewCell else {
-            print("Error: Unable to dequeue RecipeItemCollectionViewCell.")
-            return UICollectionViewCell()
-        }
-        cell.delegate = self
-        cell.configure(with: recipe[indexPath.row])
-        return cell
-    }
 
     func didTapFavoriteButton(on cell: RecipeItemCollectionViewCell) {
         guard let indexPath = categoryRecipeCollectionView.indexPath(for: cell) else { return }
@@ -137,5 +120,31 @@ extension CategoryRecipeViewController: UICollectionViewDataSource {
         print("Error fetching recipes: \(error.localizedDescription)")
     
     }
-
 }
+
+// MARK: - UICollectionViewDataSource
+
+extension CategoryRecipeViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        print("Number of items: \(recipe.count)")
+        return recipe.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecipeItemCell", for: indexPath) as? RecipeItemCollectionViewCell else {
+            print("Error: Unable to dequeue RecipeItemCollectionViewCell.")
+            return UICollectionViewCell()
+        }
+        cell.delegate = self
+        cell.configure(with: recipe[indexPath.row])
+        return cell
+    }
+    
+}
+// MARK: - CollectionView FlowLayoutDelegate
+    extension CategoryRecipeViewController: UICollectionViewDelegateFlowLayout {
+        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+            return CGSize(width: 340, height: 220)
+          
+        }
+    }

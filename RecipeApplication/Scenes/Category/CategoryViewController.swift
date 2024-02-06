@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class CategoryViewController: UIViewController, UICollectionViewDelegateFlowLayout {
+final class CategoryViewController: UIViewController {
     
     private var selectedCategory: String?
      var categoryViewModel = CategoryViewModel()
@@ -40,7 +40,6 @@ final class CategoryViewController: UIViewController, UICollectionViewDelegateFl
     }()
     
     private var categoryCollectionView = CategoryCollectionView()
-    var isHomeCell: Bool = true
     
     // MARK: - ViewLifeCycle
     
@@ -63,6 +62,9 @@ final class CategoryViewController: UIViewController, UICollectionViewDelegateFl
         categoryCollectionView.showsVerticalScrollIndicator = true
         categoryCollectionView.alwaysBounceVertical = true  
         
+        if let layout = categoryCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            layout.scrollDirection = .vertical
+        }
     }
     // MARK: - Private Methods
     
@@ -107,16 +109,19 @@ final class CategoryViewController: UIViewController, UICollectionViewDelegateFl
     
 }
 // MARK: - UICollectionViewDelegateFlowLayout
-extension CategoryViewController {
+extension CategoryViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let numberOfColumns: CGFloat = 2
-        let spacing: CGFloat = 10
         
-        let totalSpacing = (numberOfColumns - 1) * spacing
-        let cellWidth = (collectionView.bounds.width - totalSpacing) / numberOfColumns
+        let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
         
-        let cellHeight: CGFloat = isHomeCell ? 100 : 240
-        return CGSize(width: cellWidth, height: cellHeight)
+        let totalSpace = flowLayout.sectionInset.left
+        + flowLayout.sectionInset.right
+        + flowLayout.minimumInteritemSpacing
+        
+        let width = (collectionView.bounds.width - totalSpace) / 2
+        let height = width * 1
+        
+        return CGSize(width: width, height: height)
     }
 }
 
@@ -132,7 +137,6 @@ extension CategoryViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         
-        cell.isHomeCell = false
         cell.configure(with: categoryData[indexPath.row])
         
         return cell

@@ -86,6 +86,7 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
         recipeImageView.image = nil
         recipeTitle.text = nil
         readyInMinLabel.text = nil
+        favoriteButton.setImage(UIImage(systemName: "heart"), for: .normal)
     }
     
     // MARK: - Private Methods

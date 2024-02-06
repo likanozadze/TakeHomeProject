@@ -25,7 +25,7 @@ final class HomeViewController: UIViewController {
     weak var recipeDelegate: RecipeDelegate?
     private var recipe: [Recipe] = []
     private let viewModel = HomeViewModel()
-  //  private let searchViewModel = SearchViewModel()
+    //  private let searchViewModel = SearchViewModel()
     private var fetchedRecipes: [Recipe] = []
     var isHomeCell: Bool = true
     private var categoryCollectionView = CategoryCollectionView()
@@ -85,9 +85,12 @@ final class HomeViewController: UIViewController {
         setupSearchBar()
         recipeCollectionView.dataSource = self
         recipeCollectionView.delegate = self
-//        categoryCollectionView.dataSource = self
         categoryCollectionView.delegate = self
         NotificationCenter.default.addObserver(self, selector: #selector(handleSearchResults(_:)), name: Notification.Name("SearchResultsFetched"), object: nil)
+        
+        if let layout = categoryCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            layout.scrollDirection = .horizontal
+        }
     }
     
     
@@ -135,32 +138,28 @@ final class HomeViewController: UIViewController {
             mainStackView.topAnchor.constraint(equalTo:view.safeAreaLayoutGuide.topAnchor),
             mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            mainStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20)
-        ])
-        NSLayoutConstraint.activate([
-            tableView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor),
-            tableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor),
-            tableView.bottomAnchor.constraint(equalTo: categoryCollectionView.topAnchor, constant: -10)
+            mainStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
         
         NSLayoutConstraint.activate([
-            categoryCollectionView.topAnchor.constraint(equalTo: mainStackView.bottomAnchor, constant: 10),
+            categoryCollectionView.topAnchor.constraint(equalTo:view.safeAreaLayoutGuide.topAnchor),
             categoryCollectionView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
             categoryCollectionView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor),
-            categoryCollectionView.heightAnchor.constraint(equalToConstant: 150),
+            categoryCollectionView.heightAnchor.constraint(equalToConstant: 170),
         ])
         
         NSLayoutConstraint.activate([
+            titleStackView.topAnchor.constraint(equalTo: categoryCollectionView.bottomAnchor, constant: 10),
             titleStackView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
             titleStackView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor)
         ])
         
         NSLayoutConstraint.activate([
+            recipeCollectionView.topAnchor.constraint(equalTo: titleStackView.bottomAnchor, constant: 10),
             recipeCollectionView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
-            recipeCollectionView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor)
+            recipeCollectionView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor),
+            recipeCollectionView.bottomAnchor.constraint(equalTo: mainStackView.bottomAnchor)
         ])
-        
     }
     
     private func setupViewModelDelegate() {
@@ -232,8 +231,8 @@ extension HomeViewController: UICollectionViewDelegate {
         } else {
             let selectedTag = categoryData[indexPath.row].title.lowercased()
             let categoryRecipeViewController = CategoryRecipeViewController()
-
-           
+            
+            
             categoryRecipeViewController.selectedCategory = selectedTag
             categoryRecipeViewController.categoryViewModel.fetchRecipesByTag(selectedTag)
             categoryRecipeViewController.categoryViewModel.recipes = recipe
@@ -241,7 +240,37 @@ extension HomeViewController: UICollectionViewDelegate {
             
         }
     }
+}
 
+// MARK: - CollectionView FlowLayoutDelegate
+extension HomeViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if collectionView == recipeCollectionView {
+            let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
+            let totalSpace = flowLayout.sectionInset.left
+            
+            + flowLayout.sectionInset.right
+            + flowLayout.minimumInteritemSpacing
+            
+            let width = (collectionView.bounds.width - totalSpace) / 2
+            let height = width * 1.5
+            
+            return CGSize(width: width, height: height)
+            
+        } else {
+            
+            let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
+            let totalSpace = flowLayout.sectionInset.left
+            
+            + flowLayout.sectionInset.right
+            + flowLayout.minimumInteritemSpacing
+            
+            let width = Int((collectionView.bounds.width - totalSpace) / 2)
+            let height = 170
+            
+            return CGSize(width: width, height: height)
+        }
+    }
 }
 
 
@@ -260,15 +289,6 @@ extension HomeViewController: RecipeListViewModelDelegate {
         print("Error fetching recipes: \(error.localizedDescription)")
     }
 }
-
-//func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CategoryCell", for: indexPath) as? CategoryCollectionViewCell else {
-//        return UICollectionViewCell()
-//    }
-//    cell.isHomeCell = true
-//    cell.configure(with: categoryData[indexPath.row])
-//    return cell
-//}
 
 
 // MARK: - RecipeItemCollectionViewCellDelegate
@@ -313,7 +333,7 @@ extension HomeViewController: RecipeItemCollectionViewCellDelegate {
 extension HomeViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let searchText = searchBar.text, !searchText.isEmpty {
-         //   searchViewModel.searchRecipes(for: searchText)
+            //   searchViewModel.searchRecipes(for: searchText)
             tableView.isHidden = false
         }
     }

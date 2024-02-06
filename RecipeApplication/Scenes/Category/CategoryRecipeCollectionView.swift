@@ -23,7 +23,6 @@ final class CategoryRecipeCollectionView: UICollectionView, UICollectionViewDele
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         let customLayout = UICollectionViewFlowLayout()
         customLayout.scrollDirection = .vertical
-        customLayout.itemSize = CGSize(width: 340, height: 220)
         super.init(frame: frame, collectionViewLayout: customLayout)
         translatesAutoresizingMaskIntoConstraints = false
         showsVerticalScrollIndicator = false
@@ -45,23 +44,6 @@ final class CategoryRecipeCollectionView: UICollectionView, UICollectionViewDele
     }
 }
     
-    // MARK: - CollectionView FlowLayoutDelegate
-extension CategoryRecipeCollectionView: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
-        
-        let totalSpace = flowLayout.sectionInset.left
-            + flowLayout.sectionInset.right
-            + flowLayout.minimumInteritemSpacing
-        
-        let cellsPerRow: CGFloat = 1.5
-        let width = (collectionView.bounds.width - totalSpace) / cellsPerRow
-        let height = width * 1.5
-        
-        return CGSize(width: width, height: height)
-    }
-}
-
     // MARK: - UICollectionViewDataSource
     extension CategoryRecipeCollectionView: UICollectionViewDataSource {
         func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

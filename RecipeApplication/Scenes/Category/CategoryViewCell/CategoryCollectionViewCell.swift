@@ -15,6 +15,7 @@ class CategoryCollectionViewCell: UICollectionViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer.cornerRadius = 8
         imageView.contentMode = .scaleAspectFill
+        imageView.heightAnchor.constraint(equalToConstant: 140).isActive = true
         imageView.layer.masksToBounds = true
         return imageView
     }()
@@ -27,19 +28,23 @@ class CategoryCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    var isHomeCell: Bool = true
-    
     // MARK: - Initialization
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview()
         setupConstraints()
-        configureCellAppearance()
+       configureCellAppearance()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - CellLifeCycle
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        categoryImageView.image = nil
     }
     
     // MARK: - Private Methods
@@ -64,9 +69,9 @@ class CategoryCollectionViewCell: UICollectionViewCell {
         
     }
     private func configureCellAppearance() {
-        contentView.backgroundColor = .white
+       contentView.backgroundColor = .white
         contentView.layer.cornerRadius = 8
-        contentView.layer.masksToBounds = false
+      contentView.layer.masksToBounds = false
         contentView.layer.shadowColor = UIColor.gray.cgColor
         contentView.layer.shadowOffset = CGSize(width: 1, height: 2)
         contentView.layer.shadowOpacity = 0.2
@@ -77,16 +82,6 @@ class CategoryCollectionViewCell: UICollectionViewCell {
     func configure(with data: CategoryData) {
         self.categoryTitle.text = data.title
         self.categoryImageView.image = data.image
-        
-        if isHomeCell {
-            categoryImageView.heightAnchor.constraint(equalToConstant: 100).isActive = true
-            categoryImageView.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        } else {
-            categoryImageView.heightAnchor.constraint(equalToConstant: 175).isActive = true
-            categoryImageView.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        }
     
-        self.categoryImageView.setNeedsLayout()
-        self.categoryImageView.layoutIfNeeded()
     }
 }
