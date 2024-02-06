@@ -27,20 +27,19 @@ class ShoppingListTableView: UITableView {
 extension ShoppingListTableView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     
-        return 2
+        return 10
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ShoppingListCell", for: indexPath)
-        
+        cell.textLabel?.text = "Row \(indexPath.row)"
     
         return cell
     }
 }
 
 extension ShoppingListTableView: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-       
-        return 5
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("Selected row in table view: \(indexPath.row)")
     }
 }

@@ -85,7 +85,8 @@ final class HomeViewController: UIViewController {
         setupSearchBar()
         recipeCollectionView.dataSource = self
         recipeCollectionView.delegate = self
-        
+//        categoryCollectionView.dataSource = self
+//        categoryCollectionView.delegate = self
         NotificationCenter.default.addObserver(self, selector: #selector(handleSearchResults(_:)), name: Notification.Name("SearchResultsFetched"), object: nil)
     }
     

@@ -5,6 +5,7 @@
 //  Created by Lika Nozadze on 1/18/24.
 //
 
+
 import UIKit
 import SwiftUI
 
@@ -17,11 +18,11 @@ final class ProfileViewController: UIViewController {
     private var favoriteRecipeModel = FavoriteRecipeModel()
     var selectedRecipes: [Recipe] = []
     var recipeDelegate: RecipeDelegate?
-    // private let shoppingListTableView = ShoppingListTableView()
+    private let shoppingListTableView = ShoppingListTableView()
     
-    private let filterOptions = ["Favorite Recipes", "Shopping List"]
-    private var selectedSegment = "Favorite Recipes"
-    private var segmentedControl = UISegmentedControl()
+    
+    var segmentedControl: UISegmentedControl!
+    var containerView: UIView!
     
     
     // MARK: - ViewLifeCycle
@@ -34,74 +35,83 @@ final class ProfileViewController: UIViewController {
     // MARK: - UI Setup
     private func setup() {
         setupBackground()
+        setupSegmentedControl()
         addSubviewsToView()
         setupConstraints()
+      
         favoriteRecipeCollectionView.favoriteRecipeDelegate = self
-        setupSegmentedControl()
+        
         favoriteRecipeCollectionView.reloadData()
     }
     
-    private func setupSegmentedControl() {
-        segmentedControl = UISegmentedControl(items: filterOptions)
-        segmentedControl.selectedSegmentTintColor = UIColor(red: 134/255, green: 191/255, blue: 62/255, alpha: 1.0)
-        let attributes: [NSAttributedString.Key: Any] = [
-            .foregroundColor: UIColor.white
-        ]
-        segmentedControl.setTitleTextAttributes(attributes, for: .selected)
-        segmentedControl.selectedSegmentIndex = filterOptions.firstIndex(of: selectedSegment) ?? 0
-        segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged), for: .valueChanged)
-        
-        view.addSubview(segmentedControl)
-        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            segmentedControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            segmentedControl.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            segmentedControl.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            segmentedControl.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
-        ])
-    }
-    // MARK: - Private Methods
     private func setupBackground() {
         view.backgroundColor = UIColor.backgroundColor
     }
     
-    private func addSubviewsToView() {
-        addMainSubviews()
-    }
     
-    private func addMainSubviews() {
-        view.addSubview(favoriteRecipeCollectionView)
-        //  view.addSubview(IngredientCellView)
+    private func setupSegmentedControl() {
+        segmentedControl = UISegmentedControl(items: ["Favorite Recipes", "Shopping List"])
+        segmentedControl.selectedSegmentIndex = 0
+        segmentedControl.addTarget(self, action: #selector(segmentValueChanged(_:)), for: .valueChanged)
+        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(segmentedControl)
+        
+        NSLayoutConstraint.activate([
+            segmentedControl.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            segmentedControl.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            segmentedControl.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+        ])
+        
+        containerView = UIView()
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(containerView)
+        
+        NSLayoutConstraint.activate([
+            containerView.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 20),
+            containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
     }
+    // MARK: - Private Methods
+  
+    
+    private func addSubviewsToView() {
+        containerView.addSubview(favoriteRecipeCollectionView)
+        containerView.addSubview(shoppingListTableView)
+        
+    }
+
     
     private func setupConstraints() {
+        favoriteRecipeCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        shoppingListTableView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            favoriteRecipeCollectionView.topAnchor.constraint(equalTo: containerView.topAnchor),
+            favoriteRecipeCollectionView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            favoriteRecipeCollectionView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            favoriteRecipeCollectionView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+            
+            shoppingListTableView.topAnchor.constraint(equalTo: containerView.topAnchor),
+            shoppingListTableView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            shoppingListTableView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            shoppingListTableView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
+        ])
         
-        NSLayoutConstraint.activate([
-            favoriteRecipeCollectionView.topAnchor.constraint(equalTo:view.safeAreaLayoutGuide.topAnchor, constant: 40),
-            favoriteRecipeCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            favoriteRecipeCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            favoriteRecipeCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20)
-        ])
-        NSLayoutConstraint.activate([
-            // IngredientCellView.topAnchor.constraint(equalTo: recipeCollectionView.bottomAnchor, constant: 30),
-            //IngredientCellView.trailingAnchor.constraint(equalTo: favoriteRecipeCollectionView.trailingAnchor),
-        ])
+        favoriteRecipeCollectionView.isHidden = false
+        shoppingListTableView.isHidden = true
     }
-    @objc func segmentedControlValueChanged(_ sender: UISegmentedControl) {
-        selectedSegment = filterOptions[sender.selectedSegmentIndex]
-        
-        switch selectedSegment {
-        case "Favorite Recipes":
-            favoriteRecipeCollectionView.isHidden = false
-            //   IngredientCellView.isHidden = true
-        case "Shopping List":
-            favoriteRecipeCollectionView.isHidden = true
-            //   IngredientCellView.isHidden = false
-        default:
-            break
+    @objc func segmentValueChanged(_ sender: UISegmentedControl) {
+            
+            if sender.selectedSegmentIndex == 0 {
+                favoriteRecipeCollectionView.isHidden = false
+                shoppingListTableView.isHidden = true
+            } else {
+                favoriteRecipeCollectionView.isHidden = true
+                shoppingListTableView.isHidden = false
+            }
         }
     }
-}
 
     // MARK: - FavoriteRecipeCollectionViewDelegate
     extension ProfileViewController: FavoriteRecipeCollectionViewDelegate {
