@@ -10,56 +10,56 @@ import SwiftUI
 
 // MARK: - RecipeDelegate
 
-final class CategoryRecipeViewController: UIViewController, UICollectionViewDelegate, RecipeItemCollectionViewCellDelegate, CategoryListViewModelDelegate {
-
+final class CategoryRecipeViewController: UIViewController, CategoryListViewModelDelegate {
+    
     // MARK: Properties
-
-    weak var recipeDelegate: RecipeDelegate?
+    
     var categoryViewModel = CategoryViewModel()
     var selectedCategory: String?
     var categoryRecipeCollectionView = CategoryRecipeCollectionView()
-
     private var recipe: [Recipe] = []
     private var selectedRecipes: [Recipe] = []
     var favoriteRecipeModel = FavoriteRecipeModel()
-
+    var recipeDelegate: RecipeDelegate?
+    
     // MARK: - ViewLifeCycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
         categoryRecipeCollectionView.register(RecipeItemCollectionViewCell.self, forCellWithReuseIdentifier: "RecipeItemCell")
-
+        categoryRecipeCollectionView.delegate = self
+        categoryRecipeCollectionView.dataSource = self
+        
         if let selectedCategory = selectedCategory {
             categoryViewModel.delegate = self
             categoryViewModel.fetchRecipesByTag(selectedCategory)
-            categoryRecipeCollectionView.delegate = self
-            categoryRecipeCollectionView.dataSource = self
+           
         }
     }
-
+    
     // MARK: - UI Setup
-
+    
     private func setup() {
         setupBackground()
         addSubviewsToView()
         setupConstraints()
     }
-
+    
     // MARK: - Private Methods
-
+    
     private func setupBackground() {
         view.backgroundColor = UIColor.backgroundColor
     }
-
+    
     private func addSubviewsToView() {
         addMainSubviews()
     }
-
+    
     private func addMainSubviews() {
         view.addSubview(categoryRecipeCollectionView)
     }
-
+    
     func setupConstraints() {
         categoryRecipeCollectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -69,9 +69,10 @@ final class CategoryRecipeViewController: UIViewController, UICollectionViewDele
             categoryRecipeCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20)
         ])
     }
+}
 
-
-
+// MARK: - RecipeItemCollectionViewCellDelegate
+extension CategoryRecipeViewController: RecipeItemCollectionViewCellDelegate {
     func didTapFavoriteButton(on cell: RecipeItemCollectionViewCell) {
         guard let indexPath = categoryRecipeCollectionView.indexPath(for: cell) else { return }
         let recipe = self.recipe[indexPath.item]
@@ -95,20 +96,26 @@ final class CategoryRecipeViewController: UIViewController, UICollectionViewDele
             
         }
     }
-    
-    
-    func didSelectRecipe(on cell: RecipeItemCollectionViewCell) {
-        if let selectedRecipe = cell.recipe {
-            print("Selected Recipe: \(selectedRecipe.title)")
-            let detailViewModel = RecipeDetailViewModel(recipe: selectedRecipe, selectedIngredient: selectedRecipe.extendedIngredients?.first)
+
+        func didSelectRecipe(on cell: RecipeItemCollectionViewCell) {
+            if let indexPath = categoryRecipeCollectionView.indexPath(for: cell) {
+                let recipe = self.recipe[indexPath.item]
+                print("Selected recipe at index \(indexPath.item): \(recipe.title)")
+                navigateToRecipeDetailView(with: recipe)
+            } else {
+                print("Unable to get indexPath for selected cell.")
+            }
+        }
+
+        private func navigateToRecipeDetailView(with recipe: Recipe) {
+            print("Navigating to RecipeDetailView with recipe: \(recipe.title)")
+            let detailViewModel = RecipeDetailViewModel(recipe: recipe, selectedIngredient: recipe.extendedIngredients?.first)
             let detailWrapper = RecipeDetailViewWrapper(viewModel: detailViewModel)
-            
             let hostingController = UIHostingController(rootView: detailWrapper)
             navigationController?.pushViewController(hostingController, animated: true)
+            print("Pushed RecipeDetailView to navigation controller.")
         }
-    
- }
-   
+
     func categoriesFetched(_ recipes: [Recipe]) {
         self.recipe = recipes
         DispatchQueue.main.async {
@@ -121,6 +128,7 @@ final class CategoryRecipeViewController: UIViewController, UICollectionViewDele
     
     }
 }
+
 
 // MARK: - UICollectionViewDataSource
 
@@ -135,6 +143,7 @@ extension CategoryRecipeViewController: UICollectionViewDataSource {
             print("Error: Unable to dequeue RecipeItemCollectionViewCell.")
             return UICollectionViewCell()
         }
+        cell.isUserInteractionEnabled = true
         cell.delegate = self
         cell.configure(with: recipe[indexPath.row])
         return cell
@@ -148,3 +157,16 @@ extension CategoryRecipeViewController: UICollectionViewDataSource {
           
         }
     }
+
+extension CategoryRecipeViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        if let recipe = categoryViewModel.recipe(at: indexPath) {
+            let detailViewModel = RecipeDetailViewModel(recipe: recipe, selectedIngredient: recipe.extendedIngredients?[indexPath.row])
+            let detailWrapper = RecipeDetailViewWrapper(viewModel: detailViewModel)
+            
+            let hostingController = UIHostingController(rootView: detailWrapper)
+            navigationController?.pushViewController(hostingController, animated: true)
+        }
+    }
+}

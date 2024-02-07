@@ -17,6 +17,7 @@ class CategoryCollectionViewCell: UICollectionViewCell {
         imageView.contentMode = .scaleAspectFill
         imageView.heightAnchor.constraint(equalToConstant: 140).isActive = true
         imageView.layer.masksToBounds = true
+
         return imageView
     }()
     private let categoryTitle: UILabel = {
@@ -34,7 +35,7 @@ class CategoryCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         addSubview()
         setupConstraints()
-       configureCellAppearance()
+        configureCellAppearance()
     }
     
     required init?(coder: NSCoder) {
@@ -58,7 +59,7 @@ class CategoryCollectionViewCell: UICollectionViewCell {
             categoryImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             categoryImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             categoryImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-        
+            
         ])
         
         NSLayoutConstraint.activate([
@@ -69,19 +70,19 @@ class CategoryCollectionViewCell: UICollectionViewCell {
         
     }
     private func configureCellAppearance() {
-       contentView.backgroundColor = .white
+        contentView.backgroundColor = .white
         contentView.layer.cornerRadius = 8
-      contentView.layer.masksToBounds = false
+        contentView.layer.masksToBounds = false
         contentView.layer.shadowColor = UIColor.gray.cgColor
         contentView.layer.shadowOffset = CGSize(width: 1, height: 2)
         contentView.layer.shadowOpacity = 0.2
         contentView.layer.shadowRadius = 8
         contentView.layer.shadowPath = UIBezierPath(roundedRect: contentView.bounds, cornerRadius: 8).cgPath
-    
+        
     }
     func configure(with data: CategoryData) {
         self.categoryTitle.text = data.title
         self.categoryImageView.image = data.image
-    
+        
     }
 }

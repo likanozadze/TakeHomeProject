@@ -7,8 +7,10 @@
 
 import UIKit
 
+
 class ShoppingListTableView: UITableView {
     var shoppingList: [ExtendedIngredient] = []
+    let shoppingListStore = ShoppingListStore()
 
     override init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: frame, style: style)
@@ -28,7 +30,7 @@ class ShoppingListTableView: UITableView {
 extension ShoppingListTableView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     
-        return shoppingList.count
+        return  shoppingListStore.items.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

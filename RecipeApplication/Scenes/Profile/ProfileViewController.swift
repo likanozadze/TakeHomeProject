@@ -5,10 +5,8 @@
 //  Created by Lika Nozadze on 1/18/24.
 //
 
-
 import UIKit
 import SwiftUI
-
 
 final class ProfileViewController: UIViewController {
     
@@ -20,11 +18,9 @@ final class ProfileViewController: UIViewController {
     var recipeDelegate: RecipeDelegate?
     private let shoppingListTableView = ShoppingListTableView()
     var shoppingList: [ExtendedIngredient] = []
-
-    
-    
     var segmentedControl: UISegmentedControl!
     var containerView: UIView!
+    var shoppingListStore = ShoppingListStore()
     
     
     // MARK: - ViewLifeCycle
@@ -42,8 +38,9 @@ final class ProfileViewController: UIViewController {
         setupConstraints()
       
         favoriteRecipeCollectionView.favoriteRecipeDelegate = self
-        
+
         favoriteRecipeCollectionView.reloadData()
+        shoppingListTableView.reloadData()
     }
     
     private func setupBackground() {
@@ -111,49 +108,55 @@ final class ProfileViewController: UIViewController {
             } else {
                 favoriteRecipeCollectionView.isHidden = true
                 shoppingListTableView.isHidden = false
-             //   shoppingListTableView.shoppingList = shoppingList
                 shoppingListTableView.reloadData()
             }
         }
     }
 
     // MARK: - FavoriteRecipeCollectionViewDelegate
-    extension ProfileViewController: FavoriteRecipeCollectionViewDelegate {
-        
-        func didTapFavoriteRecipe(recipe: Recipe) {
-            favoriteRecipeModel.favoriteNewRecipes(recipe)
-            selectedRecipes.append(recipe)
-            favoriteRecipeCollectionView.reloadData()
+extension ProfileViewController: FavoriteRecipeCollectionViewDelegate {
+    
+    func didTapFavoriteRecipe(recipe: Recipe) {
+        favoriteRecipeModel.favoriteNewRecipes(recipe)
+        selectedRecipes.append(recipe)
+        favoriteRecipeCollectionView.reloadData()
+        navigateToRecipeDetailView(with: recipe)
+    }
+    
+    func passSelectedRecipesToProfileVC(selectedRecipes: [Recipe]) {
+        self.selectedRecipes = selectedRecipes
+        print("ProfileViewController - Selected recipes: \(selectedRecipes)")
+        favoriteRecipeCollectionView.reloadData()
+    }
+    
+    func favoriteRecipeCollectionView(_ collectionView: FavoriteRecipeCollectionView, didTapFavoriteRecipe recipe: Recipe) {
+        didTapFavoriteRecipe(recipe: recipe)
+    }
+    
+    func didTapFavoriteButton(on cell: RecipeItemCollectionViewCell) {
+        passSelectedRecipesToProfileVC(selectedRecipes: selectedRecipes)
+    }
+    
+    func didSelectRecipe(on cell: RecipeItemCollectionViewCell) {
+        if let indexPath = favoriteRecipeCollectionView.indexPath(for: cell) {
+            let recipe = favoriteRecipeModel.getFavoriteRecipeList()[indexPath.row]
             navigateToRecipeDetailView(with: recipe)
         }
+    }
+    
+    private func navigateToRecipeDetailView(with recipe: Recipe) {
+        print("Recipe selected in ProfileViewController: \(recipe.title)")
         
-        func passSelectedRecipesToProfileVC(selectedRecipes: [Recipe]) {
-            self.selectedRecipes = selectedRecipes
-            print("ProfileViewController - Selected recipes: \(selectedRecipes)")
-            favoriteRecipeCollectionView.reloadData()
-        }
-        
-        func favoriteRecipeCollectionView(_ collectionView: FavoriteRecipeCollectionView, didTapFavoriteRecipe recipe: Recipe) {
-            didTapFavoriteRecipe(recipe: recipe)
-        }
-        
-        func didTapFavoriteButton(on cell: RecipeItemCollectionViewCell) {
-            passSelectedRecipesToProfileVC(selectedRecipes: selectedRecipes)
-        }
-        
-        func didSelectRecipe(on cell: RecipeItemCollectionViewCell) {
-            if let indexPath = favoriteRecipeCollectionView.indexPath(for: cell) {
-                let recipe = favoriteRecipeModel.getFavoriteRecipeList()[indexPath.row]
-                navigateToRecipeDetailView(with: recipe)
-            }
-        }
-        
-        private func navigateToRecipeDetailView(with recipe: Recipe) {
-            print("Recipe selected in ProfileViewController: \(recipe.title)")
-            
-            let detailViewModel = RecipeDetailViewModel(recipe: recipe, selectedIngredient: nil)
-            let detailWrapper = RecipeDetailView(viewModel: detailViewModel)
-            let hostingController = UIHostingController(rootView: detailWrapper)
-            navigationController?.pushViewController(hostingController, animated: true)
+        let detailViewModel = RecipeDetailViewModel(recipe: recipe, selectedIngredient: nil)
+        let detailWrapper = RecipeDetailView(viewModel: detailViewModel)
+        let hostingController = UIHostingController(rootView: detailWrapper)
+        navigationController?.pushViewController(hostingController, animated: true)
+    }
+    
+    private func updateShoppingList() {
+        print("Current shopping list:")
+        for item in shoppingList {
+            print("\(item.name) - \(item.amount) \(item.unit)")
         }
     }
+}
