@@ -49,6 +49,7 @@ struct DummyRecipeView: View {
                 
                 HStack() {
                     Text("Ingredients")
+                        .underline()
                         .font(.headline)
                         .fontWeight(.bold)
                         .font(.system(size: 16))
@@ -92,6 +93,7 @@ struct DummyRecipeView: View {
                 
                 HStack() {
                     Text("Instructions")
+                        .underline()
                         .font(.headline)
                         .fontWeight(.bold)
                         .font(.system(size: 16))

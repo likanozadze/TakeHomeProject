@@ -70,6 +70,11 @@
 		98F669112B6A40C8009FF1EF /* StepsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F669102B6A40C8009FF1EF /* StepsView.swift */; };
 		98F669172B6AB1B5009FF1EF /* ShoppingListTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F669162B6AB1B5009FF1EF /* ShoppingListTableView.swift */; };
 		98F669192B6AB1D7009FF1EF /* FavoriteRecipesCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F669182B6AB1D7009FF1EF /* FavoriteRecipesCollectionView.swift */; };
+		98F826102B7419F5001FAFF4 /* OnboardingViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F8260F2B7419F5001FAFF4 /* OnboardingViewWrapper.swift */; };
+		98F826122B741A26001FAFF4 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F826112B741A26001FAFF4 /* OnboardingView.swift */; };
+		98F826142B741A56001FAFF4 /* ScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F826132B741A56001FAFF4 /* ScreenView.swift */; };
+		98F826162B741AB0001FAFF4 /* PageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F826152B741AB0001FAFF4 /* PageView.swift */; };
+		98F826182B741B2B001FAFF4 /* OnboardingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F826172B741B2B001FAFF4 /* OnboardingButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -131,6 +136,11 @@
 		98F669102B6A40C8009FF1EF /* StepsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepsView.swift; sourceTree = "<group>"; };
 		98F669162B6AB1B5009FF1EF /* ShoppingListTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingListTableView.swift; sourceTree = "<group>"; };
 		98F669182B6AB1D7009FF1EF /* FavoriteRecipesCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteRecipesCollectionView.swift; sourceTree = "<group>"; };
+		98F8260F2B7419F5001FAFF4 /* OnboardingViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewWrapper.swift; sourceTree = "<group>"; };
+		98F826112B741A26001FAFF4 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		98F826132B741A56001FAFF4 /* ScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenView.swift; sourceTree = "<group>"; };
+		98F826152B741AB0001FAFF4 /* PageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageView.swift; sourceTree = "<group>"; };
+		98F826172B741B2B001FAFF4 /* OnboardingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -303,6 +313,7 @@
 		988DE81D2B5D873400FA0ABC /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				98F8260E2B74197F001FAFF4 /* Onboarding */,
 				988DE81E2B5D876300FA0ABC /* Login */,
 				980BA72F2B60099100AD97E7 /* Register */,
 				98D43DDA2B61888000507EAD /* Home */,
@@ -343,18 +354,18 @@
 		98AE161F2B5981CF00AF5528 /* RecipeApplication */ = {
 			isa = PBXGroup;
 			children = (
-				988DE8162B5D333900FA0ABC /* Models */,
-				988DE7D52B5D2A2F00FA0ABC /* Firebase */,
 				984061972B5C5CC900A6BFAF /* App */,
-				988DE81D2B5D873400FA0ABC /* Scenes */,
+				988DE7D52B5D2A2F00FA0ABC /* Firebase */,
 				984061962B5C5CA300A6BFAF /* Coordinator */,
+				988DE8162B5D333900FA0ABC /* Models */,
+				988DE81D2B5D873400FA0ABC /* Scenes */,
 				98D2DFE02B5ADF710062B36C /* Extension */,
 				98D2DFE32B5AE0C40062B36C /* ReusableComponents */,
-				98D26B392B716EEE00BAA30B /* Configuration.swift */,
-				98AE16292B5981D100AF5528 /* Assets.xcassets */,
 				984019A82B6801D70025D5D3 /* Sounds */,
 				98AE162B2B5981D100AF5528 /* LaunchScreen.storyboard */,
+				98AE16292B5981D100AF5528 /* Assets.xcassets */,
 				98AE162E2B5981D100AF5528 /* Info.plist */,
+				98D26B392B716EEE00BAA30B /* Configuration.swift */,
 			);
 			path = RecipeApplication;
 			sourceTree = "<group>";
@@ -397,6 +408,18 @@
 				98CB2FA92B6E480700DCC083 /* RecipeCollectionView.swift */,
 			);
 			path = CollectionViewCell;
+			sourceTree = "<group>";
+		};
+		98F8260E2B74197F001FAFF4 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				98F8260F2B7419F5001FAFF4 /* OnboardingViewWrapper.swift */,
+				98F826112B741A26001FAFF4 /* OnboardingView.swift */,
+				98F826172B741B2B001FAFF4 /* OnboardingButton.swift */,
+				98F826152B741AB0001FAFF4 /* PageView.swift */,
+				98F826132B741A56001FAFF4 /* ScreenView.swift */,
+			);
+			path = Onboarding;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -509,6 +532,7 @@
 				984061952B5C5C7D00A6BFAF /* NavigationCoordinator.swift in Sources */,
 				98AE16392B59822E00AF5528 /* GenerateRecipeViewController.swift in Sources */,
 				98C152BE2B62C96E0028E72C /* RecipeModel.swift in Sources */,
+				98F826102B7419F5001FAFF4 /* OnboardingViewWrapper.swift in Sources */,
 				98D2DFDF2B5ADF680062B36C /* ColorExtensionView.swift in Sources */,
 				98D2DFE72B5AE16E0062B36C /* RATitleLabel.swift in Sources */,
 				980487602B652A2F00B88519 /* CategoryCollectionView.swift in Sources */,
@@ -522,7 +546,9 @@
 				984019C32B692DC80025D5D3 /* ProgressBarView.swift in Sources */,
 				984019BD2B692D8B0025D5D3 /* ProductView.swift in Sources */,
 				988DE8152B5D323300FA0ABC /* AuthService.swift in Sources */,
+				98F826122B741A26001FAFF4 /* OnboardingView.swift in Sources */,
 				984019CC2B6931320025D5D3 /* RecipeDetailViewModel.swift in Sources */,
+				98F826162B741AB0001FAFF4 /* PageView.swift in Sources */,
 				980BA7312B600A3800AD97E7 /* RegisterViewModel.swift in Sources */,
 				9804876E2B65876600B88519 /* SearchViewModel.swift in Sources */,
 				988DE8182B5D335600FA0ABC /* RegisterUserRequest.swift in Sources */,
@@ -530,12 +556,14 @@
 				98F669172B6AB1B5009FF1EF /* ShoppingListTableView.swift in Sources */,
 				98D2DFEB2B5AE1BC0062B36C /* RAAlertView.swift in Sources */,
 				98AE16232B5981CF00AF5528 /* SceneDelegate.swift in Sources */,
+				98F826182B741B2B001FAFF4 /* OnboardingButton.swift in Sources */,
 				98D43DDE2B6188FD00507EAD /* RecipeItemCollectionViewCell.swift in Sources */,
 				984019C52B692DD80025D5D3 /* ButtonView.swift in Sources */,
 				98F669112B6A40C8009FF1EF /* StepsView.swift in Sources */,
 				988DE8202B5D87A000FA0ABC /* LoginViewModel.swift in Sources */,
 				980487672B6580F100B88519 /* SearchViewController.swift in Sources */,
 				984019BF2B692D9F0025D5D3 /* IngredientCellView.swift in Sources */,
+				98F826142B741A56001FAFF4 /* ScreenView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
