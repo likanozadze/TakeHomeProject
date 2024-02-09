@@ -19,6 +19,14 @@ class CategoryCollectionViewCell: UICollectionViewCell {
 
         return imageView
     }()
+    
+    private let arrowButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.tintColor = .testColorSet
+        button.setImage(UIImage(systemName: "arrow.forward.circle.fill"), for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
 
     // MARK: - Initialization
     
@@ -37,11 +45,14 @@ class CategoryCollectionViewCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         categoryImageView.image = nil
+        arrowButton.setImage(UIImage(systemName:  "arrow.forward.circle.fill"), for: .normal)
     }
+    
     
     // MARK: - Private Methods
     private func addSubview() {
         contentView.addSubview(categoryImageView)
+        contentView.addSubview(arrowButton)
     }
     
     private func setupConstraints() {
@@ -51,6 +62,11 @@ class CategoryCollectionViewCell: UICollectionViewCell {
             categoryImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             categoryImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 1)
             ])
+        NSLayoutConstraint.activate([
+            
+        arrowButton.bottomAnchor.constraint(equalTo: categoryImageView.bottomAnchor, constant: -18),
+        arrowButton.trailingAnchor.constraint(equalTo: categoryImageView.trailingAnchor, constant: -12)
+        ])
     }
     private func configureCellAppearance() {
         contentView.backgroundColor = .systemBackground
