@@ -35,11 +35,6 @@ final class RegisterViewModel {
             return
         }
 
-        guard validatePassword(password) else {
-            delegate?.showInvalidPasswordAlert()
-            return
-        }
-
         AuthService.shared.registerUser(with: registerUserRequest) { [weak self] wasRegistered, error in
             guard let self = self else { return }
 
@@ -62,8 +57,7 @@ final class RegisterViewModel {
     }
 
     // MARK: - Password Validation
-
-    func validatePassword(_ password: String) -> Bool {
+    func updatePasswordValidationUI(password: String) {
         let isLengthValid = PasswordValidator.isPasswordValid(for: password)
         let isUppercaseValid = password.rangeOfCharacter(from: .uppercaseLetters) != nil
         let isNumberValid = password.rangeOfCharacter(from: .decimalDigits) != nil
@@ -75,9 +69,8 @@ final class RegisterViewModel {
             isNumberValid: isNumberValid,
             isSpecialCharValid: isSpecialCharValid
         )
-
-        return isLengthValid && isUppercaseValid && isNumberValid && isSpecialCharValid
     }
+
     struct PasswordValidator {
         static func isPasswordValid(for password: String) -> Bool {
             let password = password.trimmingCharacters(in: .whitespacesAndNewlines)

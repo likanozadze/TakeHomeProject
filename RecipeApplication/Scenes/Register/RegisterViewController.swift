@@ -69,12 +69,12 @@ class RegisterViewController: UIViewController, RegisterViewModelDelegate {
     private let passwordField = RATextField(fieldType: .password)
     
     
-    let meetsLengthRequirementLabel = RABodyLabel(title: "At least 6 characters", textColor: .black, textAlignment: .left, fontSize: 14, weight: .regular)
-    private let meetsUppercaseRequirementLabel = RABodyLabel(title: "At least one uppercase letter", textColor: .black, textAlignment: .left, fontSize: 14, weight: .regular)
+    let meetsLengthRequirementLabel = RABodyLabel(title: "At least 6 characters", textColor: .testColorSet, textAlignment: .left, fontSize: 14, weight: .regular)
+    private let meetsUppercaseRequirementLabel = RABodyLabel(title: "At least one uppercase letter", textColor: .testColorSet, textAlignment: .left, fontSize: 14, weight: .regular)
     
-    private let meetsNumberRequirementLabel = RABodyLabel(title: "At least one number", textColor: .black, textAlignment: .left, fontSize: 14, weight: .regular)
+    private let meetsNumberRequirementLabel = RABodyLabel(title: "At least one number", textColor: .testColorSet, textAlignment: .left, fontSize: 14, weight: .regular)
     
-    private let meetsSpecialCharRequirementLabel = RABodyLabel(title: "At least one special character", textColor: .black, textAlignment: .left, fontSize: 14, weight: .regular)
+    private let meetsSpecialCharRequirementLabel = RABodyLabel(title: "At least one special character", textColor: .testColorSet, textAlignment: .left, fontSize: 14, weight: .regular)
     
     private let passwordRequirementsStack: UIStackView = {
         let stackView = UIStackView()
@@ -88,7 +88,7 @@ class RegisterViewController: UIViewController, RegisterViewModelDelegate {
         let label = UILabel()
         label.text = "Password should contain"
         label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
-        label.textColor = UIColor.black
+        label.textColor = .testColorSet
         return label
     }()
     
@@ -157,7 +157,7 @@ class RegisterViewController: UIViewController, RegisterViewModelDelegate {
         textFieldStackView.addArrangedSubview(usernameField)
         textFieldStackView.addArrangedSubview(emailField)
         textFieldStackView.addArrangedSubview(passwordField)
-        
+        passwordField.addTarget(self, action: #selector(passwordDidChange), for: .editingChanged)
     }
     private func setupPasswordRequirementsStackView() {
         passwordRequirementsStack.addArrangedSubview(passwordRequirementLabel)
@@ -220,6 +220,10 @@ class RegisterViewController: UIViewController, RegisterViewModelDelegate {
             
         ])
     }
+    @objc private func passwordDidChange() {
+        guard let password = passwordField.text else { return }
+        viewModel.updatePasswordValidationUI(password: password)
+    }
     
     
     // MARK: - Action Handlers
@@ -227,23 +231,17 @@ class RegisterViewController: UIViewController, RegisterViewModelDelegate {
         guard let username = usernameField.text, let email = emailField.text, let password = passwordField.text else {
             return
         }
-        let isPasswordValid = viewModel.validatePassword(password)
+        viewModel.signUp(username: username, email: email, password: password) { [weak self] (success: Bool, error: Error?) in
+            guard let self = self else { return }
+            if let error = error {
+                RAAlertView.showRegistrationErrorAlert(on: self, with: error)
+            } else if success {
+                RAAlertView.showSuccessRegistrationAlert(on: self)
+                self.coordinator?.checkAuthentication()
+            }
+        }
+    }
 
-        if isPasswordValid {
-             viewModel.signUp(username: username, email: email, password: password) { [weak self] (success: Bool, error: Error?) in
-                 guard let self = self else { return }
-                 if let error = error {
-                     RAAlertView.showRegistrationErrorAlert(on: self, with: error)
-                 } else if success {
-                     RAAlertView.showSuccessRegistrationAlert(on: self)
-                     self.coordinator?.checkAuthentication()
-                 }
-             }
-         } else {
-            
-             print("Password does not meet requirements.")
-         }
-     }
         private func updateAllRequirementsLabelsColor(to color: UIColor) {
             meetsLengthRequirementLabel.textColor = color
             meetsUppercaseRequirementLabel.textColor = color
@@ -287,10 +285,10 @@ class RegisterViewController: UIViewController, RegisterViewModelDelegate {
          DispatchQueue.main.async { [weak self] in
              guard let self = self else { return }
 
-//             self.meetsLengthRequirementLabel.textColor = isLengthValid ? UIColor.accentTextColor : .black
-//             self.meetsUppercaseRequirementLabel.textColor = isUppercaseValid ? UIColor.accentTextColor : .black
-//             self.meetsNumberRequirementLabel.textColor = isNumberValid ? UIColor.accentTextColor : .black
-//             self.meetsSpecialCharRequirementLabel.textColor = isSpecialCharValid ? UIColor.accentTextColor : .black
+             self.meetsLengthRequirementLabel.textColor = isLengthValid ? UIColor.testButton : .testColorSet
+             self.meetsUppercaseRequirementLabel.textColor = isUppercaseValid ? UIColor.testButton : .testColorSet
+             self.meetsNumberRequirementLabel.textColor = isNumberValid ? UIColor.testButton : .testColorSet
+             self.meetsSpecialCharRequirementLabel.textColor = isSpecialCharValid ? UIColor.testButton : .testColorSet
          }
      }
     

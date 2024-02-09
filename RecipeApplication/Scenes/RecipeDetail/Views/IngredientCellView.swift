@@ -35,19 +35,18 @@ struct IngredientCellView: View {
                                 
                                 Text(ingredient.name)
                                     .font(.system(size: 16))
-                                    .foregroundColor(.black)
+                                  .foregroundColor(.testColorSet)
                                 
                                 Spacer()
                                 
                                 HStack {
                                     Text("\(String(format: "%.0f", ingredient.amount)) \(ingredient.unit)")
                                         .font(.system(size: 16))
-                                        .foregroundColor(.black)
+                                       .foregroundColor(.testColorSet)
                                 }
                             }
                             .foregroundStyle(.clear)
                             .frame(height: 50)
-                            .background(Color.white)
                             .cornerRadius(8)
                         Divider().background(Color.gray.opacity(0.2))
                     }
