@@ -46,6 +46,9 @@ extension RAAlertView {
     public static func showRegistrationErrorAlert(on vc: UIViewController, with customMessage: String) {
         self.showGenericAlert(on: vc, title: "Registration Error", message: customMessage)
     }
+    public static func showSuccessRegistrationAlert(on vc: UIViewController) {
+            self.showGenericAlert(on: vc, title: "Success", message: "Registration successful!")
+        }
 }
 
 // MARK: - Log In Errors

@@ -235,6 +235,7 @@ class RegisterViewController: UIViewController, RegisterViewModelDelegate {
                  if let error = error {
                      RAAlertView.showRegistrationErrorAlert(on: self, with: error)
                  } else if success {
+                     RAAlertView.showSuccessRegistrationAlert(on: self)
                      self.coordinator?.checkAuthentication()
                  }
              }
