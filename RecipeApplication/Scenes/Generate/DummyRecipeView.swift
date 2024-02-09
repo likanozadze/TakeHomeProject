@@ -20,27 +20,28 @@ struct DummyRecipeView: View {
                 VStack {
                     Image(recipe.image)
                         .resizable()
+                        .scaledToFit()
                         .clipShape(RoundedRectangle(cornerRadius: 8))
-                        .frame(height: 260)
+                        .frame(height: 300)
                     
-                    
+                    Spacer()
                     HStack {
                         Text(recipe.title)
                             .font(.system(size: 20))
                             .font(.headline)
                             .fontWeight(.bold)
-                            .foregroundColor(.primary)
+                            .foregroundColor(.testColorSet)
                         
                         Spacer()
                         HStack {
                             Image(systemName: "clock")
                                 .font(.system(size: 16))
-                                .foregroundColor(.primary)
+                                .foregroundColor(.testColorSet)
                             
                             Text("\(recipe.cookTime) Min")
                                 .font(.system(size: 16))
                                 .font(.headline)
-                                .foregroundColor(.primary)
+                                .foregroundColor(.testColorSet)
                         }
                     }
                 }
@@ -53,7 +54,7 @@ struct DummyRecipeView: View {
                         .font(.headline)
                         .fontWeight(.bold)
                         .font(.system(size: 16))
-                        .foregroundColor(.black)
+                        .foregroundColor(.testColorSet)
                     Spacer()
                 }
                 
@@ -69,20 +70,20 @@ struct DummyRecipeView: View {
                                 .scaleEffect(0.5)
                             Text(ingredient.name)
                                 .font(.system(size: 16))
-                                .foregroundColor(.black)
+                                .foregroundColor(.testColorSet)
                             
                             Spacer()
                             
                             HStack {
                                 Text("\(String(format: "%.0f", ingredient.amount)) \(ingredient.unit)")
                                     .font(.system(size: 16))
-                                    .foregroundColor(.black)
+                                    .foregroundColor(.testColorSet)
                             }
                         }
                         
-                        .foregroundStyle(.clear)
+                        .foregroundStyle(.testColorSet)
                         .frame(height: 20)
-                        .background(Color.white)
+    
 
                         
                     }
@@ -97,7 +98,7 @@ struct DummyRecipeView: View {
                         .font(.headline)
                         .fontWeight(.bold)
                         .font(.system(size: 16))
-                        .foregroundColor(.black)
+                        .foregroundColor(.testColorSet)
                     Spacer()
                 }
                 
@@ -107,11 +108,11 @@ struct DummyRecipeView: View {
                     ForEach(recipe.instructions) { instruction in
                         HStack(alignment: .top){
                             Text("Step \(instruction.id)")
-                                        .foregroundColor(.primary)
+                                        .foregroundColor(.testColorSet)
                                         .fontWeight(.bold)
                                         .font(.system(size: 14))
                             Text(instruction.step)
-                                .foregroundColor(.primary)
+                                .foregroundColor(.testColorSet)
                                 .font(.system(size: 16))
                         }
                         Divider().background(Color(red: 134/255, green: 191/255, blue: 62/255, opacity: 1.0))

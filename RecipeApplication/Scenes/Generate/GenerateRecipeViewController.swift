@@ -125,7 +125,7 @@ struct WheelView: View {
                                 Text("What to cook today?")
                                     .font(.largeTitle)
                                     .fontWeight(.bold)
-                                    .foregroundColor(.black)
+                                    .foregroundColor(.testColorSet)
                                     .padding()
                                     .lineLimit(1)
                                     .minimumScaleFactor(0.5)
@@ -151,7 +151,7 @@ struct WheelView: View {
                                     .scaleEffect(0.8)
                                 }
                                 
-                                Image("logo2")
+                                Image("logo")
                                     .resizable()
                                     .frame(width: 75, height: 75)
                                     .offset(y: -0)

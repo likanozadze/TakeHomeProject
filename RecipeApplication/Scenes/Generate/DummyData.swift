@@ -98,5 +98,59 @@ let dummyRecipes: [DRecipe] = [
                 dummyInstruction(id: 3, step: "In the same skillet, add mixed vegetables and stir-fry for 3-4 minutes until slightly softened."),
                 dummyInstruction(id: 4, step: "Return tofu to the skillet. Pour the sauce over the tofu and vegetables. Cook, stirring constantly, until the sauce has thickened and everything is heated through, about 2-3 minutes."),
                 dummyInstruction(id: 5, step: "Serve hot over cooked rice or noodles.")
-            ])
-]
+            ]),
+    DRecipe(
+        id: 123456,
+        title: "Classic Margherita Pizza",
+        image: "margherita",
+        servings: 2,
+        cookTime: 15,
+        ingredients: [
+            dummyIngredient(id: 234567, name: "pizza dough", amount: 1.0, unit: "ball"),
+            dummyIngredient(id: 345678, name: "fresh mozzarella cheese", amount: 8.0, unit: "ounces"),
+            dummyIngredient(id: 456789, name: "ripe tomatoes", amount: 2.0, unit: "medium"),
+            dummyIngredient(id: 567890, name: "fresh basil leaves", amount: 1.0, unit: "bunch"),
+            dummyIngredient(id: 678901, name: "extra virgin olive oil", amount: 2.0, unit: "tablespoons"),
+            dummyIngredient(id: 789012, name: "salt", amount: 1.0, unit: "teaspoon"),
+            dummyIngredient(id: 890123, name: "black pepper", amount: 0.5, unit: "teaspoon")
+        ],
+        instructions: [
+            dummyInstruction(id: 1, step: "Preheat your oven to 475°F (245°C). Place a pizza stone or baking sheet in the oven to preheat."),
+            dummyInstruction(id: 2, step: "Roll out the pizza dough into a circle on a lightly floured surface."),
+            dummyInstruction(id: 3, step: "Slice the tomatoes thinly. Tear the fresh mozzarella into small pieces."),
+            dummyInstruction(id: 4, step: "Spread olive oil over the rolled-out dough. Arrange the tomato slices and mozzarella pieces evenly over the dough."),
+            dummyInstruction(id: 5, step: "Season with salt and black pepper."),
+            dummyInstruction(id: 6, step: "Bake the pizza in the preheated oven for 10-12 minutes, or until the crust is golden and the cheese is bubbly."),
+            dummyInstruction(id: 7, step: "Remove the pizza from the oven and top with fresh basil leaves before serving."),
+            dummyInstruction(id: 8, step: "Slice and serve hot. Enjoy your classic Margherita pizza!")
+        ]),
+    
+    DRecipe(
+        id: 234567,
+        title: "Chocolate Chip Cookies",
+        image: "cookies",
+        servings: 24,
+        cookTime: 10,
+        ingredients: [
+            dummyIngredient(id: 345678, name: "all-purpose flour", amount: 2.25, unit: "cups"),
+            dummyIngredient(id: 456789, name: "baking soda", amount: 1.0, unit: "teaspoon"),
+            dummyIngredient(id: 567890, name: "salt", amount: 0.5, unit: "teaspoon"),
+            dummyIngredient(id: 678901, name: "unsalted butter", amount: 1.0, unit: "cup"),
+            dummyIngredient(id: 789012, name: "granulated sugar", amount: 0.75, unit: "cup"),
+            dummyIngredient(id: 890123, name: "packed light brown sugar", amount: 0.75, unit: "cup"),
+            dummyIngredient(id: 901234, name: "vanilla extract", amount: 1.0, unit: "teaspoon"),
+            dummyIngredient(id: 123456, name: "large eggs", amount: 2.0, unit: ""),
+            dummyIngredient(id: 234567, name: "semi-sweet chocolate chips", amount: 2.0, unit: "cups")
+        ],
+        instructions: [
+            dummyInstruction(id: 1, step: "Preheat your oven to 375°F (190°C). Line baking sheets with parchment paper."),
+            dummyInstruction(id: 2, step: "In a small bowl, combine flour, baking soda, and salt. Set aside."),
+            dummyInstruction(id: 3, step: "In a large mixing bowl, cream together the butter, granulated sugar, and brown sugar until light and fluffy."),
+            dummyInstruction(id: 4, step: "Beat in the eggs, one at a time, then stir in the vanilla extract."),
+            dummyInstruction(id: 5, step: "Gradually blend in the dry ingredients, then fold in the chocolate chips."),
+            dummyInstruction(id: 6, step: "Drop tablespoon-sized balls of dough onto the prepared baking sheets, spacing them about 2 inches apart."),
+            dummyInstruction(id: 7, step: "Bake for 8 to 10 minutes, or until edges are lightly golden."),
+            dummyInstruction(id: 8, step: "Allow the cookies to cool on the baking sheets for a few minutes before transferring to wire racks to cool completely."),
+            dummyInstruction(id: 9, step: "Enjoy your delicious homemade chocolate chip cookies!")
+        ])
+    ]
