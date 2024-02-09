@@ -4,23 +4,26 @@
 //
 //  Created by Lika Nozadze on 2/8/24.
 //
-
 import SwiftUI
 
 struct OnboardingView: View {
     //MARK: - Properties
     @State private var screenIndex = 0
     private let screens: [ScreenView]
+    weak var delegate: OnboardingViewDelegate?
     
-    // Public initializer
-      init(screens: [ScreenView]) {
-          self.screens = screens
-      }
+    init(screens: [ScreenView]) {
+        self.screens = screens
+    }
+  
+
     
     var body: some View {
         onboarding
+        
     }
 }
+
 extension OnboardingView {
     private var onboarding: some View {
         TabView(selection: $screenIndex) {
@@ -28,8 +31,10 @@ extension OnboardingView {
         }
         .animation(.easeInOut, value: screenIndex)
         .tabViewStyle(.page)
-        .indexViewStyle(.page(backgroundDisplayMode: .interactive))
-        .background(Color.customBackgroundColor).ignoresSafeArea()
+        .indexViewStyle(.page(backgroundDisplayMode: .always))
+        .background(Color.customBackgroundColor)
+        .ignoresSafeArea()
+        .navigationBarHidden(true)
     }
     
     private var boardingScreens: some View {
@@ -45,7 +50,7 @@ extension OnboardingView {
                 }
                 Spacer(minLength: 50)
             }
-          .tag(screen.number)
+            .tag(screen.number)
         }
     }
     
@@ -60,8 +65,11 @@ extension OnboardingView {
     private var skipButton: some View {
         HStack{
             Spacer()
+            
             Button(action: {
-                
+                UserDefaults.standard.set(true, forKey: "hasSeenOnboarding")
+                print("Skip button tapped")
+                delegate?.didCompleteOnboarding()
             }) {
                 Text("Skip")
                     .foregroundColor(.black)
@@ -71,16 +79,21 @@ extension OnboardingView {
         }
     }
     
+    
     private var nextButton: some View {
         OnboardingButton(action: changeScreen, actionText: "Next")
     }
     
     private var getStartedButton: some View {
         OnboardingButton(action: {
+            UserDefaults.standard.set(true, forKey: "hasSeenOnboarding")
+            delegate?.didCompleteOnboarding()
         }, actionText: "Get Started")
     }
+    
 }
 
 #Preview {
     OnboardingView(screens: ScreenView.onboardPages)
 }
+

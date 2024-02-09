@@ -31,7 +31,7 @@ extension PageView {
                 .resizable()
                 .scaledToFill()
                 .frame(maxWidth: .infinity)
-                .frame(height: 400)
+                .frame(height: 300)
                 .clipped()
                 .cornerRadius(10)
         }

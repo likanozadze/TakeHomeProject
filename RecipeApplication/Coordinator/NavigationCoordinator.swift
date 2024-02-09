@@ -7,9 +7,14 @@
 
 import UIKit
 import FirebaseAuth
+import SwiftUI
+
+protocol OnboardingViewDelegate: AnyObject {
+    func didCompleteOnboarding()
+}
 
 // MARK: - NavigationCoordinator
-class NavigationCoordinator {
+class NavigationCoordinator: OnboardingViewDelegate {
     
     // MARK: Properties
     var navigationController: UINavigationController
@@ -20,10 +25,25 @@ class NavigationCoordinator {
         self.navigationController = navigationController
     }
     // MARK: Coordinator Methods
-    
-    func start() {
+      
+    func showOnboarding() {
+        var onboardingView = OnboardingView(screens: ScreenView.onboardPages)
+           onboardingView.delegate = self
+           navigationController.pushViewController(UIHostingController(rootView: onboardingView), animated: true)
+       }
+
+    func didCompleteOnboarding() {
         checkAuthentication()
     }
+
+    func start() {
+        if UserDefaults.standard.bool(forKey: "hasSeenOnboarding") {
+            checkAuthentication()
+        } else {
+            showOnboarding()
+        }
+    }
+    
     
     // MARK: Authentication Methods
     public func checkAuthentication() {
