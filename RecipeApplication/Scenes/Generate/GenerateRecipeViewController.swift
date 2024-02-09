@@ -26,7 +26,7 @@ final class GenerateRecipeViewController: UIViewController {
     // MARK: - Private Methods
     
     private func setup() {
-        view.backgroundColor = UIColor.backgroundColor
+        view.backgroundColor = .systemBackground
         addWheelView()
     }
     

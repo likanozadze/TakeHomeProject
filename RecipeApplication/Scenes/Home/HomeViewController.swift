@@ -61,7 +61,7 @@ final class HomeViewController: UIViewController {
     private let recipeTitle: UILabel = {
         let label = UILabel()
         label.text = "Trending Now 🔥"
-        label.textColor = UIColor.secondaryTextColor
+        label.textColor = .testColorSet
         label.numberOfLines = 2
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
@@ -107,7 +107,7 @@ final class HomeViewController: UIViewController {
     // MARK: - Private Methods
     
     private func setupBackground() {
-        view.backgroundColor = UIColor.backgroundColor
+        view.backgroundColor = .systemBackground
     }
     
     private func setupSearchBar() {
@@ -145,7 +145,7 @@ final class HomeViewController: UIViewController {
             categoryCollectionView.topAnchor.constraint(equalTo:view.safeAreaLayoutGuide.topAnchor),
             categoryCollectionView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
             categoryCollectionView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor),
-            categoryCollectionView.heightAnchor.constraint(equalToConstant: 170),
+            categoryCollectionView.heightAnchor.constraint(equalToConstant: 100),
         ])
         
         NSLayoutConstraint.activate([
@@ -265,8 +265,8 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
             + flowLayout.sectionInset.right
             + flowLayout.minimumInteritemSpacing
             
-            let width = Int((collectionView.bounds.width - totalSpace) / 2)
-            let height = 170
+            let width = 180
+            let height = 140
             
             return CGSize(width: width, height: height)
         }

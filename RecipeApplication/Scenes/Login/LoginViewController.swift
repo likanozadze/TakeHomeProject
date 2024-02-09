@@ -44,7 +44,7 @@ final class LoginViewController: UIViewController {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Welcome to your"
-        label.textColor = UIColor.secondaryTextColor
+        label.textColor = .testColorSet
         label.font = UIFont.systemFont(ofSize: 30, weight: .bold)
         return label
         
@@ -53,7 +53,7 @@ final class LoginViewController: UIViewController {
     private let subTitleLabel: UILabel = {
         let label = UILabel()
         label.text = "Good Recipes App"
-        label.textColor = UIColor.secondaryTextColor
+        label.textColor = .testColorSet
         label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
         return label
     }()

@@ -25,19 +25,13 @@ final class CategoryViewController: UIViewController {
     private let mainTitle: UILabel = {
         let label = UILabel()
         label.text = "Categories"
-        label.textColor = UIColor.secondaryTextColor
+        label.textColor = .testColorSet
         label.numberOfLines = 2
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         return label
     }()
-    
-    private let titleStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.alignment = .leading
-        return stackView
-    }()
+
     
     private var categoryCollectionView = CategoryCollectionView()
     
@@ -55,7 +49,6 @@ final class CategoryViewController: UIViewController {
     private func setup() {
         setupBackground()
         addSubviewsToView()
-        setupTitleStackView()
         setupConstraints()
         
         categoryCollectionView.delegate = self
@@ -69,7 +62,7 @@ final class CategoryViewController: UIViewController {
     // MARK: - Private Methods
     
     private func setupBackground() {
-        view.backgroundColor = UIColor.backgroundColor
+        view.backgroundColor = .systemBackground
     }
     
     private func addSubviewsToView() {
@@ -78,12 +71,7 @@ final class CategoryViewController: UIViewController {
     
     private func addMainSubviews() {
         view.addSubview(mainStackView)
-        mainStackView.addArrangedSubview(titleStackView)
         mainStackView.addArrangedSubview(categoryCollectionView)
-    }
-    
-    private func setupTitleStackView() {
-        titleStackView.addArrangedSubview(mainTitle)
     }
     
     private func setupConstraints() {
@@ -95,15 +83,8 @@ final class CategoryViewController: UIViewController {
         ])
         
         NSLayoutConstraint.activate([
-            titleStackView.topAnchor.constraint(equalTo: mainStackView.topAnchor),
-            titleStackView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
-            titleStackView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor),
-        ])
-        
-        NSLayoutConstraint.activate([
-            categoryCollectionView.topAnchor.constraint(equalTo: titleStackView.bottomAnchor, constant: 40),
             categoryCollectionView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
-            
+            categoryCollectionView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor)
         ])
     }
     
@@ -119,7 +100,7 @@ extension CategoryViewController: UICollectionViewDelegateFlowLayout {
         + flowLayout.minimumInteritemSpacing
         
         let width = (collectionView.bounds.width - totalSpace) / 2
-        let height = width * 1
+        let height = width * 0.8
         
         return CGSize(width: width, height: height)
     }

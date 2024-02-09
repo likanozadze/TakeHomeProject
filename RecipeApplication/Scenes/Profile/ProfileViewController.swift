@@ -44,7 +44,7 @@ final class ProfileViewController: UIViewController {
     }
     
     private func setupBackground() {
-        view.backgroundColor = UIColor.backgroundColor
+        view.backgroundColor = .systemBackground
     }
     
     

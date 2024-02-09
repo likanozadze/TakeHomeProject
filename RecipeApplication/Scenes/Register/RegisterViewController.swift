@@ -43,7 +43,7 @@ class RegisterViewController: UIViewController, RegisterViewModelDelegate {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Sign Up"
-        label.textColor = UIColor.secondaryTextColor
+        label.textColor = .testColorSet
         label.font = UIFont.systemFont(ofSize: 30, weight: .bold)
         return label
         
@@ -52,7 +52,7 @@ class RegisterViewController: UIViewController, RegisterViewModelDelegate {
     private let subTitleLabel: UILabel = {
         let label = UILabel()
         label.text = "Create your account"
-        label.textColor = UIColor.secondaryTextColor
+        label.textColor = .testColorSet
         label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
         return label
     }()
@@ -286,10 +286,10 @@ class RegisterViewController: UIViewController, RegisterViewModelDelegate {
          DispatchQueue.main.async { [weak self] in
              guard let self = self else { return }
 
-             self.meetsLengthRequirementLabel.textColor = isLengthValid ? UIColor.accentTextColor : .black
-             self.meetsUppercaseRequirementLabel.textColor = isUppercaseValid ? UIColor.accentTextColor : .black
-             self.meetsNumberRequirementLabel.textColor = isNumberValid ? UIColor.accentTextColor : .black
-             self.meetsSpecialCharRequirementLabel.textColor = isSpecialCharValid ? UIColor.accentTextColor : .black
+//             self.meetsLengthRequirementLabel.textColor = isLengthValid ? UIColor.accentTextColor : .black
+//             self.meetsUppercaseRequirementLabel.textColor = isUppercaseValid ? UIColor.accentTextColor : .black
+//             self.meetsNumberRequirementLabel.textColor = isNumberValid ? UIColor.accentTextColor : .black
+//             self.meetsSpecialCharRequirementLabel.textColor = isSpecialCharValid ? UIColor.accentTextColor : .black
          }
      }
     

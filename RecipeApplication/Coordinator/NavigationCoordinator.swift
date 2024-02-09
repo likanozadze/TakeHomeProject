@@ -116,7 +116,7 @@ class NavigationCoordinator: OnboardingViewDelegate {
     // MARK: Tab Bar Creation
     private func createTabbar() -> UITabBarController {
         let tabbar = UITabBarController()
-        UITabBar.appearance().tintColor = UIColor.accentTextColor
+        UITabBar.appearance().tintColor = UIColor(named: "AccentColor")
         tabbar.viewControllers = [
             createHomeViewNavigation(),
             createCategoryViewNavigation(),

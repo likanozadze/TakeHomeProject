@@ -36,7 +36,7 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = UIColor.black
+        label.textColor = UIColor(named: "textColor")
         label.numberOfLines = 2
         label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
         return label
@@ -44,15 +44,15 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
     private let readyInMinLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
-        label.textColor = .black
+        label.textColor = UIColor(named: "textColor")
         label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
         return label
     }()
     internal let favoriteButton: UIButton = {
         let button = UIButton(type: .system)
         button.tintColor = .red
-        button.setImage(UIImage(systemName: "heart"), for: .normal)
-        button.setImage(UIImage(systemName: "heart.fill"), for: .selected)
+        button.setImage(UIImage(systemName: "heart.circle"), for: .normal)
+        button.setImage(UIImage(systemName: "heart.circle.fill"), for: .selected)
         
         button.addTarget(target, action: #selector(favoriteButtonTapped(_:)), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -86,7 +86,7 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
         recipeImageView.image = nil
         recipeTitle.text = nil
         readyInMinLabel.text = nil
-        favoriteButton.setImage(UIImage(systemName: "heart"), for: .normal)
+        favoriteButton.setImage(UIImage(systemName: "heart.circle"), for: .normal)
     }
     
     // MARK: - Private Methods
@@ -127,7 +127,7 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
     }
     
     private func configureCellAppearance() {
-        contentView.backgroundColor = .white
+        contentView.backgroundColor = .systemBackground
         contentView.layer.cornerRadius = 8
         contentView.layer.masksToBounds = false
         contentView.layer.shadowColor = UIColor.gray.cgColor
@@ -157,7 +157,7 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
         
         if let readyInMinutes = recipe.readyInMinutes {
             let attachment = NSTextAttachment()
-            attachment.image = UIImage(systemName: "clock")?.withTintColor(UIColor.accentTextColor)
+            attachment.image = UIImage(systemName: "clock")?.withTintColor(UIColor(named: "AccentColor") ?? .white)
             let attachmentString = NSAttributedString(attachment: attachment)
             let myString = NSMutableAttributedString(string: "\(readyInMinutes) min ")
             myString.insert(attachmentString, at: 0)

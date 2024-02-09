@@ -26,11 +26,11 @@ class RAButton: UIButton {
         self.layer.masksToBounds = true
         
         if hasBackground {
-            self.backgroundColor = UIColor.secondaryButtonBackgroundColor
-            self.setTitleColor(UIColor.primaryTextColor, for: .normal)
+            self.backgroundColor = .testButton
+            self.setTitleColor(UIColor(named: "testColorSet"),for: .normal)
         } else {
             self.backgroundColor = UIColor.clear
-            self.setTitleColor(UIColor.black, for: .normal)
+            self.setTitleColor(UIColor(named: "testColorSet"),for: .normal)
         }
         
         switch fontSize {

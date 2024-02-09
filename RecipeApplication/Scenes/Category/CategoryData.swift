@@ -13,14 +13,12 @@ struct CategoryData {
 }
 
 let categoryData: [CategoryData] = [
-    CategoryData(title: "Main Dish", image: UIImage(named: "mainDish")!),
-    CategoryData(title: "Appetizers", image: UIImage(named: "Appetizers")!),
+    CategoryData(title: "Main Dish", image: UIImage(named: "mainCourse")!),
+    CategoryData(title: "Appetizers", image: UIImage(named: "Entree")!),
     CategoryData(title: "Salads", image: UIImage(named: "Salads")!),
     CategoryData(title: "Pasta", image: UIImage(named: "Pasta")!),
     CategoryData(title: "Dessert", image: UIImage(named: "dessert")!),
     CategoryData(title: "Beverages", image: UIImage(named: "Beverages")!),
     CategoryData(title: "Soups", image: UIImage(named: "Soups")!),
-    CategoryData(title: "Bread", image: UIImage(named: "Bread")!),
-    CategoryData(title: "Burgers", image: UIImage(named: "Burger")!),
-    CategoryData(title: "Pizza", image: UIImage(named: "pizza")!)
+    CategoryData(title: "Bread", image: UIImage(named: "Bread")!)
    ]

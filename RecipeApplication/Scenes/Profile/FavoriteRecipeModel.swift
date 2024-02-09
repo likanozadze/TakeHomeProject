@@ -40,10 +40,10 @@ struct FavoriteRecipeModel {
     func setFavoriteButtonImage(button: UIButton, recipeID: Int) {
         if isRecipeFavorited(recipeID: recipeID) {
             button.isSelected = true
-            button.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+            button.setImage(UIImage(systemName: "heart.circle.fill"), for: .normal)
         } else {
             button.isSelected = false
-            button.setImage(UIImage(systemName: "heart"), for: .normal)
+            button.setImage(UIImage(systemName: "heart.circle"), for: .normal)
         }
     }
 }

@@ -15,20 +15,11 @@ class CategoryCollectionViewCell: UICollectionViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer.cornerRadius = 8
         imageView.contentMode = .scaleAspectFill
-        imageView.heightAnchor.constraint(equalToConstant: 140).isActive = true
         imageView.layer.masksToBounds = true
 
         return imageView
     }()
-    private let categoryTitle: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .left
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = UIColor.black
-        label.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        return label
-    }()
-    
+
     // MARK: - Initialization
     
     override init(frame: CGRect) {
@@ -51,7 +42,6 @@ class CategoryCollectionViewCell: UICollectionViewCell {
     // MARK: - Private Methods
     private func addSubview() {
         contentView.addSubview(categoryImageView)
-        contentView.addSubview(categoryTitle)
     }
     
     private func setupConstraints() {
@@ -59,18 +49,11 @@ class CategoryCollectionViewCell: UICollectionViewCell {
             categoryImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             categoryImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             categoryImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            
-        ])
-        
-        NSLayoutConstraint.activate([
-            categoryTitle.topAnchor.constraint(equalTo: categoryImageView.bottomAnchor, constant: 5),
-            categoryTitle.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            
-        ])
-        
+            categoryImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 1)
+            ])
     }
     private func configureCellAppearance() {
-        contentView.backgroundColor = .white
+        contentView.backgroundColor = .systemBackground
         contentView.layer.cornerRadius = 8
         contentView.layer.masksToBounds = false
         contentView.layer.shadowColor = UIColor.gray.cgColor
@@ -81,7 +64,6 @@ class CategoryCollectionViewCell: UICollectionViewCell {
         
     }
     func configure(with data: CategoryData) {
-        self.categoryTitle.text = data.title
         self.categoryImageView.image = data.image
         
     }

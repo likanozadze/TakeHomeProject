@@ -49,7 +49,7 @@ final class CategoryRecipeViewController: UIViewController, CategoryListViewMode
     // MARK: - Private Methods
     
     private func setupBackground() {
-        view.backgroundColor = UIColor.backgroundColor
+        view.backgroundColor = .systemBackground
     }
     
     private func addSubviewsToView() {
@@ -153,7 +153,7 @@ extension CategoryRecipeViewController: UICollectionViewDataSource {
 // MARK: - CollectionView FlowLayoutDelegate
     extension CategoryRecipeViewController: UICollectionViewDelegateFlowLayout {
         func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-            return CGSize(width: 340, height: 220)
+            return CGSize(width: 340, height: 240)
           
         }
     }
