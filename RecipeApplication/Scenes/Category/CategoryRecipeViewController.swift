@@ -19,7 +19,6 @@ final class CategoryRecipeViewController: UIViewController, CategoryListViewMode
     var categoryRecipeCollectionView = CategoryRecipeCollectionView()
     private var recipe: [Recipe] = []
     private var selectedRecipes: [Recipe] = []
-    var favoriteRecipeModel = FavoriteRecipeModel()
     var recipeDelegate: RecipeDelegate?
     
     // MARK: - ViewLifeCycle
@@ -78,23 +77,23 @@ extension CategoryRecipeViewController: RecipeItemCollectionViewCellDelegate {
         let recipe = self.recipe[indexPath.item]
         
         if cell.favoriteButton.isSelected {
-            favoriteRecipeModel.favoriteNewRecipes(recipe)
-            selectedRecipes.append(recipe)
+            PersistenceManager.updateWith(favorite: recipe, actionType: .add) { error in
+                if let error = error {
+                    print("Error favoriting recipe: \(error.rawValue)")
+                } else {
+                    self.selectedRecipes.append(recipe)
+                }
+            }
         } else {
-            favoriteRecipeModel.deleteFavoriteRecipe(recipe)
-            selectedRecipes = selectedRecipes.filter { $0.id != recipe.id }
+            PersistenceManager.updateWith(favorite: recipe, actionType: .remove) { error in
+                if let error = error {
+                    print("Error unfavoriting recipe: \(error.rawValue)")
+                } else {
+                    self.selectedRecipes = self.selectedRecipes.filter { $0.id != recipe.id }
+                }
+            }
         }
-        
-        categoryRecipeCollectionView.reloadItems(at: [indexPath])
-        recipeDelegate?.passSelectedRecipesToProfileVC(selectedRecipes: selectedRecipes)
-        
-        if let delegate = recipeDelegate {
-            print("Recipes selected in HomeViewController: \(selectedRecipes)")
-            delegate.passSelectedRecipesToProfileVC(selectedRecipes: selectedRecipes)
-        } else {
-            print("Recipe delegate is nil.")
-            
-        }
+
     }
 
         func didSelectRecipe(on cell: RecipeItemCollectionViewCell) {

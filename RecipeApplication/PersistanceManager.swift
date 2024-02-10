@@ -20,6 +20,7 @@ enum PersistenceManager {
     }
     
     static func updateWith(favorite: Recipe, actionType: PersistenceActionType, completed: @escaping (RAError?) -> Void) {
+        print("Updating favorite: \(favorite.title), ActionType: \(actionType)")
         retrieveFavorites { result in
             switch result {
             case .success(var favorites):
@@ -34,7 +35,7 @@ enum PersistenceManager {
                 case .remove:
                     favorites.removeAll { $0.id == favorite.id }
                 }
-                
+                print("Favorites after update: \(favorites)")
                 completed(save(favorites: favorites))
                 
             case .failure(let error):
@@ -44,6 +45,7 @@ enum PersistenceManager {
     }
 
     static func retrieveFavorites(completed: @escaping (Result<[Recipe], RAError>) -> Void) {
+        print("Retrieving favorite recipes...")
         guard let favoritesData = defaults.object(forKey: Keys.favorites) as? Data else {
             completed(.success([]))
             return
@@ -52,6 +54,7 @@ enum PersistenceManager {
         do {
             let decoder = JSONDecoder()
             let favorites = try decoder.decode([Recipe].self, from: favoritesData)
+            print("Favorites retrieved: \(favorites)")
             completed(.success(favorites))
         } catch {
             completed(.failure(.unableToFavorite))
@@ -59,11 +62,19 @@ enum PersistenceManager {
     }
     
     static func save(favorites: [Recipe]) -> RAError? {
+        print("Saving favorite recipes...")
+
         do {
             let encoder = JSONEncoder()
             let encodedFavorites = try encoder.encode(favorites)
             
             defaults.set(encodedFavorites, forKey: Keys.favorites)
+            
+            if let savedData = defaults.object(forKey: Keys.favorites) as? Data {
+                let decoder = JSONDecoder() 
+                           let savedFavorites = try decoder.decode([Recipe].self, from: savedData)
+                           print("Favorites saved: \(savedFavorites)")
+                       }
             return nil
         } catch {
             return .unableToFavorite

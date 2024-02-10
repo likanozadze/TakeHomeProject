@@ -9,14 +9,13 @@ import UIKit
 
 
 // MARK: - RecipeCollectionView
-final class CategoryRecipeCollectionView: UICollectionView, UICollectionViewDelegate {
+final class CategoryRecipeCollectionView: UICollectionView {
   
     
     // MARK: Properties
     var selectedRecipes: [Recipe] = []
-    var favoriteRecipeModel = FavoriteRecipeModel()
     weak var recipeCollectionViewDelegate: RecipeCollectionViewDelegate?
-    var recipe: [Recipe] = []
+    var recipes: [Recipe] = []
     
     // MARK: - Initialization
     
@@ -45,24 +44,26 @@ final class CategoryRecipeCollectionView: UICollectionView, UICollectionViewDele
 }
     
     // MARK: - UICollectionViewDataSource
-    extension CategoryRecipeCollectionView: UICollectionViewDataSource {
-        func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-            return recipe.count
+extension CategoryRecipeCollectionView: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return recipes.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecipeItemCell", for: indexPath) as? RecipeItemCollectionViewCell else {
+            return UICollectionViewCell()
         }
         
-        func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecipeItemCell", for: indexPath) as? RecipeItemCollectionViewCell else {
-                return UICollectionViewCell()
-            }
-            
-            let recipe = self.recipe[indexPath.row]
-            cell.configure(with: recipe)
-            
-            return cell
-        }
+        let recipe = recipes[indexPath.row]
+        cell.configure(with: recipe)
         
+        return cell
+    }
+}
+        // MARK: - UICollectionViewDelegate
+        extension CategoryRecipeCollectionView: UICollectionViewDelegate {
         func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-            let recipe = favoriteRecipeModel.getFavoriteRecipeList()[indexPath.row]
+            let recipe = recipes[indexPath.row]
             recipeCollectionViewDelegate?.didTapFavoriteRecipe(recipe: recipe)
         }
     }

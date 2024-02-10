@@ -20,7 +20,6 @@ final class HomeViewController: UIViewController {
     
     
     // MARK: - Properties
-    var favoriteRecipeModel = FavoriteRecipeModel()
     private var selectedRecipes: [Recipe] = []
     weak var recipeDelegate: RecipeDelegate?
     private var recipe: [Recipe] = []
@@ -30,7 +29,7 @@ final class HomeViewController: UIViewController {
     var isHomeCell: Bool = true
     private var categoryCollectionView = CategoryCollectionView()
     private let recipeCollectionView = RecipeCollectionView()
-    
+ //   private var searchViewController = SearchViewController()
     // MARK: - UI Components
     private let mainStackView: UIStackView = {
         let stackView = UIStackView()
@@ -139,6 +138,13 @@ final class HomeViewController: UIViewController {
             mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             mainStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+        
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo:view.safeAreaLayoutGuide.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor),
+           // tableView.heightAnchor.constraint(equalToConstant: 100),
         ])
         
         NSLayoutConstraint.activate([
@@ -309,12 +315,23 @@ extension HomeViewController: RecipeItemCollectionViewCellDelegate {
         let recipe = self.recipe[indexPath.item]
         
         if cell.favoriteButton.isSelected {
-            favoriteRecipeModel.favoriteNewRecipes(recipe)
-            selectedRecipes.append(recipe)
+            PersistenceManager.updateWith(favorite: recipe, actionType: .add) { error in
+                if let error = error {
+                    print("Error favoriting recipe: \(error.rawValue)")
+                } else {
+                    self.selectedRecipes.append(recipe)
+                }
+            }
         } else {
-            favoriteRecipeModel.deleteFavoriteRecipe(recipe)
-            selectedRecipes = selectedRecipes.filter { $0.id != recipe.id }
+            PersistenceManager.updateWith(favorite: recipe, actionType: .remove) { error in
+                if let error = error {
+                    print("Error unfavoriting recipe: \(error.rawValue)")
+                } else {
+                    self.selectedRecipes = self.selectedRecipes.filter { $0.id != recipe.id }
+                }
+            }
         }
+    
         
         recipeCollectionView.reloadItems(at: [indexPath])
         recipeDelegate?.passSelectedRecipesToProfileVC(selectedRecipes: selectedRecipes)

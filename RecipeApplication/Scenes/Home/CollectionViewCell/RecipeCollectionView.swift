@@ -17,10 +17,9 @@ protocol RecipeCollectionViewDelegate: AnyObject {
 final class RecipeCollectionView: UICollectionView {
     
 // MARK: Properties
-    var selectedRecipes: [Recipe] = []
-    var favoriteRecipeModel = FavoriteRecipeModel()
+
     weak var recipeCollectionViewDelegate: RecipeCollectionViewDelegate?
-    private var recipe: [Recipe] = []
+    private var recipes: [Recipe] = []
     
     // MARK: - Initialization
     
@@ -42,12 +41,7 @@ final class RecipeCollectionView: UICollectionView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    @objc private func favoriteButtonTapped(_ sender: UIButton) {
-        print("Heart button tapped.")
-        
-        
-    }
+
 }
 // MARK: - CollectionView FlowLayoutDelegate
 //extension HomeViewController: UICollectionViewDelegateFlowLayout {
@@ -65,16 +59,10 @@ final class RecipeCollectionView: UICollectionView {
 //    }
 //}
 
-// MARK: - RecipeCollectionViewDelegate
-extension RecipeCollectionView: RecipeCollectionViewDelegate {
-    func didTapFavoriteRecipe(recipe: Recipe) {
-        recipeCollectionViewDelegate?.didTapFavoriteRecipe(recipe: recipe)
-    }
-}
 // MARK: - UICollectionViewDataSource
 extension RecipeCollectionView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return favoriteRecipeModel.getFavoriteRecipeList().count
+        return recipes.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -82,14 +70,47 @@ extension RecipeCollectionView: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
                 
-        let recipe = favoriteRecipeModel.getFavoriteRecipeList()[indexPath.row]
+        let recipe = recipes[indexPath.row]
         cell.configure(with: recipe)
+        cell.favoriteButton.addTarget(self, action: #selector(favoriteButtonTapped(_:)), for: .touchUpInside)
         
         return cell
     }
     
+    @objc private func favoriteButtonTapped(_ sender: UIButton) {
+        guard let cell = sender.superview?.superview as? RecipeItemCollectionViewCell,
+              let indexPath = self.indexPath(for: cell) else {
+            return
+        }
+        
+        let recipe = recipes[indexPath.row]
+        
+        if sender.isSelected {
+            PersistenceManager.updateWith(favorite: recipe, actionType: .add) { error in
+                if let error = error {
+                    print("Error favoriting recipe: \(error.rawValue)")
+                }
+            }
+        } else {
+            PersistenceManager.updateWith(favorite: recipe, actionType: .remove) { error in
+                if let error = error {
+                    print("Error unfavoriting recipe: \(error.rawValue)")
+                }
+            }
+        }
+    }
+}
+// MARK: - UICollectionViewDelegate
+extension RecipeCollectionView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let recipe = favoriteRecipeModel.getFavoriteRecipeList()[indexPath.row]
+        let recipe = recipes[indexPath.row]
         recipeCollectionViewDelegate?.didTapFavoriteRecipe(recipe: recipe)
     }
 }
+// MARK: - RecipeCollectionViewDelegate
+extension RecipeCollectionView: RecipeCollectionViewDelegate {
+    func didTapFavoriteRecipe(recipe: Recipe) {
+        recipeCollectionViewDelegate?.didTapFavoriteRecipe(recipe: recipe)
+    }
+}
+

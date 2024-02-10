@@ -13,7 +13,6 @@ final class ProfileViewController: UIViewController {
     // MARK: - Properties
     
     private let favoriteRecipeCollectionView = FavoriteRecipeCollectionView()
-    private var favoriteRecipeModel = FavoriteRecipeModel()
     var selectedRecipes: [Recipe] = []
     var recipeDelegate: RecipeDelegate?
     private let shoppingListTableView = ShoppingListTableView()
@@ -28,6 +27,11 @@ final class ProfileViewController: UIViewController {
         super.viewDidLoad()
         setup()
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        retrieveFavorites()
     }
     
     // MARK: - UI Setup
@@ -111,17 +115,52 @@ final class ProfileViewController: UIViewController {
                 shoppingListTableView.reloadData()
             }
         }
+    
+    private func retrieveFavorites() {
+        PersistenceManager.retrieveFavorites { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let favoriteRecipes):
+                print("Retrieved favorite recipes: \(favoriteRecipes)")
+                self.favoriteRecipeCollectionView.setFavoriteRecipes(favoriteRecipes)
+            case .failure(let error):
+                print("Error retrieving favorites: \(error.rawValue)")
+            }
+        }
     }
+}
+
 
     // MARK: - FavoriteRecipeCollectionViewDelegate
 extension ProfileViewController: FavoriteRecipeCollectionViewDelegate {
-    
     func didTapFavoriteRecipe(recipe: Recipe) {
-        favoriteRecipeModel.favoriteNewRecipes(recipe)
-        selectedRecipes.append(recipe)
-        favoriteRecipeCollectionView.reloadData()
-        navigateToRecipeDetailView(with: recipe)
+        PersistenceManager.retrieveFavorites { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let favoriteRecipes):
+                let isRecipeFavorited = favoriteRecipes.contains(where: { $0.id == recipe.id })
+                if isRecipeFavorited {
+                    print("Recipe already favorited")
+                } else {
+                    PersistenceManager.updateWith(favorite: recipe, actionType: .add) { error in
+                        if let error = error {
+                            print("Error favoriting recipe: \(error.rawValue)")
+                        } else {
+                            print("Recipe favorited successfully.")
+                            self.selectedRecipes.append(recipe)
+                            DispatchQueue.main.async {
+                                self.favoriteRecipeCollectionView.reloadData()
+                            }
+                        }
+                    }
+                }
+                self.navigateToRecipeDetailView(with: recipe)
+            case .failure(let error):
+                print("Error retrieving favorites: \(error.rawValue)")
+            }
+        }
     }
+
     
     func passSelectedRecipesToProfileVC(selectedRecipes: [Recipe]) {
         self.selectedRecipes = selectedRecipes
@@ -135,15 +174,27 @@ extension ProfileViewController: FavoriteRecipeCollectionViewDelegate {
     
     func didTapFavoriteButton(on cell: RecipeItemCollectionViewCell) {
         passSelectedRecipesToProfileVC(selectedRecipes: selectedRecipes)
+        favoriteRecipeCollectionView.reloadData()
     }
     
     func didSelectRecipe(on cell: RecipeItemCollectionViewCell) {
         if let indexPath = favoriteRecipeCollectionView.indexPath(for: cell) {
-            let recipe = favoriteRecipeModel.getFavoriteRecipeList()[indexPath.row]
-            navigateToRecipeDetailView(with: recipe)
+            PersistenceManager.retrieveFavorites { result in
+                switch result {
+                case .success(let favoriteRecipes):
+                    guard indexPath.row < favoriteRecipes.count else {
+                        return
+                    }
+                    let recipe = favoriteRecipes[indexPath.row]
+                    self.navigateToRecipeDetailView(with: recipe)
+                case .failure(let error):
+                    print("Error retrieving favorites: \(error.rawValue)")
+                }
+            }
         }
     }
-    
+
+
     private func navigateToRecipeDetailView(with recipe: Recipe) {
         print("Recipe selected in ProfileViewController: \(recipe.title)")
         

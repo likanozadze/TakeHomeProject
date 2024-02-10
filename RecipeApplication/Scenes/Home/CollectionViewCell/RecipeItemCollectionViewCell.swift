@@ -20,9 +20,9 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
     // MARK: Properties
     var recipe: Recipe?
     weak var delegate: RecipeItemCollectionViewCellDelegate?
-    var favoriteRecipeModel = FavoriteRecipeModel()
     private let recipeCollectionView = RecipeCollectionView()
     private let networkManager = NetworkManager.shared
+    
     // MARK: - UI Components
     
     private let recipeImageView: UIImageView = {
@@ -122,10 +122,46 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
     
     @objc private func favoriteButtonTapped(_ sender: UIButton) {
         print("Heart button tapped.")
+        guard let recipe = recipe else { return }
         sender.isSelected.toggle()
+        if sender.isSelected {
+            print("Adding recipe to favorites: \(recipe.title)")
+            PersistenceManager.updateWith(favorite: recipe, actionType: .add) { error in
+                if let error = error {
+                    print("Error favoriting recipe: \(error.rawValue)")
+                } else {
+                    print("Recipe favorited successfully.")
+                    PersistenceManager.retrieveFavorites { result in
+                        switch result {
+                        case .success(let favoriteRecipes):
+                            print("Retrieved favorite recipes: \(favoriteRecipes)")
+                        case .failure(let error):
+                            print("Error retrieving favorites: \(error.rawValue)")
+                        }
+                    }
+                }
+            }
+        } else {
+            print("Removing recipe from favorites: \(recipe.title)")
+            PersistenceManager.updateWith(favorite: recipe, actionType: .remove) { error in
+                if let error = error {
+                    print("Error removing recipe from favorites: \(error.rawValue)")
+                } else {
+                    print("Recipe removed from favorites successfully.")
+                    PersistenceManager.retrieveFavorites { result in
+                        switch result {
+                        case .success(let favoriteRecipes):
+                            print("Retrieved favorite recipes: \(favoriteRecipes)")
+                        case .failure(let error):
+                            print("Error retrieving favorites: \(error.rawValue)")
+                        }
+                    }
+                }
+            }
+        }
         delegate?.didTapFavoriteButton(on: self)
-        
     }
+
     
     private func configureCellAppearance() {
         contentView.backgroundColor = .systemBackground
@@ -137,7 +173,7 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
         contentView.layer.shadowRadius = 8
         contentView.layer.shadowPath = UIBezierPath(roundedRect: contentView.bounds, cornerRadius: 8).cgPath
     }
-    
+
     // MARK: - Configuration
     func convertToSecureURL(_ url: String?) -> String? {
         guard let url = url else {
@@ -147,6 +183,7 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
     }
     
     func configure(with recipe: Recipe) {
+        self.recipe = recipe
         recipeTitle.text = recipe.title
         
         
@@ -168,34 +205,25 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
         }
     }
     private func downloadImage (from url: String?) {
-        guard let urlString = url else {
-            return
-        }
-        print("Downloading image from URL: \(urlString)")
-        
-        
-        if let cachedImage = networkManager.imageCache.object(forKey: urlString as NSString) {
-            print("Image found in cache: \(urlString)")
+        guard let urlString = url, let imageUrl = URL(string: urlString) else {
             DispatchQueue.main.async {
-                self.recipeImageView.image = cachedImage
+                self.recipeImageView.image = UIImage(named: "placeholderImage")
             }
             return
         }
         
-        networkManager.downloadImage(from: urlString) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let image):
-                print("Image downloaded successfully from URL: \(urlString)")
-                DispatchQueue.main.async {
-                    self.recipeImageView.image = image
-                }
-            case .failure(let error):
-                print("Failed to download image from URL: \(urlString), error: \(error)") 
+        URLSession.shared.dataTask(with: imageUrl) { (data, response, error) in
+            guard let data = data, let image = UIImage(data: data) else {
                 DispatchQueue.main.async {
                     self.recipeImageView.image = UIImage(named: "placeholderImage")
                 }
+                return
             }
-        }
+            
+            DispatchQueue.main.async {
+                self.recipeImageView.image = image
+            }
+        }.resume()
+        
     }
 }

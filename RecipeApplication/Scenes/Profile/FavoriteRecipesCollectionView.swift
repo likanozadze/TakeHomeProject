@@ -14,8 +14,8 @@ protocol FavoriteRecipeCollectionViewDelegate: AnyObject {
 final class FavoriteRecipeCollectionView: UICollectionView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, RecipeItemCollectionViewCellDelegate {
     
     // MARK: - Properties
-    var favoriteRecipeModel = FavoriteRecipeModel()
     weak var favoriteRecipeDelegate: FavoriteRecipeCollectionViewDelegate?
+    private var favoriteRecipes: [Recipe] = []
     
     // MARK: - Initialization
     
@@ -45,7 +45,7 @@ final class FavoriteRecipeCollectionView: UICollectionView, UICollectionViewData
     
     // MARK: - UICollectionViewDataSource
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return favoriteRecipeModel.getFavoriteRecipeList().count
+        return favoriteRecipes.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -53,7 +53,7 @@ final class FavoriteRecipeCollectionView: UICollectionView, UICollectionViewData
             return UICollectionViewCell()
         }
         
-        let recipe = favoriteRecipeModel.getFavoriteRecipeList()[indexPath.row]
+        let recipe = favoriteRecipes[indexPath.row]
         cell.delegate = self
         cell.configure(with: recipe)
         return cell
@@ -61,7 +61,7 @@ final class FavoriteRecipeCollectionView: UICollectionView, UICollectionViewData
     
     // MARK: - UICollectionViewDelegate
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let recipe = favoriteRecipeModel.getFavoriteRecipeList()[indexPath.row]
+        let recipe = favoriteRecipes[indexPath.row]
         favoriteRecipeDelegate?.didTapFavoriteRecipe(recipe: recipe)
     }
     
@@ -82,19 +82,28 @@ final class FavoriteRecipeCollectionView: UICollectionView, UICollectionViewData
     }
     
     // MARK: - RecipeItemCollectionViewCellDelegate
-    func didTapFavoriteButton(on cell: RecipeItemCollectionViewCell) {
-        guard let indexPath = self.indexPath(for: cell) else {
-            return
-        }
-        
-        let recipe = favoriteRecipeModel.getFavoriteRecipeList()[indexPath.row]
-        favoriteRecipeDelegate?.didTapFavoriteRecipe(recipe: recipe)
-    }
+       func didTapFavoriteButton(on cell: RecipeItemCollectionViewCell) {
+           guard let indexPath = self.indexPath(for: cell), indexPath.row < favoriteRecipes.count else {
+               return
+           }
+           
+           let recipe = favoriteRecipes[indexPath.row]
+           favoriteRecipeDelegate?.didTapFavoriteRecipe(recipe: recipe)
+       }
+
+       func didSelectRecipe(on cell: RecipeItemCollectionViewCell) {
+           guard let indexPath = self.indexPath(for: cell), indexPath.row < favoriteRecipes.count else {
+               return
+           }
+           
+           let recipe = favoriteRecipes[indexPath.row]
+           favoriteRecipeDelegate?.didTapFavoriteRecipe(recipe: recipe)
+       }
+
+       // MARK: - Public Methods
+       func setFavoriteRecipes(_ recipes: [Recipe]) {
+           favoriteRecipes = recipes
+           reloadData()
+       }
     
-    func didSelectRecipe(on cell: RecipeItemCollectionViewCell) {
-        if let indexPath = indexPath(for: cell) {
-            let recipe = favoriteRecipeModel.getFavoriteRecipeList()[indexPath.row]
-            favoriteRecipeDelegate?.didTapFavoriteRecipe(recipe: recipe)
-        }
-    }
-}
+   }
