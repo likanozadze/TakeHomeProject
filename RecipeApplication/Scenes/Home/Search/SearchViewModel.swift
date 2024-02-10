@@ -4,7 +4,7 @@
 ////
 ////  Created by Lika Nozadze on 1/27/24.
 ////
-//
+////
 //import Foundation
 //import NetworkLayer
 //
@@ -32,7 +32,7 @@
 //      let apiKey = Configuration.apiKey
 //        let endpoint = "/recipes/autocomplete"
 //        let parameters: [String: Any] = [
-//         //   "apiKey": apiKey,
+//          "apiKey": apiKey,
 //            "query": query,
 //            "number": 25
 //        ]
@@ -41,7 +41,7 @@
 //
 //        networkManager.request(
 //            baseURL: baseURL,
-//         //   apiKey: apiKey,
+//           apiKey: apiKey,
 //            endpoint: endpoint,
 //            parameters: parameters,
 //            completion: { [weak self] (result: Result<[SearchData], NetworkError>) in

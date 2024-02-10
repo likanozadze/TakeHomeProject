@@ -7,7 +7,7 @@
 
 import Foundation
 struct Configuration {
-    static let apiKey = "4a9ea75cc9c843fdd9b39be16685b2c964"
+    static let apiKey = "4a9ea75cc9c843f9b39be16685b2c964"
 }
 
 
