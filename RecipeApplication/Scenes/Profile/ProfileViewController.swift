@@ -20,6 +20,7 @@ final class ProfileViewController: UIViewController {
     var segmentedControl: UISegmentedControl!
     var containerView: UIView!
     var shoppingListStore = ShoppingListStore()
+    private var favoriteRecipes: [Recipe] = []
     
     
     // MARK: - ViewLifeCycle
@@ -132,6 +133,35 @@ final class ProfileViewController: UIViewController {
 
 
     // MARK: - FavoriteRecipeCollectionViewDelegate
+//extension ProfileViewController: FavoriteRecipeCollectionViewDelegate {
+//    func didTapFavoriteRecipe(recipe: Recipe) {
+//        PersistenceManager.retrieveFavorites { [weak self] result in
+//            guard let self = self else { return }
+//            switch result {
+//            case .success(let favoriteRecipes):
+//                let isRecipeFavorited = favoriteRecipes.contains(where: { $0.id == recipe.id })
+//                if isRecipeFavorited {
+//                    print("Recipe already favorited")
+//                } else {
+//                    PersistenceManager.updateWith(favorite: recipe, actionType: .add) { error in
+//                        if let error = error {
+//                            print("Error favoriting recipe: \(error.rawValue)")
+//                        } else {
+//                            print("Recipe favorited successfully.")
+//                            self.selectedRecipes.append(recipe)
+//                            DispatchQueue.main.async {
+//                                self.favoriteRecipeCollectionView.reloadData()
+//                            }
+//                        }
+//                    }
+//                }
+//                self.navigateToRecipeDetailView(with: recipe)
+//            case .failure(let error):
+//                print("Error retrieving favorites: \(error.rawValue)")
+//            }
+//        }
+//    }
+
 extension ProfileViewController: FavoriteRecipeCollectionViewDelegate {
     func didTapFavoriteRecipe(recipe: Recipe) {
         PersistenceManager.retrieveFavorites { [weak self] result in
@@ -140,16 +170,16 @@ extension ProfileViewController: FavoriteRecipeCollectionViewDelegate {
             case .success(let favoriteRecipes):
                 let isRecipeFavorited = favoriteRecipes.contains(where: { $0.id == recipe.id })
                 if isRecipeFavorited {
-                    print("Recipe already favorited")
-                } else {
-                    PersistenceManager.updateWith(favorite: recipe, actionType: .add) { error in
+                    PersistenceManager.updateWith(favorite: recipe, actionType: .remove) { error in
                         if let error = error {
-                            print("Error favoriting recipe: \(error.rawValue)")
+                            print("Error unfavoriting recipe: \(error.rawValue)")
                         } else {
-                            print("Recipe favorited successfully.")
-                            self.selectedRecipes.append(recipe)
-                            DispatchQueue.main.async {
-                                self.favoriteRecipeCollectionView.reloadData()
+                            print("Recipe unfavorited successfully.")
+                            if let index = self.favoriteRecipes.firstIndex(where: { $0.id == recipe.id }) {
+                                self.favoriteRecipes.remove(at: index)
+                                DispatchQueue.main.async {
+                                    self.favoriteRecipeCollectionView.reloadData()
+                                }
                             }
                         }
                     }
@@ -161,7 +191,6 @@ extension ProfileViewController: FavoriteRecipeCollectionViewDelegate {
         }
     }
 
-    
     func passSelectedRecipesToProfileVC(selectedRecipes: [Recipe]) {
         self.selectedRecipes = selectedRecipes
         print("ProfileViewController - Selected recipes: \(selectedRecipes)")
@@ -211,3 +240,4 @@ extension ProfileViewController: FavoriteRecipeCollectionViewDelegate {
         }
     }
 }
+

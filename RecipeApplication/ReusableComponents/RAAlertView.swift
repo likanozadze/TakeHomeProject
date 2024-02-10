@@ -7,6 +7,12 @@
 
 import UIKit
 
+enum RAError: String, Error {
+    case unableToFavorite = "There was an error favoriting this recipe. Please try again."
+    case alreadyInFavorites = "You've already favorited this recipe. You must REALLY like it."
+}
+
+
 class RAAlertView {
     
     // MARK: - Generic Alert
@@ -81,5 +87,23 @@ extension RAAlertView {
     
     public static func showUnknownFetchingUserError(on vc: UIViewController) {
         self.showGenericAlert(on: vc, title: "Unknown Error Fetching User", message: nil)
+    }
+}
+// MARK: - Recipe Errors
+extension RAAlertView {
+    
+    public static func showFavoriteRecipeError(on vc: UIViewController, with error: RAError) {
+        self.showGenericAlert(on: vc, title: "Error Favoriting Recipe", message: error.rawValue)
+    }
+    
+    public static func showAlreadyInFavoritesAlert(on vc: UIViewController, with error: RAError) {
+        self.showGenericAlert(on: vc, title: "Recipe Already Favorited", message: error.rawValue)
+    }
+}
+// MARK: - Favorite Recipe Alerts
+extension RAAlertView {
+    
+    public static func showAddToFavoritesSuccessAlert(on vc: UIViewController) {
+        self.showGenericAlert(on: vc, title: "Success", message: "Recipe added to favorites!")
     }
 }

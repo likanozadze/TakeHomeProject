@@ -125,12 +125,13 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
         guard let recipe = recipe else { return }
         sender.isSelected.toggle()
         if sender.isSelected {
-            print("Adding recipe to favorites: \(recipe.title)")
+           // print("Adding recipe to favorites: \(recipe.title)")
             PersistenceManager.updateWith(favorite: recipe, actionType: .add) { error in
                 if let error = error {
                     print("Error favoriting recipe: \(error.rawValue)")
+                    
                 } else {
-                    print("Recipe favorited successfully.")
+                  //  print("Recipe favorited successfully.")
                     PersistenceManager.retrieveFavorites { result in
                         switch result {
                         case .success(let favoriteRecipes):
@@ -159,7 +160,9 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
                 }
             }
         }
-        delegate?.didTapFavoriteButton(on: self)
+        if sender.isSelected {
+            delegate?.didTapFavoriteButton(on: self)
+        }
     }
 
     

@@ -81,8 +81,3 @@ enum PersistenceManager {
         }
     }
 }
-enum RAError: String, Error {
-  
-    case unableToFavorite = "There was an error favoriting this recipe. Please try again."
-    case alreadyInFavorites = "You've already favorited this recipe. You must REALLY like it."
-}

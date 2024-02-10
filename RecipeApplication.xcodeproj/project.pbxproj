@@ -10,10 +10,6 @@
 		9804875E2B65274C00B88519 /* CategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9804875D2B65274C00B88519 /* CategoryCollectionViewCell.swift */; };
 		980487602B652A2F00B88519 /* CategoryCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9804875F2B652A2F00B88519 /* CategoryCollectionView.swift */; };
 		980487632B652E4D00B88519 /* CategoryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980487622B652E4D00B88519 /* CategoryData.swift */; };
-		980487672B6580F100B88519 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980487662B6580F100B88519 /* SearchViewController.swift */; };
-		980487692B65840700B88519 /* SearchViewControllerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980487682B65840700B88519 /* SearchViewControllerCell.swift */; };
-		9804876C2B65853D00B88519 /* SearchModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9804876B2B65853D00B88519 /* SearchModel.swift */; };
-		9804876E2B65876600B88519 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9804876D2B65876600B88519 /* SearchViewModel.swift */; };
 		980BA7312B600A3800AD97E7 /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980BA7302B600A3800AD97E7 /* RegisterViewModel.swift */; };
 		98127D4F2B7264AF0022285F /* DummyRecipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98127D4E2B7264AF0022285F /* DummyRecipeView.swift */; };
 		981838332B66B48200F13797 /* WheelViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981838322B66B48200F13797 /* WheelViewWrapper.swift */; };
@@ -82,10 +78,6 @@
 		9804875D2B65274C00B88519 /* CategoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		9804875F2B652A2F00B88519 /* CategoryCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCollectionView.swift; sourceTree = "<group>"; };
 		980487622B652E4D00B88519 /* CategoryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryData.swift; sourceTree = "<group>"; };
-		980487662B6580F100B88519 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
-		980487682B65840700B88519 /* SearchViewControllerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewControllerCell.swift; sourceTree = "<group>"; };
-		9804876B2B65853D00B88519 /* SearchModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchModel.swift; sourceTree = "<group>"; };
-		9804876D2B65876600B88519 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		980BA7302B600A3800AD97E7 /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
 		98127D4E2B7264AF0022285F /* DummyRecipeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyRecipeView.swift; sourceTree = "<group>"; };
 		981838322B66B48200F13797 /* WheelViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WheelViewWrapper.swift; sourceTree = "<group>"; };
@@ -183,16 +175,6 @@
 				9804875D2B65274C00B88519 /* CategoryCollectionViewCell.swift */,
 			);
 			path = CategoryViewCell;
-			sourceTree = "<group>";
-		};
-		980487652B6580E200B88519 /* Search */ = {
-			isa = PBXGroup;
-			children = (
-				980487662B6580F100B88519 /* SearchViewController.swift */,
-				9804876D2B65876600B88519 /* SearchViewModel.swift */,
-				980487682B65840700B88519 /* SearchViewControllerCell.swift */,
-			);
-			path = Search;
 			sourceTree = "<group>";
 		};
 		9804876A2B65851D00B88519 /* RegistrationModels */ = {
@@ -306,7 +288,6 @@
 			isa = PBXGroup;
 			children = (
 				98C152BD2B62C96E0028E72C /* RecipeModel.swift */,
-				9804876B2B65853D00B88519 /* SearchModel.swift */,
 				9804876A2B65851D00B88519 /* RegistrationModels */,
 			);
 			path = Models;
@@ -398,7 +379,6 @@
 			children = (
 				98AE16242B5981CF00AF5528 /* HomeViewController.swift */,
 				98D43DDB2B61889D00507EAD /* HomeViewModel.swift */,
-				980487652B6580E200B88519 /* Search */,
 				98D43DDF2B61890C00507EAD /* CollectionViewCell */,
 			);
 			path = Home;
@@ -514,9 +494,7 @@
 				98127D4F2B7264AF0022285F /* DummyRecipeView.swift in Sources */,
 				98D2DFE22B5AE0BE0062B36C /* RAButton.swift in Sources */,
 				980487632B652E4D00B88519 /* CategoryData.swift in Sources */,
-				980487692B65840700B88519 /* SearchViewControllerCell.swift in Sources */,
 				981838332B66B48200F13797 /* WheelViewWrapper.swift in Sources */,
-				9804876C2B65853D00B88519 /* SearchModel.swift in Sources */,
 				98D26B342B71260300BAA30B /* CategoryViewModel.swift in Sources */,
 				98D43DDC2B61889D00507EAD /* HomeViewModel.swift in Sources */,
 				98EB0EBD2B719B6C001748AA /* DummyData.swift in Sources */,
@@ -554,7 +532,6 @@
 				984019CC2B6931320025D5D3 /* RecipeDetailViewModel.swift in Sources */,
 				98F826162B741AB0001FAFF4 /* PageView.swift in Sources */,
 				980BA7312B600A3800AD97E7 /* RegisterViewModel.swift in Sources */,
-				9804876E2B65876600B88519 /* SearchViewModel.swift in Sources */,
 				988DE8182B5D335600FA0ABC /* RegisterUserRequest.swift in Sources */,
 				984019C92B692E280025D5D3 /* PickerView.swift in Sources */,
 				98F669172B6AB1B5009FF1EF /* ShoppingListTableView.swift in Sources */,
@@ -565,7 +542,6 @@
 				984019C52B692DD80025D5D3 /* ButtonView.swift in Sources */,
 				98F669112B6A40C8009FF1EF /* StepsView.swift in Sources */,
 				988DE8202B5D87A000FA0ABC /* LoginViewModel.swift in Sources */,
-				980487672B6580F100B88519 /* SearchViewController.swift in Sources */,
 				984019BF2B692D9F0025D5D3 /* IngredientCellView.swift in Sources */,
 				98F826142B741A56001FAFF4 /* ScreenView.swift in Sources */,
 			);

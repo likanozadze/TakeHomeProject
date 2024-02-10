@@ -24,12 +24,11 @@ final class HomeViewController: UIViewController {
     weak var recipeDelegate: RecipeDelegate?
     private var recipe: [Recipe] = []
     private let viewModel = HomeViewModel()
-    //  private let searchViewModel = SearchViewModel()
     private var fetchedRecipes: [Recipe] = []
     var isHomeCell: Bool = true
     private var categoryCollectionView = CategoryCollectionView()
     private let recipeCollectionView = RecipeCollectionView()
- //   private var searchViewController = SearchViewController()
+    
     // MARK: - UI Components
     private let mainStackView: UIStackView = {
         let stackView = UIStackView()
@@ -39,18 +38,7 @@ final class HomeViewController: UIViewController {
         stackView.isLayoutMarginsRelativeArrangement = true
         return stackView
     }()
-    
-    private let searchBar: UISearchBar = {
-        let searchBar = UISearchBar()
-        searchBar.placeholder = "Search Recipes"
-        searchBar.searchBarStyle = .default
-        searchBar.layer.cornerRadius = 8
-        searchBar.layer.masksToBounds = true
-        searchBar.tintColor = UIColor.secondaryLabel
-        searchBar.translatesAutoresizingMaskIntoConstraints = false
-        return searchBar
-    }()
-    
+
     private let tableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -81,11 +69,9 @@ final class HomeViewController: UIViewController {
         setup()
         setupViewModelDelegate()
         viewModel.viewDidLoad()
-        setupSearchBar()
         recipeCollectionView.dataSource = self
         recipeCollectionView.delegate = self
         categoryCollectionView.delegate = self
-        NotificationCenter.default.addObserver(self, selector: #selector(handleSearchResults(_:)), name: Notification.Name("SearchResultsFetched"), object: nil)
         
         if let layout = categoryCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             layout.scrollDirection = .horizontal
@@ -109,10 +95,7 @@ final class HomeViewController: UIViewController {
         view.backgroundColor = .systemBackground
     }
     
-    private func setupSearchBar() {
-        searchBar.delegate = self
-        navigationItem.titleView = searchBar
-    }
+
     
     private func addSubviewsToView() {
         addMainSubviews()
@@ -120,8 +103,6 @@ final class HomeViewController: UIViewController {
     
     private func addMainSubviews() {
         view.addSubview(mainStackView)
-        //  mainStackView.addArrangedSubview(searchContainerView)
-        mainStackView.addArrangedSubview(searchBar)
         mainStackView.addArrangedSubview(tableView)
         mainStackView.addArrangedSubview(categoryCollectionView)
         mainStackView.addArrangedSubview(titleStackView)
@@ -139,13 +120,7 @@ final class HomeViewController: UIViewController {
             mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             mainStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
-        
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo:view.safeAreaLayoutGuide.topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor),
-           // tableView.heightAnchor.constraint(equalToConstant: 100),
-        ])
+    
         
         NSLayoutConstraint.activate([
             categoryCollectionView.topAnchor.constraint(equalTo:view.safeAreaLayoutGuide.topAnchor),
@@ -170,16 +145,6 @@ final class HomeViewController: UIViewController {
     
     private func setupViewModelDelegate() {
         viewModel.delegate = self
-    }
-    // MARK: - Notifications
-    @objc func handleSearchResults(_ notification: Notification) {
-        if let searchResults = notification.object as? [SearchData] {
-            
-            self.updateUIWithSearchResults(searchResults)
-        }
-    }
-    func updateUIWithSearchResults(_ searchResults: [SearchData]) {
-        
     }
 }
 
@@ -343,19 +308,5 @@ extension HomeViewController: RecipeItemCollectionViewCellDelegate {
             print("Recipe delegate is nil.")
             
         }
-    }
-}
-// MARK: - UISearchBarDelegate
-
-extension HomeViewController: UISearchBarDelegate {
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        if let searchText = searchBar.text, !searchText.isEmpty {
-            //   searchViewModel.searchRecipes(for: searchText)
-            tableView.isHidden = false
-        }
-    }
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        tableView.isHidden = searchText.isEmpty
     }
 }
