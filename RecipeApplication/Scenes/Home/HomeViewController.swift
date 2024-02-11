@@ -37,12 +37,17 @@ final class HomeViewController: UIViewController {
         stackView.isLayoutMarginsRelativeArrangement = true
         return stackView
     }()
-
-    private let tableView: UITableView = {
-        let tableView = UITableView()
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        return tableView
+    
+    private let categoryTitle: UILabel = {
+        let label = UILabel()
+        label.text = "Categories"
+        label.textColor = .testColorSet
+        label.numberOfLines = 2
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        return label
     }()
+    
     
     private let recipeTitle: UILabel = {
         let label = UILabel()
@@ -54,7 +59,14 @@ final class HomeViewController: UIViewController {
         return label
     }()
     
-    private let titleStackView: UIStackView = {
+    private let recipeTitleStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.alignment = .leading
+        return stackView
+    }()
+    
+    private let categoryTitleStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.alignment = .leading
@@ -85,7 +97,6 @@ final class HomeViewController: UIViewController {
         addSubviewsToView()
         setupTitleStackView()
         setupConstraints()
-        tableView.isHidden = true
     }
     
     // MARK: - Private Methods
@@ -100,14 +111,16 @@ final class HomeViewController: UIViewController {
     
     private func addMainSubviews() {
         view.addSubview(mainStackView)
-        mainStackView.addArrangedSubview(tableView)
+        mainStackView.addArrangedSubview(categoryTitleStackView)
         mainStackView.addArrangedSubview(categoryCollectionView)
-        mainStackView.addArrangedSubview(titleStackView)
+        mainStackView.addArrangedSubview(recipeTitleStackView)
         mainStackView.addArrangedSubview(recipeCollectionView)
     }
     
     private func setupTitleStackView() {
-        titleStackView.addArrangedSubview(recipeTitle)
+        recipeTitleStackView.addArrangedSubview(recipeTitle)
+        categoryTitleStackView.addArrangedSubview(categoryTitle)
+        
     }
     
     private func setupConstraints() {
@@ -118,22 +131,26 @@ final class HomeViewController: UIViewController {
             mainStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     
-        
         NSLayoutConstraint.activate([
-            categoryCollectionView.topAnchor.constraint(equalTo:view.safeAreaLayoutGuide.topAnchor),
+            categoryTitleStackView.topAnchor.constraint(equalTo:view.safeAreaLayoutGuide.topAnchor),
+            recipeTitleStackView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
+            recipeTitleStackView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor)
+        ])
+        NSLayoutConstraint.activate([
+            categoryCollectionView.topAnchor.constraint(equalTo: categoryTitleStackView.bottomAnchor, constant: 20),
             categoryCollectionView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
             categoryCollectionView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor),
             categoryCollectionView.heightAnchor.constraint(equalToConstant: 100),
         ])
         
         NSLayoutConstraint.activate([
-            titleStackView.topAnchor.constraint(equalTo: categoryCollectionView.bottomAnchor, constant: 10),
-            titleStackView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
-            titleStackView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor)
+            recipeTitleStackView.topAnchor.constraint(equalTo: categoryCollectionView.bottomAnchor, constant: 20),
+            recipeTitleStackView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
+            recipeTitleStackView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor)
         ])
         
         NSLayoutConstraint.activate([
-            recipeCollectionView.topAnchor.constraint(equalTo: titleStackView.bottomAnchor, constant: 10),
+            recipeCollectionView.topAnchor.constraint(equalTo: recipeTitleStackView.bottomAnchor, constant: 10),
             recipeCollectionView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
             recipeCollectionView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor),
             recipeCollectionView.bottomAnchor.constraint(equalTo: mainStackView.bottomAnchor)

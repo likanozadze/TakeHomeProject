@@ -207,8 +207,8 @@
 		981838342B66EA7000F13797 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				98B23DD12B72F68700A86C69 /* ShoppingListItem.swift */,
 				98AE16342B59821500AF5528 /* ProfileViewController.swift */,
+				98B23DD12B72F68700A86C69 /* ShoppingListItem.swift */,
 				98F669182B6AB1D7009FF1EF /* FavoriteRecipesCollectionView.swift */,
 				98F669162B6AB1B5009FF1EF /* ShoppingListTableView.swift */,
 			);

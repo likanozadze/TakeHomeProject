@@ -7,15 +7,34 @@
 
 import SwiftUI
 
+//
+//struct ShoppingListItem {
+//    let ingredient: [ExtendedIngredient]
+//    let title: String
+//    let name: String
+//    let amount: Double
+//    let unit: String
+//    
+//}
+//class ShoppingListStore: ObservableObject {
+//    @Published var items: [ExtendedIngredient] = []
+//}
+//class ShoppingListStore: ObservableObject {
+//    @Published var shoppingList: [ExtendedIngredient] = []
+//}
 
-struct ShoppingListItem {
-    let ingredient: [ExtendedIngredient]
-    let title: String
-    let name: String
-    let amount: Double
-    let unit: String
+
+//class ShoppingList {
+//    static let shared = ShoppingList()
+//    var items = [ExtendedIngredient]()
+//    
+//    private init(){}
+//}
     
-}
-class ShoppingListStore: ObservableObject {
-    @Published var items: [ExtendedIngredient] = []
+//    init(items: [ExtendedIngredient]) {
+//        self.items = items
+//    }
+
+class ShoppingListViewModel: ObservableObject {
+    @Published var shoppingList: [ExtendedIngredient] = []
 }
