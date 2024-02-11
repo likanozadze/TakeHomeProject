@@ -16,7 +16,7 @@ class ShoppingListTableView: UITableView {
         super.init(frame: frame, style: style)
         
         translatesAutoresizingMaskIntoConstraints = false
-      //  backgroundColor = .red
+
         register(UITableViewCell.self, forCellReuseIdentifier: "ShoppingListCell")
         dataSource = self
         delegate = self

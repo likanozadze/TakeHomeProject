@@ -10,7 +10,7 @@ import SwiftUI
 
 // MARK: - RecipeDelegate
 
-final class CategoryRecipeViewController: UIViewController, CategoryListViewModelDelegate {
+final class CategoryRecipeViewController: UIViewController {
     
     // MARK: Properties
     
@@ -26,7 +26,7 @@ final class CategoryRecipeViewController: UIViewController, CategoryListViewMode
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
-        categoryRecipeCollectionView.register(RecipeItemCollectionViewCell.self, forCellWithReuseIdentifier: "RecipeItemCell")
+     //   categoryRecipeCollectionView.register(RecipeItemCollectionViewCell.self, forCellWithReuseIdentifier: "RecipeItemCell")
         categoryRecipeCollectionView.delegate = self
         categoryRecipeCollectionView.dataSource = self
         
@@ -93,28 +93,33 @@ extension CategoryRecipeViewController: RecipeItemCollectionViewCellDelegate {
                 }
             }
         }
-
+        
     }
-
-        func didSelectRecipe(on cell: RecipeItemCollectionViewCell) {
-            if let indexPath = categoryRecipeCollectionView.indexPath(for: cell) {
-                let recipe = self.recipe[indexPath.item]
-                print("Selected recipe at index \(indexPath.item): \(recipe.title)")
-                navigateToRecipeDetailView(with: recipe)
-            } else {
-                print("Unable to get indexPath for selected cell.")
-            }
+    
+    func didSelectRecipe(on cell: RecipeItemCollectionViewCell) {
+        if let indexPath = categoryRecipeCollectionView.indexPath(for: cell) {
+            let recipe = self.recipe[indexPath.item]
+            print("Selected recipe at index \(indexPath.item): \(recipe.title)")
+            navigateToRecipeDetailView(with: recipe)
+        } else {
+            print("Unable to get indexPath for selected cell.")
         }
+    }
+    
+    // MARK: - Navigation
+    
+    private func navigateToRecipeDetailView(with recipe: Recipe) {
+        print("Navigating to RecipeDetailView with recipe: \(recipe.title)")
+        let detailViewModel = RecipeDetailViewModel(recipe: recipe, selectedIngredient: recipe.extendedIngredients?.first)
+        let detailWrapper = RecipeDetailViewWrapper(viewModel: detailViewModel)
+        let hostingController = UIHostingController(rootView: detailWrapper)
+        navigationController?.pushViewController(hostingController, animated: true)
+        print("Pushed RecipeDetailView to navigation controller.")
+    }
+}
+    // MARK: - CategoryListViewModelDelegate
 
-        private func navigateToRecipeDetailView(with recipe: Recipe) {
-            print("Navigating to RecipeDetailView with recipe: \(recipe.title)")
-            let detailViewModel = RecipeDetailViewModel(recipe: recipe, selectedIngredient: recipe.extendedIngredients?.first)
-            let detailWrapper = RecipeDetailViewWrapper(viewModel: detailViewModel)
-            let hostingController = UIHostingController(rootView: detailWrapper)
-            navigationController?.pushViewController(hostingController, animated: true)
-            print("Pushed RecipeDetailView to navigation controller.")
-        }
-
+    extension CategoryRecipeViewController: CategoryListViewModelDelegate {
     func categoriesFetched(_ recipes: [Recipe]) {
         self.recipe = recipes
         DispatchQueue.main.async {

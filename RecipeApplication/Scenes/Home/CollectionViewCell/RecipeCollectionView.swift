@@ -43,22 +43,6 @@ final class RecipeCollectionView: UICollectionView {
     }
 
 }
-// MARK: - CollectionView FlowLayoutDelegate
-//extension HomeViewController: UICollectionViewDelegateFlowLayout {
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
-//        
-//        let totalSpace = flowLayout.sectionInset.left
-//        + flowLayout.sectionInset.right
-//        + flowLayout.minimumInteritemSpacing
-//        
-//        let width = (collectionView.bounds.width - totalSpace) / 2
-//        let height = width * 1.5
-//        
-//        return CGSize(width: width, height: height)
-//    }
-//}
-
 // MARK: - UICollectionViewDataSource
 extension RecipeCollectionView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

@@ -11,7 +11,7 @@ protocol FavoriteRecipeCollectionViewDelegate: AnyObject {
     func didTapFavoriteRecipe(recipe: Recipe)
 }
 
-final class FavoriteRecipeCollectionView: UICollectionView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, RecipeItemCollectionViewCellDelegate {
+final class FavoriteRecipeCollectionView: UICollectionView {
     
     // MARK: - Properties
     weak var favoriteRecipeDelegate: FavoriteRecipeCollectionViewDelegate?
@@ -42,8 +42,10 @@ final class FavoriteRecipeCollectionView: UICollectionView, UICollectionViewData
     private func setupCollectionView() {
         self.register(RecipeItemCollectionViewCell.self, forCellWithReuseIdentifier: "RecipeItemCell")
     }
-    
-    // MARK: - UICollectionViewDataSource
+}
+
+// MARK: - UICollectionViewDataSource
+extension FavoriteRecipeCollectionView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return favoriteRecipes.count
     }
@@ -58,16 +60,19 @@ final class FavoriteRecipeCollectionView: UICollectionView, UICollectionViewData
         cell.configure(with: recipe)
         return cell
     }
-    
+}
     // MARK: - UICollectionViewDelegate
+    
+extension FavoriteRecipeCollectionView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let recipe = favoriteRecipes[indexPath.row]
         favoriteRecipeDelegate?.didTapFavoriteRecipe(recipe: recipe)
     }
-    
-    
-    // MARK: - UICollectionViewDelegateFlowLayout
-    
+}
+        
+        
+        // MARK: - UICollectionViewDelegateFlowLayout
+extension FavoriteRecipeCollectionView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
         
@@ -80,30 +85,31 @@ final class FavoriteRecipeCollectionView: UICollectionView, UICollectionViewData
         
         return CGSize(width: width, height: height)
     }
-    
-    // MARK: - RecipeItemCollectionViewCellDelegate
-       func didTapFavoriteButton(on cell: RecipeItemCollectionViewCell) {
-           guard let indexPath = self.indexPath(for: cell), indexPath.row < favoriteRecipes.count else {
-               return
-           }
-           
-           let recipe = favoriteRecipes[indexPath.row]
-           favoriteRecipeDelegate?.didTapFavoriteRecipe(recipe: recipe)
-       }
-
-       func didSelectRecipe(on cell: RecipeItemCollectionViewCell) {
-           guard let indexPath = self.indexPath(for: cell), indexPath.row < favoriteRecipes.count else {
-               return
-           }
-           
-           let recipe = favoriteRecipes[indexPath.row]
-           favoriteRecipeDelegate?.didTapFavoriteRecipe(recipe: recipe)
-       }
-
-       // MARK: - Public Methods
-       func setFavoriteRecipes(_ recipes: [Recipe]) {
-           favoriteRecipes = recipes
-           reloadData()
-       }
-    
-   }
+}
+        // MARK: - RecipeItemCollectionViewCellDelegate
+extension FavoriteRecipeCollectionView: RecipeItemCollectionViewCellDelegate {
+        func didTapFavoriteButton(on cell: RecipeItemCollectionViewCell) {
+            guard let indexPath = self.indexPath(for: cell), indexPath.row < favoriteRecipes.count else {
+                return
+            }
+            
+            let recipe = favoriteRecipes[indexPath.row]
+            favoriteRecipeDelegate?.didTapFavoriteRecipe(recipe: recipe)
+        }
+        
+        func didSelectRecipe(on cell: RecipeItemCollectionViewCell) {
+            guard let indexPath = self.indexPath(for: cell), indexPath.row < favoriteRecipes.count else {
+                return
+            }
+            
+            let recipe = favoriteRecipes[indexPath.row]
+            favoriteRecipeDelegate?.didTapFavoriteRecipe(recipe: recipe)
+        }
+        
+        // MARK: - Public Methods
+        func setFavoriteRecipes(_ recipes: [Recipe]) {
+            favoriteRecipes = recipes
+            reloadData()
+        }
+        
+    }

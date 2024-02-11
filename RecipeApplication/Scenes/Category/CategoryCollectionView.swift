@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class CategoryCollectionView: UICollectionView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+final class CategoryCollectionView: UICollectionView {
     
     
     private let categoryCollectionView: UICollectionView = {
@@ -39,12 +39,18 @@ final class CategoryCollectionView: UICollectionView, UICollectionViewDataSource
         self.dataSource = self
         categoryCollectionView.delegate = self
     }
-    
-    
+}
+// MARK: - UICollectionViewDataSource
+
+extension CategoryCollectionView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return categoryData.count
     }
     
+}
+// MARK: - UICollectionViewDelegateFlowLayout
+
+extension CategoryCollectionView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CategoryCell", for: indexPath) as? CategoryCollectionViewCell else {
             return UICollectionViewCell()

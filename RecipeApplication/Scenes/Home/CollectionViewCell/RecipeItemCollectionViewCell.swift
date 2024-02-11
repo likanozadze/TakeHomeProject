@@ -14,6 +14,7 @@ protocol RecipeItemCollectionViewCellDelegate: AnyObject {
     func didTapFavoriteButton(on cell: RecipeItemCollectionViewCell)
        func didSelectRecipe(on cell: RecipeItemCollectionViewCell)
 }
+
 // MARK: - RecipeItemCollectionViewCell
 class RecipeItemCollectionViewCell: UICollectionViewCell {
     
@@ -53,7 +54,7 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
         let button = UIButton(type: .system)
         button.tintColor = .red
         button.setImage(UIImage(systemName: "heart.circle"), for: .normal)
-        button.setImage(UIImage(systemName: "heart.circle.fill"), for: .selected)
+    //    button.setImage(UIImage(systemName: "heart.circle.fill"), for: .selected)
         
         button.addTarget(target, action: #selector(favoriteButtonTapped(_:)), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false

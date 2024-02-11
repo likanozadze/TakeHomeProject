@@ -25,7 +25,6 @@ final class HomeViewController: UIViewController {
     private var recipe: [Recipe] = []
     private let viewModel = HomeViewModel()
     private var fetchedRecipes: [Recipe] = []
-    var isHomeCell: Bool = true
     private var categoryCollectionView = CategoryCollectionView()
     private let recipeCollectionView = RecipeCollectionView()
     
@@ -94,8 +93,6 @@ final class HomeViewController: UIViewController {
     private func setupBackground() {
         view.backgroundColor = .systemBackground
     }
-    
-
     
     private func addSubviewsToView() {
         addMainSubviews()
@@ -180,6 +177,7 @@ extension HomeViewController: UICollectionViewDataSource {
             
             return UICollectionViewCell()
         }
+        
         cell.delegate = self
         cell.configure(with: recipe[indexPath.row])
         return cell
@@ -199,10 +197,10 @@ extension HomeViewController: UICollectionViewDelegate {
                 let hostingController = UIHostingController(rootView: detailWrapper)
                 navigationController?.pushViewController(hostingController, animated: true)
             }
+            
         } else {
             let selectedTag = categoryData[indexPath.row].title.lowercased()
             let categoryRecipeViewController = CategoryRecipeViewController()
-            
             
             categoryRecipeViewController.selectedCategory = selectedTag
             categoryRecipeViewController.categoryViewModel.fetchRecipesByTag(selectedTag)
@@ -231,7 +229,7 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
         } else {
             
             let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
-            let totalSpace = flowLayout.sectionInset.left
+            _ = flowLayout.sectionInset.left
             
             + flowLayout.sectionInset.right
             + flowLayout.minimumInteritemSpacing
