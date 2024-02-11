@@ -51,11 +51,10 @@ class TabBarController: UITabBarController {
             let profileViewController = ProfileViewController()
             profileViewController.title = ""
             profileViewController.tabBarItem = UITabBarItem(title: "Account", image: UIImage(systemName: "person.crop.circle"), tag: 3)
-            addLogoToNavigationBar(of: profileViewController)
-            return UINavigationController(rootViewController: profileViewController)
+            let navigationController = UINavigationController(rootViewController: profileViewController)
+            addLogoutButton(to: navigationController)
+            return navigationController
         }
-        
-        
         
         
         // MARK: Navigation Bar Customization
@@ -84,4 +83,28 @@ class TabBarController: UITabBarController {
             
         }
     }
+    
+    func addLogoutButton(to navigationController: UINavigationController) {
+        let logOutButton = RAButton(title: "Log out", hasBackground: false, fontSize: .medium)
+        logOutButton.addTarget(self, action: #selector(logoutTapped), for: .touchUpInside)
+        
+        let logoutBarButton = UIBarButtonItem(customView: logOutButton)
+        navigationController.topViewController?.navigationItem.rightBarButtonItem = logoutBarButton
+    }
+
+    
+    @objc func logoutTapped() {
+        AuthService.shared.signOut { [weak self] error in
+            guard let self = self else { return }
+            if let error = error {
+                RAAlertView.showLogoutError(on: self, with: error)
+                return
+            }
+            
+            if let sceneDelegate = self.view.window?.windowScene?.delegate as? SceneDelegate {
+                sceneDelegate.coordinator?.checkAuthentication()
+            }
+        }
+    }
+    
 }

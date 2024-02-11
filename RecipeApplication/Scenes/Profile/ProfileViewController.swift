@@ -22,12 +22,11 @@ final class ProfileViewController: UIViewController {
     var shoppingListStore = ShoppingListStore()
     private var favoriteRecipes: [Recipe] = []
     
-    
+
     // MARK: - ViewLifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -62,8 +61,8 @@ final class ProfileViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             segmentedControl.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            segmentedControl.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            segmentedControl.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+            segmentedControl.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            segmentedControl.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
         ])
         
         containerView = UIView()
@@ -81,6 +80,7 @@ final class ProfileViewController: UIViewController {
   
     
     private func addSubviewsToView() {
+        
         containerView.addSubview(favoriteRecipeCollectionView)
         containerView.addSubview(shoppingListTableView)
         
@@ -92,8 +92,8 @@ final class ProfileViewController: UIViewController {
         shoppingListTableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             favoriteRecipeCollectionView.topAnchor.constraint(equalTo: containerView.topAnchor),
-            favoriteRecipeCollectionView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            favoriteRecipeCollectionView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            favoriteRecipeCollectionView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
+            favoriteRecipeCollectionView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
             favoriteRecipeCollectionView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
             
             shoppingListTableView.topAnchor.constraint(equalTo: containerView.topAnchor),
@@ -163,32 +163,35 @@ final class ProfileViewController: UIViewController {
 //    }
 
 extension ProfileViewController: FavoriteRecipeCollectionViewDelegate {
+//    func didTapFavoriteRecipe(recipe: Recipe) {
+//        PersistenceManager.retrieveFavorites { [weak self] result in
+//            guard let self = self else { return }
+//            switch result {
+//            case .success(let favoriteRecipes):
+//                let isRecipeFavorited = favoriteRecipes.contains(where: { $0.id == recipe.id })
+//                if isRecipeFavorited {
+//                    PersistenceManager.updateWith(favorite: recipe, actionType: .remove) { error in
+//                        if let error = error {
+//                            print("Error unfavoriting recipe: \(error.rawValue)")
+//                        } else {
+//                            print("Recipe unfavorited successfully.")
+//                            if let index = self.favoriteRecipes.firstIndex(where: { $0.id == recipe.id }) {
+//                                self.favoriteRecipes.remove(at: index)
+//                                DispatchQueue.main.async {
+//                                    self.favoriteRecipeCollectionView.reloadData()
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//                self.navigateToRecipeDetailView(with: recipe)
+//            case .failure(let error):
+//                print("Error retrieving favorites: \(error.rawValue)")
+//            }
+//        }
+//    }
     func didTapFavoriteRecipe(recipe: Recipe) {
-        PersistenceManager.retrieveFavorites { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let favoriteRecipes):
-                let isRecipeFavorited = favoriteRecipes.contains(where: { $0.id == recipe.id })
-                if isRecipeFavorited {
-                    PersistenceManager.updateWith(favorite: recipe, actionType: .remove) { error in
-                        if let error = error {
-                            print("Error unfavoriting recipe: \(error.rawValue)")
-                        } else {
-                            print("Recipe unfavorited successfully.")
-                            if let index = self.favoriteRecipes.firstIndex(where: { $0.id == recipe.id }) {
-                                self.favoriteRecipes.remove(at: index)
-                                DispatchQueue.main.async {
-                                    self.favoriteRecipeCollectionView.reloadData()
-                                }
-                            }
-                        }
-                    }
-                }
-                self.navigateToRecipeDetailView(with: recipe)
-            case .failure(let error):
-                print("Error retrieving favorites: \(error.rawValue)")
-            }
-        }
+        self.navigateToRecipeDetailView(with: recipe)
     }
 
     func passSelectedRecipesToProfileVC(selectedRecipes: [Recipe]) {
@@ -197,14 +200,14 @@ extension ProfileViewController: FavoriteRecipeCollectionViewDelegate {
         favoriteRecipeCollectionView.reloadData()
     }
     
-    func favoriteRecipeCollectionView(_ collectionView: FavoriteRecipeCollectionView, didTapFavoriteRecipe recipe: Recipe) {
-        didTapFavoriteRecipe(recipe: recipe)
-    }
+//    func favoriteRecipeCollectionView(_ collectionView: FavoriteRecipeCollectionView, didTapFavoriteRecipe recipe: Recipe) {
+//        didTapFavoriteRecipe(recipe: recipe)
+//    }
     
-    func didTapFavoriteButton(on cell: RecipeItemCollectionViewCell) {
-        passSelectedRecipesToProfileVC(selectedRecipes: selectedRecipes)
-        favoriteRecipeCollectionView.reloadData()
-    }
+//    func didTapFavoriteButton(on cell: RecipeItemCollectionViewCell) {
+//        passSelectedRecipesToProfileVC(selectedRecipes: selectedRecipes)
+//        favoriteRecipeCollectionView.reloadData()
+//    }
     
     func didSelectRecipe(on cell: RecipeItemCollectionViewCell) {
         if let indexPath = favoriteRecipeCollectionView.indexPath(for: cell) {
