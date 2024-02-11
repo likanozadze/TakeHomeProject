@@ -54,7 +54,6 @@
 		98D26B362B71269900BAA30B /* CategoryRecipeCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D26B352B71269900BAA30B /* CategoryRecipeCollectionView.swift */; };
 		98D26B382B71271B00BAA30B /* CategoryRecipeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D26B372B71271B00BAA30B /* CategoryRecipeViewController.swift */; };
 		98D26B3A2B716EEE00BAA30B /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D26B392B716EEE00BAA30B /* Configuration.swift */; };
-		98D2DFDF2B5ADF680062B36C /* ColorExtensionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D2DFDE2B5ADF680062B36C /* ColorExtensionView.swift */; };
 		98D2DFE22B5AE0BE0062B36C /* RAButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D2DFE12B5AE0BE0062B36C /* RAButton.swift */; };
 		98D2DFE52B5AE1510062B36C /* RATextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D2DFE42B5AE1510062B36C /* RATextField.swift */; };
 		98D2DFE72B5AE16E0062B36C /* RATitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D2DFE62B5AE16E0062B36C /* RATitleLabel.swift */; };
@@ -118,7 +117,6 @@
 		98D26B352B71269900BAA30B /* CategoryRecipeCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryRecipeCollectionView.swift; sourceTree = "<group>"; };
 		98D26B372B71271B00BAA30B /* CategoryRecipeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryRecipeViewController.swift; sourceTree = "<group>"; };
 		98D26B392B716EEE00BAA30B /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
-		98D2DFDE2B5ADF680062B36C /* ColorExtensionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtensionView.swift; sourceTree = "<group>"; };
 		98D2DFE12B5AE0BE0062B36C /* RAButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAButton.swift; sourceTree = "<group>"; };
 		98D2DFE42B5AE1510062B36C /* RATextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RATextField.swift; sourceTree = "<group>"; };
 		98D2DFE62B5AE16E0062B36C /* RATitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RATitleLabel.swift; sourceTree = "<group>"; };
@@ -342,7 +340,6 @@
 				984061962B5C5CA300A6BFAF /* Coordinator */,
 				988DE8162B5D333900FA0ABC /* Models */,
 				988DE81D2B5D873400FA0ABC /* Scenes */,
-				98D2DFE02B5ADF710062B36C /* Extension */,
 				98D2DFE32B5AE0C40062B36C /* ReusableComponents */,
 				984019A82B6801D70025D5D3 /* Sounds */,
 				98AE162B2B5981D100AF5528 /* LaunchScreen.storyboard */,
@@ -352,14 +349,6 @@
 				98960F6A2B77AE7900667BA2 /* PersistanceManager.swift */,
 			);
 			path = RecipeApplication;
-			sourceTree = "<group>";
-		};
-		98D2DFE02B5ADF710062B36C /* Extension */ = {
-			isa = PBXGroup;
-			children = (
-				98D2DFDE2B5ADF680062B36C /* ColorExtensionView.swift */,
-			);
-			path = Extension;
 			sourceTree = "<group>";
 		};
 		98D2DFE32B5AE0C40062B36C /* ReusableComponents */ = {
@@ -516,7 +505,6 @@
 				98AE16392B59822E00AF5528 /* GenerateRecipeViewController.swift in Sources */,
 				98C152BE2B62C96E0028E72C /* RecipeModel.swift in Sources */,
 				98F826102B7419F5001FAFF4 /* OnboardingViewWrapper.swift in Sources */,
-				98D2DFDF2B5ADF680062B36C /* ColorExtensionView.swift in Sources */,
 				98D2DFE72B5AE16E0062B36C /* RATitleLabel.swift in Sources */,
 				980487602B652A2F00B88519 /* CategoryCollectionView.swift in Sources */,
 				988DE81C2B5D439500FA0ABC /* Validator.swift in Sources */,
