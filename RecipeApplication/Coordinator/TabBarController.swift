@@ -27,9 +27,15 @@ class TabBarController: UITabBarController {
             let homeViewController = HomeViewController()
             homeViewController.title = ""
             homeViewController.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 0)
+
+            let navigationController = UINavigationController(rootViewController: homeViewController)
+            let navigationCoordinator = NavigationCoordinator(navigationController: navigationController)
+            homeViewController.coordinator = navigationCoordinator 
+
             addLogoToNavigationBar(of: homeViewController)
-            return UINavigationController(rootViewController: homeViewController)
+            return navigationController
         }
+
         
         func createCategoryViewNavigation() -> UINavigationController {
             let categoryViewController = CategoryViewController()

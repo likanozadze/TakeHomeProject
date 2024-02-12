@@ -7,9 +7,11 @@
 
 import UIKit
 
+// MARK: - CategoryCollectionView
+
 final class CategoryCollectionView: UICollectionView {
     
-    
+    // MARK: - Properties
     private let categoryCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)

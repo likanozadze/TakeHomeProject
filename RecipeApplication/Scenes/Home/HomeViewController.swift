@@ -9,24 +9,18 @@
 import UIKit
 import SwiftUI
 
-// MARK: - RecipeDelegate
-protocol RecipeDelegate: AnyObject {
-    func passSelectedRecipesToProfileVC(selectedRecipes: [Recipe])
-    func didSelectRecipe(recipe: Recipe)
-}
-
 // MARK: - HomeViewController
-final class HomeViewController: UIViewController {
+final class HomeViewController: UIViewController, RecipeItemCollectionViewCellDelegate {
     
     
     // MARK: - Properties
     private var selectedRecipes: [Recipe] = []
-    weak var recipeDelegate: RecipeDelegate?
     private var recipe: [Recipe] = []
     private let viewModel = HomeViewModel()
     private var fetchedRecipes: [Recipe] = []
     private var categoryCollectionView = CategoryCollectionView()
     private let recipeCollectionView = RecipeCollectionView()
+    var coordinator: NavigationCoordinator?
     
     // MARK: - UI Components
     private let mainStackView: UIStackView = {
@@ -83,13 +77,12 @@ final class HomeViewController: UIViewController {
         recipeCollectionView.dataSource = self
         recipeCollectionView.delegate = self
         categoryCollectionView.delegate = self
-        
+        coordinator?.delegate = self
+
         if let layout = categoryCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             layout.scrollDirection = .horizontal
         }
     }
-    
-    
     
     // MARK: - UI Setup
     private func setup() {
@@ -130,7 +123,7 @@ final class HomeViewController: UIViewController {
             mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             mainStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
-    
+        
         NSLayoutConstraint.activate([
             categoryTitleStackView.topAnchor.constraint(equalTo:view.safeAreaLayoutGuide.topAnchor),
             recipeTitleStackView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
@@ -160,27 +153,11 @@ final class HomeViewController: UIViewController {
     private func setupViewModelDelegate() {
         viewModel.delegate = self
     }
-}
-
-// MARK: - RecipeDelegate
-extension HomeViewController: RecipeDelegate {
-    func passSelectedRecipesToProfileVC(selectedRecipes: [Recipe]) {
-        let profileVC = ProfileViewController()
-        profileVC.selectedRecipes = selectedRecipes
-        profileVC.recipeDelegate = self
-        print("HomeViewController is the delegate.")
-        navigationController?.pushViewController(profileVC, animated: true)
-    }
-    func didSelectRecipe(recipe: Recipe) {
-        let detailViewModel = RecipeDetailViewModel(recipe: recipe, selectedIngredient: nil)
-        let detailWrapper = RecipeDetailView(viewModel: detailViewModel)
-        
-        let hostingController = UIHostingController(rootView: detailWrapper)
-        navigationController?.pushViewController(hostingController, animated: true)
-    }
+    
 }
 
 // MARK: - CollectionView DataSource
+
 extension HomeViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         print("Number of items: \(recipe.count)")
@@ -195,7 +172,7 @@ extension HomeViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         
-        cell.delegate = self
+       cell.delegate = self
         cell.configure(with: recipe[indexPath.row])
         return cell
         
@@ -229,6 +206,7 @@ extension HomeViewController: UICollectionViewDelegate {
 }
 
 // MARK: - CollectionView FlowLayoutDelegate
+
 extension HomeViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView == recipeCollectionView {
@@ -277,51 +255,21 @@ extension HomeViewController: RecipeListViewModelDelegate {
 }
 
 
-// MARK: - RecipeItemCollectionViewCellDelegate
-
-extension HomeViewController: RecipeItemCollectionViewCellDelegate {
+// MARK: - NavigationCoordinatorDelegate
+extension HomeViewController: NavigationCoordinatorDelegate {
+    func passSelectedRecipesToProfileVC(selectedRecipes: [Recipe]) {
+        coordinator?.passSelectedRecipesToProfileVC(selectedRecipes: selectedRecipes)
+    }
+    
+    func didSelectRecipe(recipe: Recipe) {
+        coordinator?.didSelectRecipe(recipe: recipe)
+    }
+    
     func didSelectRecipe(on cell: RecipeItemCollectionViewCell) {
-        if let selectedRecipe = cell.recipe {
-            print("Selected Recipe: \(selectedRecipe.title)")
-            let detailViewModel = RecipeDetailViewModel(recipe: selectedRecipe, selectedIngredient: selectedRecipe.extendedIngredients?.first)
-            let detailWrapper = RecipeDetailViewWrapper(viewModel: detailViewModel)
-            let hostingController = UIHostingController(rootView: detailWrapper)
-            navigationController?.pushViewController(hostingController, animated: true)
-        }
+        coordinator?.didSelectRecipe(on: cell)
     }
     
     func didTapFavoriteButton(on cell: RecipeItemCollectionViewCell) {
-        guard let indexPath = recipeCollectionView.indexPath(for: cell) else { return }
-        let recipe = self.recipe[indexPath.item]
-        
-        if cell.favoriteButton.isSelected {
-            PersistenceManager.updateWith(favorite: recipe, actionType: .add) { error in
-                if let error = error {
-                    print("Error favoriting recipe: \(error.rawValue)")
-                } else {
-                    self.selectedRecipes.append(recipe)
-                }
-            }
-        } else {
-            PersistenceManager.updateWith(favorite: recipe, actionType: .remove) { error in
-                if let error = error {
-                    print("Error unfavoriting recipe: \(error.rawValue)")
-                } else {
-                    self.selectedRecipes = self.selectedRecipes.filter { $0.id != recipe.id }
-                }
-            }
-        }
-    
-        
-        recipeCollectionView.reloadItems(at: [indexPath])
-        recipeDelegate?.passSelectedRecipesToProfileVC(selectedRecipes: selectedRecipes)
-        
-        if let delegate = recipeDelegate {
-            print("Recipes selected in HomeViewController: \(selectedRecipes)")
-            delegate.passSelectedRecipesToProfileVC(selectedRecipes: selectedRecipes)
-        } else {
-            print("Recipe delegate is nil.")
-            
-        }
+        coordinator?.didTapFavoriteButton(on: cell)
     }
 }

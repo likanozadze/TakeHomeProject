@@ -9,8 +9,7 @@ import UIKit
 import SwiftUI
 
 // MARK: - RecipeDelegate
-
-final class CategoryRecipeViewController: UIViewController {
+final class CategoryRecipeViewController: UIViewController, RecipeItemCollectionViewCellDelegate {
     
     // MARK: Properties
     
@@ -19,14 +18,16 @@ final class CategoryRecipeViewController: UIViewController {
     var categoryRecipeCollectionView = CategoryRecipeCollectionView()
     private var recipe: [Recipe] = []
     private var selectedRecipes: [Recipe] = []
-    var recipeDelegate: RecipeDelegate?
+    var coordinator: NavigationCoordinator?
+    weak var delegate: RecipeItemCollectionViewCellDelegate?
     
     // MARK: - ViewLifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
-     //   categoryRecipeCollectionView.register(RecipeItemCollectionViewCell.self, forCellWithReuseIdentifier: "RecipeItemCell")
+        coordinator = NavigationCoordinator(navigationController: navigationController!)
+                coordinator?.delegate = self
         categoryRecipeCollectionView.delegate = self
         categoryRecipeCollectionView.dataSource = self
         
@@ -70,53 +71,6 @@ final class CategoryRecipeViewController: UIViewController {
     }
 }
 
-// MARK: - RecipeItemCollectionViewCellDelegate
-extension CategoryRecipeViewController: RecipeItemCollectionViewCellDelegate {
-    func didTapFavoriteButton(on cell: RecipeItemCollectionViewCell) {
-        guard let indexPath = categoryRecipeCollectionView.indexPath(for: cell) else { return }
-        let recipe = self.recipe[indexPath.item]
-        
-        if cell.favoriteButton.isSelected {
-            PersistenceManager.updateWith(favorite: recipe, actionType: .add) { error in
-                if let error = error {
-                    print("Error favoriting recipe: \(error.rawValue)")
-                } else {
-                    self.selectedRecipes.append(recipe)
-                }
-            }
-        } else {
-            PersistenceManager.updateWith(favorite: recipe, actionType: .remove) { error in
-                if let error = error {
-                    print("Error unfavoriting recipe: \(error.rawValue)")
-                } else {
-                    self.selectedRecipes = self.selectedRecipes.filter { $0.id != recipe.id }
-                }
-            }
-        }
-        
-    }
-    
-    func didSelectRecipe(on cell: RecipeItemCollectionViewCell) {
-        if let indexPath = categoryRecipeCollectionView.indexPath(for: cell) {
-            let recipe = self.recipe[indexPath.item]
-            print("Selected recipe at index \(indexPath.item): \(recipe.title)")
-            navigateToRecipeDetailView(with: recipe)
-        } else {
-            print("Unable to get indexPath for selected cell.")
-        }
-    }
-    
-    // MARK: - Navigation
-    
-    private func navigateToRecipeDetailView(with recipe: Recipe) {
-        print("Navigating to RecipeDetailView with recipe: \(recipe.title)")
-        let detailViewModel = RecipeDetailViewModel(recipe: recipe, selectedIngredient: recipe.extendedIngredients?.first)
-        let detailWrapper = RecipeDetailViewWrapper(viewModel: detailViewModel)
-        let hostingController = UIHostingController(rootView: detailWrapper)
-        navigationController?.pushViewController(hostingController, animated: true)
-        print("Pushed RecipeDetailView to navigation controller.")
-    }
-}
     // MARK: - CategoryListViewModelDelegate
 
     extension CategoryRecipeViewController: CategoryListViewModelDelegate {
@@ -148,29 +102,45 @@ extension CategoryRecipeViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         cell.isUserInteractionEnabled = true
-        cell.delegate = self
+         cell.delegate = self
         cell.configure(with: recipe[indexPath.row])
         return cell
     }
-    
 }
+
+
 // MARK: - CollectionView FlowLayoutDelegate
-    extension CategoryRecipeViewController: UICollectionViewDelegateFlowLayout {
-        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-            return CGSize(width: 340, height: 240)
-          
-        }
+extension CategoryRecipeViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 340, height: 240)
+        
     }
+}
 
 extension CategoryRecipeViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
+        print("Recipe selected in categoryViewController")
         if let recipe = categoryViewModel.recipe(at: indexPath) {
-            let detailViewModel = RecipeDetailViewModel(recipe: recipe, selectedIngredient: recipe.extendedIngredients?[indexPath.row])
-            let detailWrapper = RecipeDetailViewWrapper(viewModel: detailViewModel)
-            
-            let hostingController = UIHostingController(rootView: detailWrapper)
-            navigationController?.pushViewController(hostingController, animated: true)
+            coordinator?.didSelectRecipe(recipe: recipe)
         }
+    }
+}
+
+// MARK: - NavigationCoordinatorDelegate
+extension CategoryRecipeViewController: NavigationCoordinatorDelegate {
+    func passSelectedRecipesToProfileVC(selectedRecipes: [Recipe]) {
+        coordinator?.passSelectedRecipesToProfileVC(selectedRecipes: selectedRecipes)
+    }
+    
+    func didSelectRecipe(recipe: Recipe) {
+        coordinator?.didSelectRecipe(recipe: recipe)
+    }
+    
+    func didSelectRecipe(on cell: RecipeItemCollectionViewCell) {
+        coordinator?.didSelectRecipe(on: cell)
+    }
+    
+    func didTapFavoriteButton(on cell: RecipeItemCollectionViewCell) {
+        coordinator?.didTapFavoriteButton(on: cell)
     }
 }
