@@ -62,7 +62,6 @@
 		98D43DE52B6194A500507EAD /* NetworkLayer in Frameworks */ = {isa = PBXBuildFile; productRef = 98D43DE42B6194A500507EAD /* NetworkLayer */; };
 		98EB0EBD2B719B6C001748AA /* DummyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98EB0EBC2B719B6C001748AA /* DummyData.swift */; };
 		98F669112B6A40C8009FF1EF /* StepsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F669102B6A40C8009FF1EF /* StepsView.swift */; };
-		98F669172B6AB1B5009FF1EF /* ShoppingListTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F669162B6AB1B5009FF1EF /* ShoppingListTableView.swift */; };
 		98F669192B6AB1D7009FF1EF /* FavoriteRecipesCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F669182B6AB1D7009FF1EF /* FavoriteRecipesCollectionView.swift */; };
 		98F826102B7419F5001FAFF4 /* OnboardingViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F8260F2B7419F5001FAFF4 /* OnboardingViewWrapper.swift */; };
 		98F826122B741A26001FAFF4 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F826112B741A26001FAFF4 /* OnboardingView.swift */; };
@@ -122,7 +121,6 @@
 		98D43DDD2B6188FD00507EAD /* RecipeItemCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeItemCollectionViewCell.swift; sourceTree = "<group>"; };
 		98EB0EBC2B719B6C001748AA /* DummyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyData.swift; sourceTree = "<group>"; };
 		98F669102B6A40C8009FF1EF /* StepsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepsView.swift; sourceTree = "<group>"; };
-		98F669162B6AB1B5009FF1EF /* ShoppingListTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingListTableView.swift; sourceTree = "<group>"; };
 		98F669182B6AB1D7009FF1EF /* FavoriteRecipesCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteRecipesCollectionView.swift; sourceTree = "<group>"; };
 		98F8260F2B7419F5001FAFF4 /* OnboardingViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewWrapper.swift; sourceTree = "<group>"; };
 		98F826112B741A26001FAFF4 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
@@ -200,14 +198,13 @@
 			path = Generate;
 			sourceTree = "<group>";
 		};
-		981838342B66EA7000F13797 /* Profile */ = {
+		981838342B66EA7000F13797 /* Favorites */ = {
 			isa = PBXGroup;
 			children = (
 				98AE16342B59821500AF5528 /* ProfileViewController.swift */,
-				98F669182B6AB1D7009FF1EF /* FavoriteRecipesCollectionView.swift */,
-				98F669162B6AB1B5009FF1EF /* ShoppingListTableView.swift */,
+				98C2CC6B2B7A5B500019D256 /* FavoritesCollectionViewCell */,
 			);
-			path = Profile;
+			path = Favorites;
 			sourceTree = "<group>";
 		};
 		984019A82B6801D70025D5D3 /* Sounds */ = {
@@ -295,7 +292,7 @@
 				984019B92B692CF70025D5D3 /* RecipeDetail */,
 				980487612B652B8C00B88519 /* Category */,
 				981838312B66B43400F13797 /* Generate */,
-				981838342B66EA7000F13797 /* Profile */,
+				981838342B66EA7000F13797 /* Favorites */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -343,6 +340,14 @@
 				98960F6A2B77AE7900667BA2 /* PersistanceManager.swift */,
 			);
 			path = RecipeApplication;
+			sourceTree = "<group>";
+		};
+		98C2CC6B2B7A5B500019D256 /* FavoritesCollectionViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				98F669182B6AB1D7009FF1EF /* FavoriteRecipesCollectionView.swift */,
+			);
+			path = FavoritesCollectionViewCell;
 			sourceTree = "<group>";
 		};
 		98D2DFE32B5AE0C40062B36C /* ReusableComponents */ = {
@@ -515,7 +520,6 @@
 				980BA7312B600A3800AD97E7 /* RegisterViewModel.swift in Sources */,
 				988DE8182B5D335600FA0ABC /* RegisterUserRequest.swift in Sources */,
 				984019C92B692E280025D5D3 /* PickerView.swift in Sources */,
-				98F669172B6AB1B5009FF1EF /* ShoppingListTableView.swift in Sources */,
 				98D2DFEB2B5AE1BC0062B36C /* RAAlertView.swift in Sources */,
 				98AE16232B5981CF00AF5528 /* SceneDelegate.swift in Sources */,
 				98F826182B741B2B001FAFF4 /* OnboardingButton.swift in Sources */,
