@@ -65,7 +65,6 @@ extension OnboardingView {
             
             Button(action: {
                 UserDefaults.standard.set(true, forKey: "hasSeenOnboarding")
-                print("Skip button tapped")
                 delegate?.didCompleteOnboarding()
             }) {
                 Text("Skip")

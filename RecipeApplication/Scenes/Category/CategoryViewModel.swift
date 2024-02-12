@@ -38,7 +38,6 @@ final class CategoryViewModel {
         if let savedRecipes = UserDefaults.standard.object(forKey: tag) as? Data {
                    let decoder = JSONDecoder()
                    if let loadedRecipes = try? decoder.decode([Recipe].self, from: savedRecipes) {
-                       print("Data fetched from UserDefaults")
                        self.recipes = loadedRecipes
                        DispatchQueue.main.async {
                            self.delegate?.categoriesFetched(loadedRecipes)
@@ -65,7 +64,6 @@ final class CategoryViewModel {
             completion: { (result: Result<RecipeResponse, NetworkError>) in
                 switch result {
                 case .success(let fetchedRecipes):
-                    print("Data fetched successfully:", fetchedRecipes)
                     self.recipes = fetchedRecipes.results
                     let encoder = JSONEncoder()
                                      if let encoded = try? encoder.encode(fetchedRecipes.results) {

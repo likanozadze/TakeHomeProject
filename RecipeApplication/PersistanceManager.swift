@@ -45,7 +45,6 @@ enum PersistenceManager {
     }
 
     static func retrieveFavorites(completed: @escaping (Result<[Recipe], RAError>) -> Void) {
-        print("Retrieving favorite recipes...")
         guard let favoritesData = defaults.object(forKey: Keys.favorites) as? Data else {
             completed(.success([]))
             return
@@ -62,7 +61,6 @@ enum PersistenceManager {
     }
     
     static func save(favorites: [Recipe]) -> RAError? {
-        print("Saving favorite recipes...")
 
         do {
             let encoder = JSONEncoder()

@@ -122,7 +122,6 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
     }
     
     @objc private func favoriteButtonTapped(_ sender: UIButton) {
-        print("Heart button tapped.")
         guard let recipe = recipe else { return }
         sender.isSelected.toggle()
         if sender.isSelected {
@@ -147,7 +146,6 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
                 if let error = error {
                     print("Error removing recipe from favorites: \(error.rawValue)")
                 } else {
-                    print("Recipe removed from favorites successfully.")
                     PersistenceManager.retrieveFavorites { result in
                         switch result {
                         case .success(let favoriteRecipes):

@@ -115,10 +115,9 @@ final class ProfileViewController: UIViewController, FavoriteRecipeCollectionVie
             guard let self = self else { return }
             switch result {
             case .success(let favoriteRecipes):
-                print("Retrieved favorite recipes: \(favoriteRecipes)")
                 self.favoriteRecipeCollectionView.setFavoriteRecipes(favoriteRecipes)
-            case .failure(let error):
-                print("Error retrieving favorites: \(error.rawValue)")
+            case .failure(_):
+                break
             }
         }
     }

@@ -153,7 +153,6 @@ class NavigationCoordinator: OnboardingViewDelegate, NavigationCoordinatorDelega
     }
     
     func didSelectRecipe(recipe: Recipe) {
-        print("Coordinator received didSelectRecipe call")
         let detailViewModel = RecipeDetailViewModel(recipe: recipe, selectedIngredient: nil)
         let detailWrapper = RecipeDetailView(viewModel: detailViewModel)
         

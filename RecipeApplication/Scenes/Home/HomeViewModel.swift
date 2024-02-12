@@ -64,7 +64,6 @@ final class HomeViewModel: ObservableObject {
             completion: { (result: Result<RecipeResponse, NetworkError>) in
                 switch result {
                 case .success(let fetchedRecipes):
-                    print("Data fetched successfully:", fetchedRecipes)
                     self.recipes = fetchedRecipes.results 
                     self.delegate?.recipesFetched(fetchedRecipes.results)
                     
@@ -73,7 +72,6 @@ final class HomeViewModel: ObservableObject {
                                UserDefaults.standard.set(encoded, forKey: "recipes")
                            }
                 case .failure(let error):
-                    print("Error fetching data:", error)
                     self.delegate?.recipeFetchError(error)
                 }
             }

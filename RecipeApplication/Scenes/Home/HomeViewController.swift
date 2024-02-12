@@ -160,14 +160,12 @@ final class HomeViewController: UIViewController, RecipeItemCollectionViewCellDe
 
 extension HomeViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print("Number of items: \(recipe.count)")
         return recipe.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecipeItemCell", for: indexPath) as? RecipeItemCollectionViewCell else {
-            print("Error: Unable to dequeue RecipeItemCollectionViewCell.")
             
             return UICollectionViewCell()
         }
@@ -242,7 +240,6 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
 
 extension HomeViewController: RecipeListViewModelDelegate {
     func recipesFetched(_ recipe: [Recipe]) {
-        print("Recipes fetched:", recipe)
         self.recipe = recipe
         DispatchQueue.main.async {
             self.recipeCollectionView.reloadData()
