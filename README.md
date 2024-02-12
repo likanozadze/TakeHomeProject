@@ -6,7 +6,7 @@ This project is a part of the iOS development Course at TBC IT Academy. The Good
 
 ### Onboarding Pages
 Introduces users to the app and its features.
-![App Screenshot](https://i.ibb.co/7QG996z/Image-2-12-24-at-7-15-PM.jpg)
+![App Screenshot](https://i.ibb.co/VLxYVf7/Image-2-12-24-at-7-19-PM.jpg)
 ### User Registration and Login
 A secure system for users to create accounts, enabling the following features:
 - Saving favorite recipes
