@@ -6,8 +6,9 @@ This project is a part of the iOS development Course at TBC IT Academy. The Good
 
 ### Onboarding Pages
 Introduces users to the app and its features.
-![Uploading Simulator Screenshot - iPhone 15 - 2024-02-12 at 16.44.02.png…](https://github.com/likanozadze/TakeHomeProject/assets/145837358/677c6b63-f936-4e94-a87b-e447e9d17d90)
-![Uploading Simulator Screenshot - iPhone 15 - 2024-02-12 at 16.44.08.png…](https://github.com/likanozadze/TakeHomeProject/assets/145837358/677c6b63-f936-4e94-a87b-e447e9d17d90)
+![Simulator Screenshot - iPhone 15 - 2024-02-12 at 16 44 02](https://github.com/likanozadze/TakeHomeProject/assets/145837358/b366dda7-4fa7-4d50-8694-d740fd0d6183)
+![Simulator Screenshot - iPhone 15 - 2024-02-12 at 16 44 08](https://github.com/likanozadze/TakeHomeProject/assets/145837358/c95723a7-63e3-4c9e-b1d9-222420065aa7)
+
 ### User Registration and Login
 A secure system for users to create accounts, enabling the following features:
 - Saving favorite recipes
