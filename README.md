@@ -6,14 +6,14 @@ This project is a part of the iOS development Course at TBC IT Academy. The Good
 
 ### Onboarding Pages
 Introduces users to the app and its features.
-![Uploading Simulator Screenshot - iPhone 15 - 2024-02-12 at 16.44.02.png…]()
-![Uploading Simulator Screenshot - iPhone 15 - 2024-02-12 at 16.44.08.png…]()
+![Uploading Simulator Screenshot - iPhone 15 - 2024-02-12 at 16.44.02.png…](https://github.com/likanozadze/TakeHomeProject/assets/145837358/677c6b63-f936-4e94-a87b-e447e9d17d90)
+![Uploading Simulator Screenshot - iPhone 15 - 2024-02-12 at 16.44.08.png…](https://github.com/likanozadze/TakeHomeProject/assets/145837358/677c6b63-f936-4e94-a87b-e447e9d17d90)
 ### User Registration and Login
 A secure system for users to create accounts, enabling the following features:
 - Saving favorite recipes
 - Personalizing content or recommendations (if applicable)
 
-![Simulator Screenshot - iPhone 15 - 2024-02-12 at 16 44 12]()
+![Simulator Screenshot - iPhone 15 - 2024-02-12 at 16 44 12](https://github.com/likanozadze/TakeHomeProject/assets/145837358/677c6b63-f936-4e94-a87b-e447e9d17d90)
 ### Categorized Recipes
 Find the perfect dish with recipes organized into clear categories for easy browsing.
 
