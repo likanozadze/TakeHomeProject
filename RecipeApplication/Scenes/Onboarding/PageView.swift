@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct PageView: View {
+    
     //MARK: - Properties
     var screen: ScreenView
     

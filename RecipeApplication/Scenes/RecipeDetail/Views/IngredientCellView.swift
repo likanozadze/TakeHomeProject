@@ -13,8 +13,6 @@ struct IngredientCellView: View {
     // MARK: Properties
     var viewModel: RecipeDetailViewModel
     var ingredients: [ExtendedIngredient]
- //   @Binding var shoppingList: [ExtendedIngredient]
-   // @State private var selectedIngredients: [Int: Bool] = [:]
     
     // MARK: - Body
     var body: some View {
@@ -48,10 +46,3 @@ struct IngredientCellView: View {
         }
     }
 }
-        // MARK: - ButtonView
-//        ButtonView(isAnyItemSelected: .constant(selectedIngredients.values.contains(true)), selectedIngredients: $selectedIngredients, ingredients: ingredients, shoppingList: $shoppingList) 
-//
-//        }
-//    }
-
-

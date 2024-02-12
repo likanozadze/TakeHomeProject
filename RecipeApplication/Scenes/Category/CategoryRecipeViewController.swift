@@ -98,7 +98,6 @@ extension CategoryRecipeViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecipeItemCell", for: indexPath) as? RecipeItemCollectionViewCell else {
-            print("Error: Unable to dequeue RecipeItemCollectionViewCell.")
             return UICollectionViewCell()
         }
         cell.isUserInteractionEnabled = true
@@ -119,7 +118,6 @@ extension CategoryRecipeViewController: UICollectionViewDelegateFlowLayout {
 
 extension CategoryRecipeViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("Recipe selected in categoryViewController")
         if let recipe = categoryViewModel.recipe(at: indexPath) {
             coordinator?.didSelectRecipe(recipe: recipe)
         }

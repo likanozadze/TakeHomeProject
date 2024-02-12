@@ -35,7 +35,3 @@ struct ProgressBarView: View {
     }
 }
 
-//#Preview() {
-//    
-//    ProgressBarView(percent: progress)
-//}

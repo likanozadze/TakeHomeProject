@@ -15,12 +15,9 @@ struct OnboardingView: View {
     init(screens: [ScreenView]) {
         self.screens = screens
     }
-  
-
     
     var body: some View {
-        onboarding
-        
+        onboarding        
     }
 }
 

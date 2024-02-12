@@ -31,9 +31,6 @@ class RABodyLabel: UILabel {
     // MARK: - Configuration
     
     private func configure() {
-     //   textColor = .secondaryLabel
-        //font = UIFont.preferredFont(forTextStyle: .body)
-        //adjustsFontSizeToFitWidth = true
         minimumScaleFactor = 0.75
         lineBreakMode = .byWordWrapping
         translatesAutoresizingMaskIntoConstraints = false

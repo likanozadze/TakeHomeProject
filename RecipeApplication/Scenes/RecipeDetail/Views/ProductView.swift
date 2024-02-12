@@ -68,6 +68,3 @@ struct ProductView: View {
         }
 
 
-//#Preview {
-//    ProductView(recipe: recipe)
-//}

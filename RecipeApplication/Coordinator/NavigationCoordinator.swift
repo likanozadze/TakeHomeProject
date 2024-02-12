@@ -40,6 +40,8 @@ class NavigationCoordinator: OnboardingViewDelegate, NavigationCoordinatorDelega
     private let viewModel = HomeViewModel()
     private let categoryViewModel = CategoryViewModel()
     private var categoryCollectionView = CategoryCollectionView()
+    private var favoriteRecipeCollectionView = FavoriteRecipeCollectionView()
+    private var favoriteRecipes: [Recipe] = []
     
     private var state: AppState = .onboarding {
         didSet {
@@ -182,4 +184,19 @@ class NavigationCoordinator: OnboardingViewDelegate, NavigationCoordinatorDelega
         }
         
     }
+    func didTapUnfavoriteButton(on cell: RecipeItemCollectionViewCell) {
+        guard let indexPath = favoriteRecipeCollectionView.indexPath(for: cell) else { return }
+        let recipe = self.favoriteRecipes[indexPath.item]
+
+        PersistenceManager.updateWith(favorite: recipe, actionType: .remove) { error in
+            if let error = error {
+                print("Error unfavoriting recipe: \(error.rawValue)")
+            } else {
+                self.selectedRecipes = self.selectedRecipes.filter { $0.id != recipe.id }
+                self.favoriteRecipes = self.favoriteRecipes.filter { $0.id != recipe.id }
+                self.favoriteRecipeCollectionView.reloadData()
+            }
+        }
+    }
+
 }

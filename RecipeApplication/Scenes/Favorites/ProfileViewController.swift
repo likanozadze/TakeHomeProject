@@ -126,10 +126,16 @@ final class ProfileViewController: UIViewController, FavoriteRecipeCollectionVie
 // MARK: - NavigationCoordinatorDelegate
 extension ProfileViewController: NavigationCoordinatorDelegate {
     func didTapFavoriteButton(on cell: RecipeItemCollectionViewCell) {
-        coordinator?.didTapFavoriteButton(on: cell)
+        cell.favoriteButton.isSelected = !cell.favoriteButton.isSelected
+        if cell.favoriteButton.isSelected {
+            coordinator?.didTapFavoriteButton(on: cell)
+        } else {
+            coordinator?.didTapUnfavoriteButton(on: cell)
+        }
     }
-    
-    
+  
+
+
     func didSelectRecipe(recipe: Recipe) {
         coordinator?.didSelectRecipe(recipe: recipe)
     }
