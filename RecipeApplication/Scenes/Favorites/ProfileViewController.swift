@@ -53,6 +53,7 @@ final class ProfileViewController: UIViewController, FavoriteRecipeCollectionVie
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         retrieveFavorites()
+        
     }
     
     // MARK: - UI Setup
