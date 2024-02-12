@@ -122,7 +122,7 @@ struct WheelView: View {
                     VStack {
                         VStack {
                             HStack {
-                                Text("What to cook today?")
+                                Text("Not Sure What to Cook?")
                                     .font(.largeTitle)
                                     .fontWeight(.bold)
                                     .foregroundColor(.testColorSet)

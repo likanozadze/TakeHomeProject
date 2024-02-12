@@ -48,7 +48,7 @@ class TabBarController: UITabBarController {
         func createGenerateRecipeViewNavigation() -> UINavigationController {
             let generateRecipeViewController = GenerateRecipeViewController()
             generateRecipeViewController.title = ""
-            generateRecipeViewController.tabBarItem = UITabBarItem(title: "Generate Recipe", image: UIImage(systemName: "list.clipboard"), tag: 2)
+            generateRecipeViewController.tabBarItem = UITabBarItem(title: "Generate Recipe", image: UIImage(systemName: "dice"), tag: 2)
             addLogoToNavigationBar(of: generateRecipeViewController)
             return UINavigationController(rootViewController: generateRecipeViewController)
         }
