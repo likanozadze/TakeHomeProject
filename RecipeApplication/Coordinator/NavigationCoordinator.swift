@@ -9,6 +9,13 @@ import UIKit
 import FirebaseAuth
 import SwiftUI
 
+
+enum AppState {
+    case onboarding
+    case authenticated
+    case unauthenticated
+}
+
 protocol OnboardingViewDelegate: AnyObject {
     func didCompleteOnboarding()
 }
@@ -21,6 +28,7 @@ protocol NavigationCoordinatorDelegate: AnyObject {
 }
 
 // MARK: - NavigationCoordinator
+
 class NavigationCoordinator: OnboardingViewDelegate, NavigationCoordinatorDelegate {
     
     // MARK: Properties
@@ -32,13 +40,38 @@ class NavigationCoordinator: OnboardingViewDelegate, NavigationCoordinatorDelega
     private let viewModel = HomeViewModel()
     private let categoryViewModel = CategoryViewModel()
     private var categoryCollectionView = CategoryCollectionView()
+    
+    private var state: AppState = .onboarding {
+        didSet {
+            transitionTo(state)
+        }
+    }
+    
     // MARK: Initialization
     
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
-    // MARK: Coordinator Methods
     
+    // MARK: Coordinator Methods
+    func start() {
+        state = UserDefaults.standard.bool(forKey: "hasSeenOnboarding") ? .authenticated : .onboarding
+    }
+    
+    // MARK: State Management Methods
+    private func transitionTo(_ state: AppState) {
+        switch state {
+        case .onboarding:
+            showOnboarding()
+        case .authenticated:
+            checkAuthentication()
+        case .unauthenticated:
+            presentLoginViewController()
+        }
+    }
+    
+
+    // MARK: Authentication Methods
     func showOnboarding() {
         var onboardingView = OnboardingView(screens: ScreenView.onboardPages)
         onboardingView.delegate = self
@@ -48,32 +81,27 @@ class NavigationCoordinator: OnboardingViewDelegate, NavigationCoordinatorDelega
     func didCompleteOnboarding() {
         checkAuthentication()
     }
-    
-    func start() {
-        if UserDefaults.standard.bool(forKey: "hasSeenOnboarding") {
-            checkAuthentication()
-        } else {
-            showOnboarding()
-        }
-    }
-    
-    
-    // MARK: Authentication Methods
+
+
     public func checkAuthentication() {
         if Auth.auth().currentUser == nil {
-            let loginViewController = LoginViewController()
-            loginViewController.coordinator = self
-            navigationController.pushViewController(loginViewController, animated: true)
+            presentLoginViewController()
         } else {
-            let tabBarController = TabBarController()
-            navigationController.pushViewController(tabBarController, animated: true)
+            presentTabBarController()
         }
     }
     
-    func login() {
+    func presentLoginViewController() {
+        let loginViewController = LoginViewController()
+        loginViewController.coordinator = self
+        navigationController.pushViewController(loginViewController, animated: true)
+    }
+    
+    func presentTabBarController() {
         let tabBarController =  TabBarController()
         navigationController.pushViewController(tabBarController, animated: true)
     }
+    
     
     func register() {
         let registerViewController = RegisterViewController()
@@ -121,9 +149,6 @@ class NavigationCoordinator: OnboardingViewDelegate, NavigationCoordinatorDelega
             navigationController.pushViewController(categoryRecipeViewController, animated: true)
         }
     }
-    
-    
-    
     
     func didSelectRecipe(recipe: Recipe) {
         print("Coordinator received didSelectRecipe call")
