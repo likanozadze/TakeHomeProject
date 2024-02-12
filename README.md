@@ -10,9 +10,7 @@ Introduces users to the app and its features.
 ### User Registration and Login
 A secure system for users to create accounts, enabling the following features:
 - Saving favorite recipes
-- Personalizing content or recommendations (if applicable)
-
-![Simulator Screenshot - iPhone 15 - 2024-02-12 at 16 44 12](https://github.com/likanozadze/TakeHomeProject/assets/145837358/677c6b63-f936-4e94-a87b-e447e9d17d90)
+![App Screenshot](https://i.ibb.co/DRGgXVt/Image-2-12-24-at-7-22-PM.jpg)
 ### Categorized Recipes
 Find the perfect dish with recipes organized into clear categories for easy browsing.
 
