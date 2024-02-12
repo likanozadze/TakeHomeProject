@@ -37,8 +37,11 @@ The app utilizes 4 tab bars for convenient access to:
 
 
 - Favorites: Save frequently used recipes for quick reference.
-- 
-![App Screenshot](https://i.ibb.co/rmfKZhw/Image-2-12-24-at-7-31-PM.jpg)
+  ![App Screenshot](https://i.ibb.co/rmfKZhw/Image-2-12-24-at-7-31-PM.jpg)
+
+## License
+
+ This project is licensed under the [License Name] license. See the LICENSE file for details.
 
 Hope you enjoy our app!
 🍳👩‍🍳👨‍🍳
