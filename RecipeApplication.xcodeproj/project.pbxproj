@@ -216,7 +216,10 @@
 		984019A82B6801D70025D5D3 /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
+				98AE162B2B5981D100AF5528 /* LaunchScreen.storyboard */,
 				984019A92B6802060025D5D3 /* spinning_sound.mp3 */,
+				98AE16292B5981D100AF5528 /* Assets.xcassets */,
+				98E4E1F42B92392300683A11 /* Animation - 1709293040117.json */,
 			);
 			path = Sounds;
 			sourceTree = "<group>";
@@ -244,13 +247,14 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		984061962B5C5CA300A6BFAF /* Coordinator */ = {
+		984061962B5C5CA300A6BFAF /* Managers */ = {
 			isa = PBXGroup;
 			children = (
 				984061942B5C5C7D00A6BFAF /* NavigationCoordinator.swift */,
 				98960F682B7798B500667BA2 /* TabBarController.swift */,
+				98960F6A2B77AE7900667BA2 /* PersistanceManager.swift */,
 			);
-			path = Coordinator;
+			path = Managers;
 			sourceTree = "<group>";
 		};
 		984061972B5C5CC900A6BFAF /* App */ = {
@@ -334,17 +338,13 @@
 			children = (
 				984061972B5C5CC900A6BFAF /* App */,
 				988DE7D52B5D2A2F00FA0ABC /* Firebase */,
-				984061962B5C5CA300A6BFAF /* Coordinator */,
+				984061962B5C5CA300A6BFAF /* Managers */,
 				988DE8162B5D333900FA0ABC /* Models */,
 				988DE81D2B5D873400FA0ABC /* Scenes */,
 				98D2DFE32B5AE0C40062B36C /* ReusableComponents */,
-				984019A82B6801D70025D5D3 /* Sounds */,
-				98AE162B2B5981D100AF5528 /* LaunchScreen.storyboard */,
-				98AE16292B5981D100AF5528 /* Assets.xcassets */,
+				98E4E1F62B92407C00683A11 /* Resources */,
 				98AE162E2B5981D100AF5528 /* Info.plist */,
 				98D26B392B716EEE00BAA30B /* Configuration.swift */,
-				98960F6A2B77AE7900667BA2 /* PersistanceManager.swift */,
-				98E4E1F42B92392300683A11 /* Animation - 1709293040117.json */,
 				98E4E1F22B9238B800683A11 /* EmptyStateViewController.swift */,
 			);
 			path = RecipeApplication;
@@ -387,6 +387,14 @@
 				98CB2FA92B6E480700DCC083 /* RecipeCollectionView.swift */,
 			);
 			path = CollectionViewCell;
+			sourceTree = "<group>";
+		};
+		98E4E1F62B92407C00683A11 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				984019A82B6801D70025D5D3 /* Sounds */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		98F8260E2B74197F001FAFF4 /* Onboarding */ = {
