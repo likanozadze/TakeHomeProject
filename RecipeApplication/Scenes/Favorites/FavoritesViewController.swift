@@ -8,11 +8,13 @@
 import UIKit
 import SwiftUI
 
-final class ProfileViewController: UIViewController, FavoriteRecipeCollectionViewDelegate {
+final class FavoritesViewController: UIViewController, FavoriteRecipeCollectionViewDelegate {
     
     // MARK: - Properties
     
     private let favoriteRecipeCollectionView = FavoriteRecipeCollectionView()
+    let emptyStateViewController = EmptyStateViewController(
+        title: "Save recipes you love", description: "Collect the recipes that inspire you. Tap the heart to save them here", animationName: "Animation - 1709293040117")
     var selectedRecipes: [Recipe] = []
     private var favoriteRecipes: [Recipe] = []
     var coordinator: NavigationCoordinator?
@@ -48,6 +50,14 @@ final class ProfileViewController: UIViewController, FavoriteRecipeCollectionVie
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        updateEmptyStateVisibility()
+    }
+    private func updateEmptyStateVisibility() {
+        if favoriteRecipes.isEmpty {
+            showEmptyState()
+        } else {
+            hideEmptyState()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -109,13 +119,30 @@ final class ProfileViewController: UIViewController, FavoriteRecipeCollectionVie
         ])
     }
 
+    private func showEmptyState() {
+        if children.contains(emptyStateViewController) { return }
+        addChild(emptyStateViewController)
+        view.addSubview(emptyStateViewController.view)
+        emptyStateViewController.view.frame = view.bounds
+        emptyStateViewController.didMove(toParent: self)
+    }
+    
+    private func hideEmptyState() {
+        if children.contains(emptyStateViewController) {
+            emptyStateViewController.willMove(toParent: nil)
+            emptyStateViewController.view.removeFromSuperview()
+            emptyStateViewController.removeFromParent()
+        }
+    }
     
     private func retrieveFavorites() {
         PersistenceManager.retrieveFavorites { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let favoriteRecipes):
+                self.favoriteRecipes = favoriteRecipes
                 self.favoriteRecipeCollectionView.setFavoriteRecipes(favoriteRecipes)
+                self.updateEmptyStateVisibility()
             case .failure(_):
                 break
             }
@@ -124,13 +151,17 @@ final class ProfileViewController: UIViewController, FavoriteRecipeCollectionVie
 }
 
 // MARK: - NavigationCoordinatorDelegate
-extension ProfileViewController: NavigationCoordinatorDelegate {
+extension FavoritesViewController: NavigationCoordinatorDelegate {
     func didTapFavoriteButton(on cell: RecipeItemCollectionViewCell) {
         cell.favoriteButton.isSelected = !cell.favoriteButton.isSelected
         if cell.favoriteButton.isSelected {
             coordinator?.didTapFavoriteButton(on: cell)
         } else {
             coordinator?.didTapUnfavoriteButton(on: cell)
+        }
+        
+        func recipesUpdated() {
+            updateEmptyStateVisibility()
         }
     }
   

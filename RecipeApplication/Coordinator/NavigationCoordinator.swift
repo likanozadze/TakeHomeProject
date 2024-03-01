@@ -122,7 +122,7 @@ class NavigationCoordinator: OnboardingViewDelegate, NavigationCoordinatorDelega
     }
     
     func passSelectedRecipesToProfileVC(selectedRecipes: [Recipe]) {
-        let profileVC = ProfileViewController()
+        let profileVC = FavoritesViewController()
         profileVC.selectedRecipes = selectedRecipes
         navigationController.pushViewController(profileVC, animated: true)
     }

@@ -54,7 +54,7 @@ class TabBarController: UITabBarController {
         }
         
         func createProfileViewNavigation() -> UINavigationController {
-            let profileViewController = ProfileViewController()
+            let profileViewController = FavoritesViewController()
             profileViewController.title = ""
             profileViewController.tabBarItem = UITabBarItem(title: "Favorites", image: UIImage(systemName: "heart.circle.fill"), tag: 3)
             let navigationController = UINavigationController(rootViewController: profileViewController)
