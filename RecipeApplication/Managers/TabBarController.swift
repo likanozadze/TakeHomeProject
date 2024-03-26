@@ -18,7 +18,9 @@ class TabBarController: UITabBarController {
             createHomeViewNavigation(),
             createCategoryViewNavigation(),
             createGenerateRecipeViewNavigation(),
+            createOriginalRecipeViewNavigation(),
             createProfileViewNavigation()]
+
         
         
         // MARK: Navigation Methods
@@ -53,6 +55,15 @@ class TabBarController: UITabBarController {
             return UINavigationController(rootViewController: generateRecipeViewController)
         }
         
+        func createOriginalRecipeViewNavigation() -> UINavigationController {
+            let originalRecipeViewController = OriginalRecipeViewController()
+            originalRecipeViewController.title = ""
+            originalRecipeViewController.tabBarItem = UITabBarItem(title: "Your recipe", image: UIImage(systemName: "plus.circle"), tag: 3)
+            let navigationController = UINavigationController(rootViewController: originalRecipeViewController)
+          
+            return navigationController
+        }
+        
         func createProfileViewNavigation() -> UINavigationController {
             let profileViewController = FavoritesViewController()
             profileViewController.title = ""
@@ -62,6 +73,7 @@ class TabBarController: UITabBarController {
             return navigationController
         }
         
+      
         
         // MARK: Navigation Bar Customization
         func addLogoToNavigationBar(of viewController: UIViewController) {

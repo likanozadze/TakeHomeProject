@@ -1,10 +1,10 @@
+////
+////  ProfileViewController.swift
+////  RecipeApplication
+////
+////  Created by Lika Nozadze on 1/18/24.
+////
 //
-//  ProfileViewController.swift
-//  RecipeApplication
-//
-//  Created by Lika Nozadze on 1/18/24.
-//
-
 import UIKit
 import SwiftUI
 
@@ -165,8 +165,6 @@ extension FavoritesViewController: NavigationCoordinatorDelegate {
         }
     }
   
-
-
     func didSelectRecipe(recipe: Recipe) {
         coordinator?.didSelectRecipe(recipe: recipe)
     }
@@ -195,3 +193,4 @@ extension FavoritesViewController: NavigationCoordinatorDelegate {
         navigationController?.pushViewController(hostingController, animated: true)
     }
 }
+

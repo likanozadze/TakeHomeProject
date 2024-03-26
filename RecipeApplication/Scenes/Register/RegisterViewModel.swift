@@ -19,11 +19,12 @@ protocol RegisterViewModelDelegate: AnyObject {
 final class RegisterViewModel {
     weak var delegate: RegisterViewModelDelegate?
     var coordinator: NavigationCoordinator?
+    let uid = UUID().uuidString
 
     // MARK: - Public Methods
 
     func signUp(username: String, email: String, password: String, completion: @escaping (Bool, Error?) -> Void) {
-        let registerUserRequest = RegisterUserRequest(username: username, email: email, password: password)
+        let registerUserRequest = RegisterUserRequest(username: username, email: email, password: password, id: uid, recipes: [], likedRecipes: [])
 
         guard Validator.isValidUsername(for: registerUserRequest.username) else {
             delegate?.showInvalidUsernameAlert()

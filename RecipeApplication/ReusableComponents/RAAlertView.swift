@@ -53,7 +53,7 @@ extension RAAlertView {
         self.showGenericAlert(on: vc, title: "Registration Error", message: customMessage)
     }
     public static func showSuccessRegistrationAlert(on vc: UIViewController) {
-            self.showGenericAlert(on: vc, title: "Success", message: "Registration successful!")
+            self.showGenericAlert(on: vc, title: "Success", message: "Registration was successful, go back to login page")
         }
 }
 
