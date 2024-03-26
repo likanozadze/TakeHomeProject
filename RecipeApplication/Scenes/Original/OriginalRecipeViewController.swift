@@ -9,11 +9,12 @@
 import UIKit
 import SwiftUI
 import FirebaseAuth
+import Lottie
 
 final class OriginalRecipeViewController: UIViewController {
     
     let viewModel = OriginalRecipeViewModel()
-    
+    @Published var originalRecipes: [OriginalRecipesData] = []
     var recipe: OriginalRecipesData?
     
     private let yourRecipesTitle: UILabel = {
@@ -55,19 +56,30 @@ final class OriginalRecipeViewController: UIViewController {
         button.layer.shadowOpacity = 0.5
         return button
     }()
-    
+    private let animationView = LottieAnimationView()
+
+    let emptyStateViewController = EmptyStateViewController(
+        title: "Save your original recipes", description: "Save the recipes that inspire you. Tap the plus to save them here", animationName: "Animation - 1711457021878")
     
     
     // MARK: - ViewLifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("viewDidLoad called")
+       
         setup()
+        updateEmptyStateVisibility()
         Task {
             await self.getRecipes()
         }
         
+    }
+    private func updateEmptyStateVisibility() {
+        if originalRecipes.isEmpty {
+            showEmptyState()
+        } else {
+            hideEmptyState()
+        }
     }
     
     // MARK: - UI Setup
@@ -114,10 +126,31 @@ final class OriginalRecipeViewController: UIViewController {
             addButton.heightAnchor.constraint(equalToConstant: 60),
             addButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             addButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-            
-            
+        
         ])
     }
+    
+    private func showEmptyState() {
+        if children.contains(emptyStateViewController) { return }
+        
+        addChild(emptyStateViewController)
+        view.addSubview(emptyStateViewController.view)
+        emptyStateViewController.view.frame = view.bounds
+        emptyStateViewController.didMove(toParent: self)
+        animationView.play()
+        }
+
+    
+    private func hideEmptyState() {
+        if children.contains(emptyStateViewController) {
+            emptyStateViewController.willMove(toParent: nil)
+            emptyStateViewController.view.removeFromSuperview()
+            emptyStateViewController.removeFromParent()
+        }
+            animationView.stop()
+        }
+    
+    
     //MARK: - action
     
     private func setupAddButton() {
@@ -130,7 +163,9 @@ final class OriginalRecipeViewController: UIViewController {
     
     private func getRecipes() async {
         await viewModel.getUserRecipes()
+        originalRecipes = viewModel.originalRecipes
         collectionView.reloadData()
+        updateEmptyStateVisibility()
     }
     private func addButtonTapped() {
         let viewController = UIHostingController(
