@@ -53,7 +53,7 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
     internal let favoriteButton: UIButton = {
         let button = UIButton(type: .system)
         button.tintColor = .red
-        button.setImage(UIImage(systemName: "heart.circle"), for: .normal)
+        button.setImage(UIImage(systemName: "heart"), for: .normal)
         button.addTarget(target, action: #selector(favoriteButtonTapped(_:)), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -74,6 +74,7 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
         addSubview()
         setupConstraints()
         configureCellAppearance()
+        
     }
     
     required init?(coder: NSCoder) {
@@ -86,7 +87,7 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
         recipeImageView.image = nil
         recipeTitle.text = nil
         readyInMinLabel.text = nil
-        favoriteButton.setImage(UIImage(systemName: "heart.circle"), for: .normal)
+        favoriteButton.setImage(UIImage(systemName: "heart"), for: .normal)
     }
     
     // MARK: - Private Methods
@@ -123,6 +124,7 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
         guard let recipe = recipe else { return }
         sender.isSelected.toggle()
         if sender.isSelected {
+            
             PersistenceManager.updateWith(favorite: recipe, actionType: .add) { error in
                 if let error = error {
                     print("Error favoriting recipe: \(error.rawValue)")

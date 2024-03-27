@@ -13,6 +13,8 @@ struct IngredientCellView: View {
     // MARK: Properties
     var viewModel: RecipeDetailViewModel
     var ingredients: [ExtendedIngredient]
+    @Binding var shoppingList: [ExtendedIngredient]
+    @State private var selectedIngredients: [Int: Bool] = [:]
     
     // MARK: - Body
     var body: some View {
@@ -21,13 +23,18 @@ struct IngredientCellView: View {
                 ForEach(viewModel.extendedIngredients, id: \.id) { ingredient in
                     
                     HStack {
-                        Image(systemName: "circle.fill")
+                        Image(systemName: selectedIngredients[ingredient.id, default: false] ? "checkmark.square" : "square")
                             .foregroundColor(Color(red: 134/255, green: 191/255, blue: 62/255))
                             .font(.system(size: 18))
-                      Text(ingredient.name)
+                            .onTapGesture {
+                                selectedIngredients[ingredient.id, default: false].toggle()
+                            }
+                        
+                        Text(ingredient.name)
                             .font(.system(size: 16))
                             .foregroundColor(.testColorSet)
-                        
+                            .foregroundColor(selectedIngredients[ingredient.id, default: false] ? .gray : .testColorSet)
+                            .strikethrough(selectedIngredients[ingredient.id, default: false], color: .black)
                         Spacer()
                         
                         HStack {
@@ -46,3 +53,4 @@ struct IngredientCellView: View {
         }
     }
 }
+
