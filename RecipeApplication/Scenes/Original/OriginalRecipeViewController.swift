@@ -59,86 +59,99 @@ final class OriginalRecipeViewController: UIViewController {
     private let animationView = LottieAnimationView()
 
     let emptyStateViewController = EmptyStateViewController(
-        title: "Save your original recipes", description: "Save the recipes that inspire you. Tap the plus to save them here", animationName: "Animation - 1711457021878")
+        title: "Save your original recipes", description: "Save the recipes that inspire you. Tap the plus button to save them.", animationName: "Animation - 1711457021878")
     
     
     // MARK: - ViewLifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       
+        
         setup()
         updateEmptyStateVisibility()
         Task {
             await self.getRecipes()
         }
         
-    }
-    private func updateEmptyStateVisibility() {
-        if originalRecipes.isEmpty {
-            showEmptyState()
-        } else {
-            hideEmptyState()
+        AuthService.shared.onUserSignedIn = { [weak self] recipes in
+            DispatchQueue.main.async {
+                self?.originalRecipes = recipes
+                self?.collectionView.reloadData()
+                self?.updateEmptyStateVisibility()
+            }
         }
     }
-    
-    // MARK: - UI Setup
-    
-    private func setup() {
-        setupBackground()
-        addSubviewsToView()
-        setupConstraints()
-        setupCollectionView()
-        setupAddButton()
-    }
-    // MARK: - Private Methods
-    private func setupBackground() {
-        view.backgroundColor = .systemBackground
-    }
-    
-    private func addSubviewsToView() {
         
-        view.addSubview(mainStackView)
-        view.addSubview(addButton)
-        
-    }
-    
-    //MARK: - Setup Collection View
-    
-    private func setupCollectionView() {
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        collectionView.backgroundColor = .clear
-        registerCollectionViewCell()
-    }
-    private func registerCollectionViewCell() {
-        collectionView.register(OriginalRecipeCell.self, forCellWithReuseIdentifier: "originalRecipeCell")
-    }
-    func setupConstraints() {
-        NSLayoutConstraint.activate([
-            mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            mainStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 80),
-            mainStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            
-            
-            addButton.widthAnchor.constraint(equalToConstant: 60),
-            addButton.heightAnchor.constraint(equalToConstant: 60),
-            addButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            addButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-        
-        ])
-    }
-    
-    private func showEmptyState() {
-        if children.contains(emptyStateViewController) { return }
-        
-        addChild(emptyStateViewController)
-        view.addSubview(emptyStateViewController.view)
-        emptyStateViewController.view.frame = view.bounds
-        emptyStateViewController.didMove(toParent: self)
-        animationView.play()
+        private func updateEmptyStateVisibility() {
+            if originalRecipes.isEmpty {
+                showEmptyState()
+            } else {
+                hideEmptyState()
+            }
         }
+        
+        // MARK: - UI Setup
+        
+        private func setup() {
+            setupBackground()
+            addSubviewsToView()
+            setupConstraints()
+            setupCollectionView()
+            setupAddButton()
+        }
+        // MARK: - Private Methods
+        private func setupBackground() {
+            view.backgroundColor = .systemBackground
+        }
+        
+        private func addSubviewsToView() {
+            
+            view.addSubview(mainStackView)
+            view.addSubview(addButton)
+            
+        }
+        
+        //MARK: - Setup Collection View
+        
+        private func setupCollectionView() {
+            collectionView.dataSource = self
+            collectionView.delegate = self
+            collectionView.backgroundColor = .clear
+            registerCollectionViewCell()
+        }
+        private func registerCollectionViewCell() {
+            collectionView.register(OriginalRecipeCell.self, forCellWithReuseIdentifier: "originalRecipeCell")
+        }
+        func setupConstraints() {
+            NSLayoutConstraint.activate([
+                mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+                mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+                mainStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 80),
+                mainStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+                
+                
+                addButton.widthAnchor.constraint(equalToConstant: 60),
+                addButton.heightAnchor.constraint(equalToConstant: 60),
+                addButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+                addButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+                
+            ])
+        }
+
+        
+        private func showEmptyState() {
+            if children.contains(emptyStateViewController) { return }
+            
+            DispatchQueue.main.async {
+                self.addChild(self.emptyStateViewController)
+                self.view.addSubview(self.emptyStateViewController.view)
+                self.emptyStateViewController.view.frame = self.view.bounds
+                self.emptyStateViewController.didMove(toParent: self)
+                self.animationView.play()
+                self.view.bringSubviewToFront(self.addButton) 
+            }
+        }
+    
 
     
     private func hideEmptyState() {
@@ -168,14 +181,15 @@ final class OriginalRecipeViewController: UIViewController {
         updateEmptyStateVisibility()
     }
     private func addButtonTapped() {
-        let viewController = UIHostingController(
-            rootView: OriginalRecipeView(dismissAction: {
+        print("Add button tapped")
+        let viewController = UIHostingController(rootView: OriginalRecipeView(dismissAction: {
                 Task {
                     await self.getRecipes()
                     self.dismiss(animated: true)
                 }
             })
         )
+        print(viewController) 
         present(viewController, animated: true)
     }
 }

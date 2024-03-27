@@ -249,10 +249,14 @@ class RegisterViewController: UIViewController, RegisterViewModelDelegate {
             meetsSpecialCharRequirementLabel.textColor = color
         }
     
+//    @objc private func didTapSignIn() {
+//        self.navigationController?.popToRootViewController(animated: true)
+//    }
+//    
     @objc private func didTapSignIn() {
-        self.navigationController?.popToRootViewController(animated: true)
+        coordinator?.presentLoginViewController()
     }
-    
+
     // MARK: - Binding
     private func setupBindings() {
         self.signUpButton.addTarget(self, action: #selector(didTapSignUp), for: .touchUpInside)
@@ -275,6 +279,12 @@ class RegisterViewController: UIViewController, RegisterViewModelDelegate {
     func showRegistrationErrorAlert(message: String?) {
         RAAlertView.showRegistrationErrorAlert(on: self, with: "")
     }
+    
+    func showSuccessRegistrationAlert(message: String?){
+    RAAlertView.showSuccessRegistrationAlert(on: self)
+        self.navigationController?.popViewController(animated: true)
+    }
+
     
     func checkAuthentication() {
         coordinator?.start()

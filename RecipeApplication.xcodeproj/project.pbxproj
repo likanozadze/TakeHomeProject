@@ -41,7 +41,6 @@
 		98960F692B7798B500667BA2 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98960F682B7798B500667BA2 /* TabBarController.swift */; };
 		98960F6B2B77AE7900667BA2 /* PersistanceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98960F6A2B77AE7900667BA2 /* PersistanceManager.swift */; };
 		98A5658A2BAF4450009BC302 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A565892BAF4450009BC302 /* UserManager.swift */; };
-		98A5658C2BAF576A009BC302 /* AuthServiceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A5658B2BAF576A009BC302 /* AuthServiceModel.swift */; };
 		98ABC0602BB2AF1D00AFC695 /* OriginalRecipeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98ABC05F2BB2AF1D00AFC695 /* OriginalRecipeDetailView.swift */; };
 		98AE16212B5981CF00AF5528 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98AE16202B5981CF00AF5528 /* AppDelegate.swift */; };
 		98AE16232B5981CF00AF5528 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98AE16222B5981CF00AF5528 /* SceneDelegate.swift */; };
@@ -112,7 +111,6 @@
 		98960F682B7798B500667BA2 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		98960F6A2B77AE7900667BA2 /* PersistanceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistanceManager.swift; sourceTree = "<group>"; };
 		98A565892BAF4450009BC302 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
-		98A5658B2BAF576A009BC302 /* AuthServiceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthServiceModel.swift; sourceTree = "<group>"; };
 		98ABC05F2BB2AF1D00AFC695 /* OriginalRecipeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OriginalRecipeDetailView.swift; sourceTree = "<group>"; };
 		98AE161D2B5981CF00AF5528 /* RecipeApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RecipeApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		98AE16202B5981CF00AF5528 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -134,7 +132,7 @@
 		98D26B332B71260300BAA30B /* CategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewModel.swift; sourceTree = "<group>"; };
 		98D26B352B71269900BAA30B /* CategoryRecipeCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryRecipeCollectionView.swift; sourceTree = "<group>"; };
 		98D26B372B71271B00BAA30B /* CategoryRecipeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryRecipeViewController.swift; sourceTree = "<group>"; };
-		98D26B392B716EEE00BAA30B /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
+		98D26B392B716EEE00BAA30B /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Configuration.swift; path = ../Configuration.swift; sourceTree = "<group>"; };
 		98D2DFE12B5AE0BE0062B36C /* RAButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAButton.swift; sourceTree = "<group>"; };
 		98D2DFE42B5AE1510062B36C /* RATextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RATextField.swift; sourceTree = "<group>"; };
 		98D2DFE62B5AE16E0062B36C /* RATitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RATitleLabel.swift; sourceTree = "<group>"; };
@@ -256,8 +254,8 @@
 		984019A82B6801D70025D5D3 /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
-				98AE162B2B5981D100AF5528 /* LaunchScreen.storyboard */,
 				984019A92B6802060025D5D3 /* spinning_sound.mp3 */,
+				98AE162B2B5981D100AF5528 /* LaunchScreen.storyboard */,
 				98AE16292B5981D100AF5528 /* Assets.xcassets */,
 				98E4E1F42B92392300683A11 /* Animation - 1709293040117.json */,
 				9808EB162BB2FB8000D782B6 /* Animation - 1711457021878.json */,
@@ -294,6 +292,7 @@
 				984061942B5C5C7D00A6BFAF /* NavigationCoordinator.swift */,
 				98960F682B7798B500667BA2 /* TabBarController.swift */,
 				98960F6A2B77AE7900667BA2 /* PersistanceManager.swift */,
+				98D26B392B716EEE00BAA30B /* Configuration.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -312,7 +311,6 @@
 			children = (
 				988DE7D62B5D2C0900FA0ABC /* GoogleService-Info.plist */,
 				988DE8142B5D323300FA0ABC /* AuthService.swift */,
-				98A5658B2BAF576A009BC302 /* AuthServiceModel.swift */,
 				988DE81B2B5D439500FA0ABC /* Validator.swift */,
 				98A565892BAF4450009BC302 /* UserManager.swift */,
 			);
@@ -388,7 +386,6 @@
 				98D2DFE32B5AE0C40062B36C /* ReusableComponents */,
 				98E4E1F62B92407C00683A11 /* Resources */,
 				98AE162E2B5981D100AF5528 /* Info.plist */,
-				98D26B392B716EEE00BAA30B /* Configuration.swift */,
 			);
 			path = RecipeApplication;
 			sourceTree = "<group>";
@@ -584,7 +581,6 @@
 				98AE16352B59821500AF5528 /* FavoritesViewController.swift in Sources */,
 				98D2DFE52B5AE1510062B36C /* RATextField.swift in Sources */,
 				984019C32B692DC80025D5D3 /* ProgressBarView.swift in Sources */,
-				98A5658C2BAF576A009BC302 /* AuthServiceModel.swift in Sources */,
 				984019BD2B692D8B0025D5D3 /* ProductView.swift in Sources */,
 				988DE8152B5D323300FA0ABC /* AuthService.swift in Sources */,
 				98F826122B741A26001FAFF4 /* OnboardingView.swift in Sources */,

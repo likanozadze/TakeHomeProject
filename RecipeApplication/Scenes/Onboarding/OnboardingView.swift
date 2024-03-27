@@ -11,6 +11,7 @@ struct OnboardingView: View {
     @State private var screenIndex = 0
     private let screens: [ScreenView]
     weak var delegate: OnboardingViewDelegate?
+    var coordinator: NavigationCoordinator?
     
     init(screens: [ScreenView]) {
         self.screens = screens
@@ -66,6 +67,7 @@ extension OnboardingView {
             Button(action: {
                 UserDefaults.standard.set(true, forKey: "hasSeenOnboarding")
                 delegate?.didCompleteOnboarding()
+                coordinator?.presentLoginViewController() 
             }) {
                 Text("Skip")
                     .foregroundColor(.black)
