@@ -17,6 +17,7 @@ struct OriginalRecipeDetailView: View {
                 if let imageURL = URL(string: recipe.image) {
                     AsyncImage(url: imageURL) { image in
                         image.resizable()
+                            .scaledToFit()
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                     } placeholder: {
                         ProgressView()
