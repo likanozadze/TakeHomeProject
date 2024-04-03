@@ -38,7 +38,15 @@ final class HomeViewModel: ObservableObject {
     
     func fetchRecipes() {
         
-        if let savedRecipes = UserDefaults.standard.object(forKey: "recipes") as? Data {
+//        if let savedRecipes = UserDefaults.standard.object(forKey: "recipes") as? Data {
+//            let decoder = JSONDecoder()
+//            if let loadedRecipes = try? decoder.decode([Recipe].self, from: savedRecipes) {
+//                self.recipes = loadedRecipes
+//                self.delegate?.recipesFetched(loadedRecipes)
+//                return
+//            }
+//        }
+        if let savedRecipes = UserDefaults.standard.object(forKey: "newRecipes") as? Data {
             let decoder = JSONDecoder()
             if let loadedRecipes = try? decoder.decode([Recipe].self, from: savedRecipes) {
                 self.recipes = loadedRecipes
@@ -46,14 +54,14 @@ final class HomeViewModel: ObservableObject {
                 return
             }
         }
-        
         let baseURL = "https://api.spoonacular.com"
         let apiKey = Configuration.apiKey
         let endpoint = "/recipes/complexSearch"
         let parameters: [String: Any] = [
             "apiKey": apiKey,
-            "number": 10,
+            "number": 20,
             "addRecipeInformation": true,
+            
         ]
         
         networkManager.request(

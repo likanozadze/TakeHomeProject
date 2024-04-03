@@ -24,7 +24,7 @@ final class CategoryViewModel {
     weak var delegate: CategoryListViewModelDelegate?
     private let networkManager: NetworkManager
     var recipes: [Recipe] = []
-
+    
     
     // MARK: Initialization
     
@@ -35,24 +35,24 @@ final class CategoryViewModel {
     // MARK: Public Methods
     
     func fetchRecipesByTag(_ tag: String) {
-        if let savedRecipes = UserDefaults.standard.object(forKey: tag) as? Data {
-                   let decoder = JSONDecoder()
-                   if let loadedRecipes = try? decoder.decode([Recipe].self, from: savedRecipes) {
-                       self.recipes = loadedRecipes
-                       DispatchQueue.main.async {
-                           self.delegate?.categoriesFetched(loadedRecipes)
+                if let savedRecipes = UserDefaults.standard.object(forKey: tag) as? Data {
+                           let decoder = JSONDecoder()
+                           if let loadedRecipes = try? decoder.decode([Recipe].self, from: savedRecipes) {
+                               self.recipes = loadedRecipes
+                               DispatchQueue.main.async {
+                                   self.delegate?.categoriesFetched(loadedRecipes)
+                               }
+                               return
+                           }
                        }
-                       return
-                   }
-               }
-
-
+        
+        
         let baseURL = "https://api.spoonacular.com"
         let apiKey = Configuration.apiKey
         let endpoint = "/recipes/complexSearch"
         let parameters: [String: Any] = [
             "apiKey": apiKey,
-            "number": 10,
+            "number": 20,
             "type": tag.lowercased().replacingOccurrences(of: " ", with: "+")
         ]
         
@@ -66,12 +66,12 @@ final class CategoryViewModel {
                 case .success(let fetchedRecipes):
                     self.recipes = fetchedRecipes.results
                     let encoder = JSONEncoder()
-                                     if let encoded = try? encoder.encode(fetchedRecipes.results) {
-                                         UserDefaults.standard.set(encoded, forKey: tag)
-                                     }
-                                     DispatchQueue.main.async {
-                                         self.delegate?.categoriesFetched(fetchedRecipes.results)
-                                     }
+                    if let encoded = try? encoder.encode(fetchedRecipes.results) {
+                        UserDefaults.standard.set(encoded, forKey: tag)
+                    }
+                    DispatchQueue.main.async {
+                        self.delegate?.categoriesFetched(fetchedRecipes.results)
+                    }
                     
                 case .failure(let error):
                     print("Error fetching data:", error)

@@ -15,21 +15,27 @@ final class CategoryRecipeViewController: UIViewController, RecipeItemCollection
     
     var categoryViewModel = CategoryViewModel()
     var selectedCategory: String?
-    var categoryRecipeCollectionView = CategoryRecipeCollectionView()
+    private let viewModel = HomeViewModel()
+    var categoryRecipeTableView = CategoryRecipeTableView()
     private var recipe: [Recipe] = []
     private var selectedRecipes: [Recipe] = []
     var coordinator: NavigationCoordinator?
     weak var delegate: RecipeItemCollectionViewCellDelegate?
     
+        
     // MARK: - ViewLifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        setupViewModelDelegate()
+       viewModel.viewDidLoad()
+        categoryRecipeTableView.register(RecipeItemTableViewCell.self, forCellReuseIdentifier: "RecipeTableViewCell")
+    
         coordinator = NavigationCoordinator(navigationController: navigationController!)
                 coordinator?.delegate = self
-        categoryRecipeCollectionView.delegate = self
-        categoryRecipeCollectionView.dataSource = self
+        categoryRecipeTableView.delegate = self
+        categoryRecipeTableView.dataSource = self
         
         if let selectedCategory = selectedCategory {
             categoryViewModel.delegate = self
@@ -44,6 +50,7 @@ final class CategoryRecipeViewController: UIViewController, RecipeItemCollection
         setupBackground()
         addSubviewsToView()
         setupConstraints()
+   
     }
     
     // MARK: - Private Methods
@@ -57,17 +64,20 @@ final class CategoryRecipeViewController: UIViewController, RecipeItemCollection
     }
     
     private func addMainSubviews() {
-        view.addSubview(categoryRecipeCollectionView)
+        view.addSubview(categoryRecipeTableView)
     }
     
     func setupConstraints() {
-        categoryRecipeCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        categoryRecipeTableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            categoryRecipeCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            categoryRecipeCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            categoryRecipeCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            categoryRecipeCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20)
+            categoryRecipeTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            categoryRecipeTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            categoryRecipeTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            categoryRecipeTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20)
         ])
+    }
+    private func setupViewModelDelegate() {
+        viewModel.delegate = self
     }
 }
 
@@ -77,7 +87,7 @@ final class CategoryRecipeViewController: UIViewController, RecipeItemCollection
     func categoriesFetched(_ recipes: [Recipe]) {
         self.recipe = recipes
         DispatchQueue.main.async {
-            self.categoryRecipeCollectionView.reloadData()
+            self.categoryRecipeTableView.reloadData()
         }
     }
 
@@ -88,36 +98,30 @@ final class CategoryRecipeViewController: UIViewController, RecipeItemCollection
 }
 
 
-// MARK: - UICollectionViewDataSource
 
-extension CategoryRecipeViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print("Number of items: \(recipe.count)")
+
+// MARK: - UITableViewDataSource
+
+extension CategoryRecipeViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return recipe.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecipeItemCell", for: indexPath) as? RecipeItemCollectionViewCell else {
-            return UICollectionViewCell()
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeTableViewCell", for: indexPath) as? RecipeItemTableViewCell else {
+            return UITableViewCell()
         }
-        cell.isUserInteractionEnabled = true
-         cell.delegate = self
+     //   cell.isUserInteractionEnabled = true
+        cell.delegate = self
         cell.configure(with: recipe[indexPath.row])
         return cell
     }
 }
 
 
-// MARK: - CollectionView FlowLayoutDelegate
-extension CategoryRecipeViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 340, height: 240)
-        
-    }
-}
 
-extension CategoryRecipeViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+extension CategoryRecipeViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let recipe = categoryViewModel.recipe(at: indexPath) {
             coordinator?.didSelectRecipe(recipe: recipe)
         }
@@ -140,5 +144,18 @@ extension CategoryRecipeViewController: NavigationCoordinatorDelegate {
     
     func didTapFavoriteButton(on cell: RecipeItemCollectionViewCell) {
         coordinator?.didTapFavoriteButton(on: cell)
+    }
+}
+
+extension CategoryRecipeViewController: RecipeListViewModelDelegate {
+    func recipesFetched(_ recipe: [Recipe]) {
+        self.recipe = recipe
+        DispatchQueue.main.async {
+            self.categoryRecipeTableView.reloadData()
+        }
+    }
+    
+    func recipeFetchError(_ error: Error) {
+        print("Error fetching recipes: \(error.localizedDescription)")
     }
 }

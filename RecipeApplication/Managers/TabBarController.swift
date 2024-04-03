@@ -67,7 +67,7 @@ class TabBarController: UITabBarController {
         func createProfileViewNavigation() -> UINavigationController {
             let profileViewController = FavoritesViewController()
             profileViewController.title = ""
-            profileViewController.tabBarItem = UITabBarItem(title: "Favorites", image: UIImage(systemName: "heart.fill"), tag: 3)
+            profileViewController.tabBarItem = UITabBarItem(title: "Favorites", image: UIImage(systemName: "heart"), tag: 3)
             let navigationController = UINavigationController(rootViewController: profileViewController)
             addLogoutButton(to: navigationController)
             return navigationController

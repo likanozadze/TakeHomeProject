@@ -6,13 +6,12 @@
 //
 
 import UIKit
-import NetworkLayer
 
 // MARK: - RecipeItemCollectionViewCellDelegate
 
 protocol RecipeItemCollectionViewCellDelegate: AnyObject {
     func didTapFavoriteButton(on cell: RecipeItemCollectionViewCell)
-       func didSelectRecipe(on cell: RecipeItemCollectionViewCell)
+    func didSelectRecipe(on cell: RecipeItemCollectionViewCell)
 }
 
 // MARK: - RecipeItemCollectionViewCell
@@ -21,10 +20,20 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
     // MARK: Properties
     var recipe: Recipe?
     weak var delegate: RecipeItemCollectionViewCellDelegate?
-    private let recipeCollectionView = RecipeCollectionView()
-    private let networkManager = NetworkManager.shared
     
     // MARK: - UI Components
+    
+    
+    private let mainStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.spacing = 10
+        stackView.alignment = .top
+        stackView.axis = .vertical
+        stackView.isLayoutMarginsRelativeArrangement = true
+        stackView.layoutMargins = .init(top: 12, left: 16, bottom: 12, right: 16)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
     
     private let recipeImageView: UIImageView = {
         let imageView = UIImageView()
@@ -43,6 +52,23 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
         label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
         return label
     }()
+    
+    private let dishLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.textColor = UIColor(named: "textColor")
+        label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        return label
+    }()
+    
+    private let servingsLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.textColor = UIColor(named: "textColor")
+        label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        return label
+    }()
+    
     private let readyInMinLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
@@ -58,14 +84,23 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-    private lazy var bottomStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [readyInMinLabel, favoriteButton])
-        stackView.axis = .horizontal
+    private lazy var titleStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [recipeTitle, dishLabel])
+        stackView.axis = .vertical
         stackView.spacing = 2
         stackView.distribution = .fill
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
+    private lazy var bottomStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [readyInMinLabel, servingsLabel])
+        stackView.axis = .horizontal
+        stackView.spacing = 5
+        stackView.distribution = .fill
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
     
     // MARK: - Initialization
     
@@ -87,36 +122,38 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
         recipeImageView.image = nil
         recipeTitle.text = nil
         readyInMinLabel.text = nil
+        servingsLabel.text = nil
+        dishLabel.text = nil
         favoriteButton.setImage(UIImage(systemName: "heart"), for: .normal)
     }
     
     // MARK: - Private Methods
-    private func addSubview() {
-        contentView.addSubview(recipeImageView)
-        contentView.addSubview(recipeTitle)
-        contentView.addSubview(bottomStackView)
-    }
     
+    private func addSubview() {
+        contentView.addSubview(mainStackView)
+        mainStackView.addArrangedSubview(recipeImageView)
+        mainStackView.addArrangedSubview(bottomStackView)
+        mainStackView.addArrangedSubview(titleStackView)
+        contentView.addSubview(favoriteButton)
+        
+    }
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            recipeImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            recipeImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            recipeImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            recipeImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.7)
             
-        ])
-        
-        NSLayoutConstraint.activate([
-            recipeTitle.topAnchor.constraint(equalTo: recipeImageView.bottomAnchor, constant: 10),
-            recipeTitle.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            recipeTitle.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
-        ])
-        
-        NSLayoutConstraint.activate([
-            bottomStackView.topAnchor.constraint(equalTo: recipeTitle.bottomAnchor, constant: 8),
-            bottomStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            bottomStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            bottomStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            mainStackView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            mainStackView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
+            mainStackView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
+            mainStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            
+            recipeImageView.widthAnchor.constraint(equalToConstant: 150),
+            recipeImageView.heightAnchor.constraint(equalToConstant: 150),
+            
+            favoriteButton.topAnchor.constraint(equalTo: mainStackView.topAnchor, constant: 16),
+            favoriteButton.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor, constant: -16),
+            favoriteButton.widthAnchor.constraint(equalToConstant: 28),
+            favoriteButton.heightAnchor.constraint(equalToConstant: 24),
+            
+            
         ])
     }
     
@@ -161,7 +198,7 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
             delegate?.didTapFavoriteButton(on: self)
         }
     }
-
+    
     
     private func configureCellAppearance() {
         contentView.backgroundColor = .systemBackground
@@ -173,7 +210,7 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
         contentView.layer.shadowRadius = 8
         contentView.layer.shadowPath = UIBezierPath(roundedRect: contentView.bounds, cornerRadius: 8).cgPath
     }
-
+    
     // MARK: - Configuration
     func convertToSecureURL(_ url: String?) -> String? {
         guard let url = url else {
@@ -203,6 +240,26 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
         } else {
             readyInMinLabel.text = "N/A"
         }
+        
+        if let servingsCount = recipe.servings {
+            if let servingsImage = UIImage(systemName: "person")?.withTintColor(UIColor(named: "AccentColor") ?? .white) {
+                
+                let servingsAttachment = NSTextAttachment(image: servingsImage)
+                
+                let attachmentString = NSAttributedString(attachment: servingsAttachment)
+                let servingsString = NSMutableAttributedString(string: "  \(servingsCount)")
+                servingsString.insert(attachmentString, at: 0)
+                
+                servingsLabel.attributedText = servingsString
+               // print("This recipe serves: \(servingsCount)")
+            }
+        }
+        
+        if let dishTypesArray = recipe.dishTypes {
+            dishLabel.text = dishTypesArray[0]
+           // print("Dish Types: \(dishTypesArray)")
+        }
+        
     }
     private func downloadImage (from url: String?) {
         guard let urlString = url, let imageUrl = URL(string: urlString) else {

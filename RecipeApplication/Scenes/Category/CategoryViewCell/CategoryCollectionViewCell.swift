@@ -22,7 +22,7 @@ class CategoryCollectionViewCell: UICollectionViewCell {
     
     private let arrowButton: UIButton = {
         let button = UIButton(type: .system)
-        button.tintColor = .testColorSet
+        button.tintColor = .accent
         button.setImage(UIImage(systemName: "arrow.forward.circle.fill"), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
