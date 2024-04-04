@@ -88,15 +88,21 @@ extension FavoriteRecipeCollectionView: UICollectionViewDelegateFlowLayout {
 }
         // MARK: - RecipeItemCollectionViewCellDelegate
 extension FavoriteRecipeCollectionView: RecipeItemCollectionViewCellDelegate {
-        func didTapFavoriteButton(on cell: RecipeItemCollectionViewCell) {
-            guard let indexPath = self.indexPath(for: cell), indexPath.row < favoriteRecipes.count else {
-                return
-            }
-            
-            let recipe = favoriteRecipes[indexPath.row]
-            favoriteRecipeDelegate?.didTapFavoriteRecipe(recipe: recipe)
+    func didTapFavoriteButton(on cell: RecipeItemCollectionViewCell) {
+        guard let indexPath = self.indexPath(for: cell), indexPath.row < favoriteRecipes.count else {
+            return
         }
-        
+
+        let recipe = favoriteRecipes[indexPath.row]
+        PersistenceManager.updateWith(favorite: recipe, actionType: .remove) { error in
+            if let error = error {
+                print("Error unfavoriting recipe: \(error.rawValue)")
+            } else {
+                self.favoriteRecipes.remove(at: indexPath.row)
+                self.reloadData()
+            }
+        }
+    }
         func didSelectRecipe(on cell: RecipeItemCollectionViewCell) {
             guard let indexPath = self.indexPath(for: cell), indexPath.row < favoriteRecipes.count else {
                 return
