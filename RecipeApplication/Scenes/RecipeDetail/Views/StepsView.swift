@@ -28,17 +28,18 @@ struct StepsSectionView: View {
                                 Image(systemName: completedSteps[step.number, default: false] ? "checkmark.square" : "square")
                                     .foregroundColor(Color(red: 134/255, green: 191/255, blue: 62/255))
                                     .font(.system(size: 25))
-                                    .onTapGesture {
-                                        if completedSteps[step.number, default: false] {
-                                            completedSteps[step.number] = false
-                                            progress -= 100 / CGFloat(steps.count)
-                                        } else {
-                                            completedSteps[step.number] = true
-                                            progress += 100 / CGFloat(steps.count)
-                                        }
-                                    }
+                               
             
                                 StepView(step: step)
+                            }
+                            .onTapGesture {
+                                if completedSteps[step.number, default: false] {
+                                    completedSteps[step.number] = false
+                                    progress -= 100 / CGFloat(steps.count)
+                                } else {
+                                    completedSteps[step.number] = true
+                                    progress += 100 / CGFloat(steps.count)
+                                }
                             }
                             Divider().background(Color.gray.opacity(0.2))
                         }

@@ -1,13 +1,12 @@
+////
+////  IngredientCellView.swift
+////  RecipeApplication
+////
+////  Created by Lika Nozadze on 1/30/24.
+////
 //
-//  IngredientCellView.swift
-//  RecipeApplication
-//
-//  Created by Lika Nozadze on 1/30/24.
-//
-
 import SwiftUI
 
-// MARK: - IngredientCellView
 struct IngredientCellView: View {
     
     // MARK: Properties
@@ -25,10 +24,7 @@ struct IngredientCellView: View {
                     HStack {
                         Image(systemName: selectedIngredients[ingredient.id, default: false] ? "checkmark.square" : "square")
                             .foregroundColor(Color(red: 134/255, green: 191/255, blue: 62/255))
-                            .font(.system(size: 18))
-                            .onTapGesture {
-                                selectedIngredients[ingredient.id, default: false].toggle()
-                            }
+                            .font(.system(size: 25))
                         
                         Text(ingredient.name)
                             .font(.system(size: 16))
@@ -42,15 +38,16 @@ struct IngredientCellView: View {
                                 .font(.system(size: 16))
                                 .foregroundColor(.testColorSet)
                         }
-                        
-                        .foregroundStyle(.clear)
-                        .frame(height: 30)
-                        .cornerRadius(8)
-                        Divider().background(Color.gray.opacity(0.2))
                     }
+                    .foregroundStyle(.clear)
+                    .frame(height: 30)
+                    .cornerRadius(8)
+                    .onTapGesture {
+                        selectedIngredients[ingredient.id, default: false].toggle()
+                    }
+                    Divider().background(Color.gray.opacity(0.2))
                 }
             }
         }
     }
 }
-
