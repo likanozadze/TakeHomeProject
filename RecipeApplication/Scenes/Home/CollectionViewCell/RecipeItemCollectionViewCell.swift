@@ -80,7 +80,7 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
         let button = UIButton(type: .system)
         button.tintColor = .red
         button.setImage(UIImage(systemName: "heart"), for: .normal)
-        button.addTarget(target, action: #selector(favoriteButtonTapped(_:)), for: .touchUpInside)
+        //button.addTarget(target, action: #selector(favoriteButtonTapped(_:)), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -109,6 +109,7 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
         addSubview()
         setupConstraints()
         configureCellAppearance()
+        favoriteButton.addTarget(self, action: #selector(favoriteButtonTapped), for: .touchUpInside)
         
     }
     
@@ -156,50 +157,35 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
             
         ])
     }
-    
     @objc private func favoriteButtonTapped(_ sender: UIButton) {
         guard let recipe = recipe else { return }
+
         sender.isSelected.toggle()
-        if sender.isSelected {
-            
-            PersistenceManager.updateWith(favorite: recipe, actionType: .add) { error in
-                if let error = error {
-                    print("Error favoriting recipe: \(error.rawValue)")
-                    
-                } else {
-                    PersistenceManager.retrieveFavorites { result in
-                        switch result {
-                        case .success(let favoriteRecipes):
-                            print("Retrieved favorite recipes: \(favoriteRecipes)")
-                        case .failure(let error):
-                            print("Error retrieving favorites: \(error.rawValue)")
-                        }
-                    }
-                }
-            }
-        } else {
-            print("Removing recipe from favorites: \(recipe.title)")
-            PersistenceManager.updateWith(favorite: recipe, actionType: .remove) { error in
-                if let error = error {
-                    print("Error removing recipe from favorites: \(error.rawValue)")
-                } else {
-                    PersistenceManager.retrieveFavorites { result in
-                        switch result {
-                        case .success(let favoriteRecipes):
-                            print("Retrieved favorite recipes: \(favoriteRecipes)")
-                        case .failure(let error):
-                            print("Error retrieving favorites: \(error.rawValue)")
-                        }
+
+        let actionTypeDescription: String = sender.isSelected ? "add" : "remove"
+        let actionType: PersistenceActionType = sender.isSelected ? .add : .remove
+
+        PersistenceManager.updateWith(favorite: recipe, actionType: actionType) { error in
+            if let error = error {
+                print("Error \(actionTypeDescription) recipe: \(error.rawValue)")
+            } else {
+                PersistenceManager.retrieveFavorites { result in
+                    switch result {
+                    case .success(let favoriteRecipes):
+                        print("Retrieved favorite recipes: \(favoriteRecipes)")
+                    case .failure(let error):
+                        print("Error retrieving favorites: \(error.rawValue)")
                     }
                 }
             }
         }
+
         if sender.isSelected {
             delegate?.didTapFavoriteButton(on: self)
         }
     }
-    
-    
+
+
     private func configureCellAppearance() {
         contentView.backgroundColor = .systemBackground
         contentView.layer.cornerRadius = 8
@@ -251,13 +237,11 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
                 servingsString.insert(attachmentString, at: 0)
                 
                 servingsLabel.attributedText = servingsString
-               // print("This recipe serves: \(servingsCount)")
             }
         }
         
         if let dishTypesArray = recipe.dishTypes {
             dishLabel.text = dishTypesArray[0]
-           // print("Dish Types: \(dishTypesArray)")
         }
         
     }

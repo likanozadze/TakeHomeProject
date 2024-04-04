@@ -14,7 +14,7 @@ enum PersistenceActionType {
 enum PersistenceManager {
     
     static private let defaults = UserDefaults.standard
-
+    
     enum Keys {
         static let favorites = "favorites"
     }
@@ -43,7 +43,7 @@ enum PersistenceManager {
             }
         }
     }
-
+    
     static func retrieveFavorites(completed: @escaping (Result<[Recipe], RAError>) -> Void) {
         guard let favoritesData = defaults.object(forKey: Keys.favorites) as? Data else {
             completed(.success([]))
@@ -61,7 +61,7 @@ enum PersistenceManager {
     }
     
     static func save(favorites: [Recipe]) -> RAError? {
-
+        
         do {
             let encoder = JSONEncoder()
             let encodedFavorites = try encoder.encode(favorites)
@@ -69,13 +69,30 @@ enum PersistenceManager {
             defaults.set(encodedFavorites, forKey: Keys.favorites)
             
             if let savedData = defaults.object(forKey: Keys.favorites) as? Data {
-                let decoder = JSONDecoder() 
-                           let savedFavorites = try decoder.decode([Recipe].self, from: savedData)
-                           print("Favorites saved: \(savedFavorites)")
-                       }
+                let decoder = JSONDecoder()
+                let savedFavorites = try decoder.decode([Recipe].self, from: savedData)
+                print("Favorites saved: \(savedFavorites)")
+            }
             return nil
         } catch {
             return .unableToFavorite
+        }
+    }
+    
+    static func toggleFavorite(recipe: Recipe, completed: @escaping (Result<Bool, RAError>) -> Void) {
+        retrieveFavorites { result in
+            switch result {
+            case .success(var favorites):
+                let isCurrentlyFavorited = favorites.contains(where: { $0.id == recipe.id })
+                if isCurrentlyFavorited {
+                    favorites.removeAll(where: {$0.id == recipe.id})
+                } else {
+                    favorites.append(recipe)
+                }
+                completed(.success(!isCurrentlyFavorited)) 
+            case .failure(let error):
+                completed(.failure(error))
+            }
         }
     }
 }

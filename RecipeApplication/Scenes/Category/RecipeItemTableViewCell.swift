@@ -144,32 +144,17 @@ private func addSubview() {
         ])
     }
 
+    @objc private func favoriteButtonTapped(_ sender: UIButton) {
+        guard let recipe = recipe else { return }
 
-@objc private func favoriteButtonTapped(_ sender: UIButton) {
-    guard let recipe = recipe else { return }
-    sender.isSelected.toggle()
-    if sender.isSelected {
-        
-        PersistenceManager.updateWith(favorite: recipe, actionType: .add) { error in
+        sender.isSelected.toggle()
+
+        let actionTypeDescription: String = sender.isSelected ? "add" : "remove"
+        let actionType: PersistenceActionType = sender.isSelected ? .add : .remove
+
+        PersistenceManager.updateWith(favorite: recipe, actionType: actionType) { error in
             if let error = error {
-                print("Error favoriting recipe: \(error.rawValue)")
-                
-            } else {
-                PersistenceManager.retrieveFavorites { result in
-                    switch result {
-                    case .success(let favoriteRecipes):
-                        print("Retrieved favorite recipes: \(favoriteRecipes)")
-                    case .failure(let error):
-                        print("Error retrieving favorites: \(error.rawValue)")
-                    }
-                }
-            }
-        }
-    } else {
-        print("Removing recipe from favorites: \(recipe.title)")
-        PersistenceManager.updateWith(favorite: recipe, actionType: .remove) { error in
-            if let error = error {
-                print("Error removing recipe from favorites: \(error.rawValue)")
+                print("Error \(actionTypeDescription) recipe: \(error.rawValue)")
             } else {
                 PersistenceManager.retrieveFavorites { result in
                     switch result {
@@ -182,11 +167,6 @@ private func addSubview() {
             }
         }
     }
-//    if sender.isSelected {
-//        delegate?.didTapFavoriteButton(on: self)
-//    }
-}
-
 
 private func configureCellAppearance() {
     contentView.backgroundColor = .systemBackground

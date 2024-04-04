@@ -57,12 +57,12 @@ class NavigationCoordinator: OnboardingViewDelegate, NavigationCoordinatorDelega
     }
     
     // MARK: Coordinator Methods
-
+    
     func start() {
         let hasSeenOnboarding = UserDefaults.standard.bool(forKey: "hasSeenOnboarding")
         state = hasSeenOnboarding ? .authenticated(user: User(id: "", username: "", email: "", recipes: nil, likedRecipes: nil)) : .onboarding
     }
-
+    
     func checkAuthentication() {
         if Auth.auth().currentUser == nil {
             presentLoginViewController()
@@ -70,20 +70,20 @@ class NavigationCoordinator: OnboardingViewDelegate, NavigationCoordinatorDelega
             presentTabBarControllerOnMainThread()
         }
     }
-        
+    
     // MARK: State Management Methods
-        private func transitionTo(_ state: AppState) {
-                switch state {
-                case .onboarding:
-                    showOnboarding()
-                case .authenticated:
-                    presentTabBarControllerOnMainThread()
-                case .unauthenticated:
-                    presentLoginViewController()
+    private func transitionTo(_ state: AppState) {
+        switch state {
+        case .onboarding:
+            showOnboarding()
+        case .authenticated:
+            presentTabBarControllerOnMainThread()
+        case .unauthenticated:
+            presentLoginViewController()
         }
     }
     
-
+    
     // MARK: Authentication Methods
     func showOnboarding() {
         var onboardingView = OnboardingView(screens: ScreenView.onboardPages)
@@ -107,7 +107,7 @@ class NavigationCoordinator: OnboardingViewDelegate, NavigationCoordinatorDelega
             self.navigationController.pushViewController(tabBarController, animated: true)
         }
     }
-
+    
     
     func register() {
         let registerViewController = RegisterViewController()
@@ -165,42 +165,24 @@ class NavigationCoordinator: OnboardingViewDelegate, NavigationCoordinatorDelega
         navigationController.pushViewController(hostingController, animated: true)
     }
     
+    
     func didTapFavoriteButton(on cell: RecipeItemCollectionViewCell) {
         guard let indexPath = recipeCollectionView.indexPath(for: cell) else { return }
         let recipe = self.recipe[indexPath.item]
         
-        if cell.favoriteButton.isSelected {
-            PersistenceManager.updateWith(favorite: recipe, actionType: .add) { error in
-                if let error = error {
-                    print("Error favoriting recipe: \(error.rawValue)")
-                } else {
+        PersistenceManager.toggleFavorite(recipe: recipe) { result in
+            switch result {
+            case .success(let isFavorited):
+                if isFavorited {
                     self.selectedRecipes.append(recipe)
-                }
-            }
-        } else {
-            PersistenceManager.updateWith(favorite: recipe, actionType: .remove) { error in
-                if let error = error {
-                    print("Error unfavoriting recipe: \(error.rawValue)")
                 } else {
-                    self.selectedRecipes = self.selectedRecipes.filter { $0.id != recipe.id }
+                    self.selectedRecipes.removeAll(where: {$0.id == recipe.id})
                 }
-            }
-        }
-        
-    }
-    func didTapUnfavoriteButton(on cell: RecipeItemCollectionViewCell) {
-        guard let indexPath = favoriteRecipeCollectionView.indexPath(for: cell) else { return }
-        let recipe = self.favoriteRecipes[indexPath.item]
+                cell.favoriteButton.isSelected = isFavorited
+            case .failure(let error):
+                print("Failed to toggle favorite: \(error.localizedDescription)")
 
-        PersistenceManager.updateWith(favorite: recipe, actionType: .remove) { error in
-            if let error = error {
-                print("Error unfavoriting recipe: \(error.rawValue)")
-            } else {
-                self.selectedRecipes = self.selectedRecipes.filter { $0.id != recipe.id }
-                self.favoriteRecipes = self.favoriteRecipes.filter { $0.id != recipe.id }
-                self.favoriteRecipeCollectionView.reloadData()
             }
         }
     }
-
 }

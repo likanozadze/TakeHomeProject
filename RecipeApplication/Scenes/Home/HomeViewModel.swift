@@ -38,14 +38,14 @@ final class HomeViewModel: ObservableObject {
     
     func fetchRecipes() {
         
-//        if let savedRecipes = UserDefaults.standard.object(forKey: "recipes") as? Data {
-//            let decoder = JSONDecoder()
-//            if let loadedRecipes = try? decoder.decode([Recipe].self, from: savedRecipes) {
-//                self.recipes = loadedRecipes
-//                self.delegate?.recipesFetched(loadedRecipes)
-//                return
-//            }
-//        }
+        if let savedRecipes = UserDefaults.standard.object(forKey: "recipes") as? Data {
+            let decoder = JSONDecoder()
+            if let loadedRecipes = try? decoder.decode([Recipe].self, from: savedRecipes) {
+                self.recipes = loadedRecipes
+                self.delegate?.recipesFetched(loadedRecipes)
+                return
+            }
+        }
         if let savedRecipes = UserDefaults.standard.object(forKey: "newRecipes") as? Data {
             let decoder = JSONDecoder()
             if let loadedRecipes = try? decoder.decode([Recipe].self, from: savedRecipes) {

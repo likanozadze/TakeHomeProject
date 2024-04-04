@@ -157,7 +157,7 @@ extension FavoritesViewController: NavigationCoordinatorDelegate {
         if cell.favoriteButton.isSelected {
             coordinator?.didTapFavoriteButton(on: cell)
         } else {
-            coordinator?.didTapUnfavoriteButton(on: cell)
+    
         }
         
         func recipesUpdated() {

@@ -86,7 +86,8 @@ extension FavoriteRecipeCollectionView: UICollectionViewDelegateFlowLayout {
         return CGSize(width: width, height: height)
     }
 }
-        // MARK: - RecipeItemCollectionViewCellDelegate
+        // MARK: - RecipeItemCollectionViewCellDelegate   
+
 extension FavoriteRecipeCollectionView: RecipeItemCollectionViewCellDelegate {
     func didTapFavoriteButton(on cell: RecipeItemCollectionViewCell) {
         guard let indexPath = self.indexPath(for: cell), indexPath.row < favoriteRecipes.count else {
