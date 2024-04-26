@@ -13,6 +13,7 @@ struct RecipeDetailViewWrapper: View {
     var body: some View {
         NavigationView {
             RecipeDetailView(viewModel: viewModel)
-        }
+                .environmentObject(ShoppingListViewModel.shared)
+                     }
     }
 }

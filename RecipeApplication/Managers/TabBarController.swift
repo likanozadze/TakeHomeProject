@@ -7,9 +7,12 @@
 
 import Foundation
 import UIKit
-
+import SwiftUI
 
 class TabBarController: UITabBarController {
+    private let navigationCoordinator = NavigationCoordinator(navigationController: UINavigationController())
+    var shoppingListViewModel = ShoppingListViewModel.shared
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,31 +22,27 @@ class TabBarController: UITabBarController {
             createCategoryViewNavigation(),
             createGenerateRecipeViewNavigation(),
             createOriginalRecipeViewNavigation(),
-            createProfileViewNavigation()]
-
-        
-        
+        createProfilesViewNavigation()]
+                
         // MARK: Navigation Methods
         
         func createHomeViewNavigation() -> UINavigationController {
             let homeViewController = HomeViewController()
             homeViewController.title = ""
             homeViewController.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 0)
-
+            
             let navigationController = UINavigationController(rootViewController: homeViewController)
             let navigationCoordinator = NavigationCoordinator(navigationController: navigationController)
-            homeViewController.coordinator = navigationCoordinator 
-
-            addLogoToNavigationBar(of: homeViewController)
+            homeViewController.coordinator = navigationCoordinator
+            
             return navigationController
         }
-
+        
         
         func createCategoryViewNavigation() -> UINavigationController {
             let categoryViewController = CategoryViewController()
             categoryViewController.title = ""
             categoryViewController.tabBarItem = UITabBarItem(title: "Category", image: UIImage(systemName: "list.bullet"), tag: 1)
-            addLogoToNavigationBar(of: categoryViewController)
             return UINavigationController(rootViewController: categoryViewController)
         }
         
@@ -51,7 +50,6 @@ class TabBarController: UITabBarController {
             let generateRecipeViewController = GenerateRecipeViewController()
             generateRecipeViewController.title = ""
             generateRecipeViewController.tabBarItem = UITabBarItem(title: "Generate Recipe", image: UIImage(systemName: "dice"), tag: 2)
-            addLogoToNavigationBar(of: generateRecipeViewController)
             return UINavigationController(rootViewController: generateRecipeViewController)
         }
         
@@ -60,21 +58,21 @@ class TabBarController: UITabBarController {
             originalRecipeViewController.title = ""
             originalRecipeViewController.tabBarItem = UITabBarItem(title: "Your recipe", image: UIImage(systemName: "plus.circle"), tag: 3)
             let navigationController = UINavigationController(rootViewController: originalRecipeViewController)
-          
+
             return navigationController
         }
         
-        func createProfileViewNavigation() -> UINavigationController {
-            let profileViewController = FavoritesViewController()
-            profileViewController.title = ""
-            profileViewController.tabBarItem = UITabBarItem(title: "Favorites", image: UIImage(systemName: "heart"), tag: 3)
-            let navigationController = UINavigationController(rootViewController: profileViewController)
-            addLogoutButton(to: navigationController)
-            return navigationController
+        func createProfilesViewNavigation() -> UINavigationController {
+            let profileHostingController = UIHostingController(rootView: ProfilePage()
+                .environmentObject(ShoppingListViewModel.shared)
+                .environmentObject(AuthService.shared))
+                profileHostingController.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "person"), tag: 4)
+                let navigationController = UINavigationController(rootViewController: profileHostingController)
+                return navigationController
+            
         }
-        
-      
-        
+
+
         // MARK: Navigation Bar Customization
         func addLogoToNavigationBar(of viewController: UIViewController) {
             let logoImageView = UIImageView()

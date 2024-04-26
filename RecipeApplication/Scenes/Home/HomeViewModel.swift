@@ -59,7 +59,7 @@ final class HomeViewModel: ObservableObject {
         let endpoint = "/recipes/complexSearch"
         let parameters: [String: Any] = [
             "apiKey": apiKey,
-            "number": 20,
+            "number": 30,
             "addRecipeInformation": true,
             
         ]

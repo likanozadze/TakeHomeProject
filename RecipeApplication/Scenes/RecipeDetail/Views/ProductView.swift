@@ -11,29 +11,31 @@ struct ProductView: View {
     var recipe: Recipe
     
     @State private var recipeImage: UIImage? = nil
+    @State private var isLoading: Bool = false
     // MARK: - Body
     var body: some View {
         
-        VStack {
-            if let recipeImage = recipeImage {
-                        Image(uiImage: recipeImage)
-                            .resizable()
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                            .frame(height: 200)
-                    } else {
-       
-                        Rectangle()
-                            .foregroundColor(.gray)
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                            .frame(height: 200)
-                    }
+        VStack(alignment: .leading) {
+            Text(recipe.title ?? "Unknown Title")
+                .font(.system(size: 18))
+                .font(.headline)
+                .fontWeight(.bold)
+                .foregroundColor(.primary)
             
-            HStack {
-                Text(recipe.title)
-                    .font(.system(size: 18))
-                    .font(.headline)
-                    .fontWeight(.bold)
-                    .foregroundColor(.primary)
+            
+            VStack {
+                if let recipeImage = recipeImage {
+                    Image(uiImage: recipeImage)
+                        .resizable()
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .frame(height: 200)
+                } else {
+                    
+                    Rectangle()
+                        .foregroundColor(.gray)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .frame(height: 200)
+                }
                 
                 Spacer()
                 HStack {
@@ -45,26 +47,47 @@ struct ProductView: View {
                         .font(.system(size: 14))
                         .font(.headline)
                         .foregroundColor(.primary)
-                }
-            }
-        }
-        .onAppear {
-
-                    if let imageUrlString = recipe.image, let imageUrl = URL(string: imageUrlString) {
-                        fetchImage(from: imageUrl)
-                    }
-                }
-            }
-
-            private func fetchImage(from url: URL) {
-                URLSession.shared.dataTask(with: url) { data, _, error in
-                    if let data = data, let image = UIImage(data: data) {
-                        DispatchQueue.main.async {
-                            self.recipeImage = image
+                    Spacer()
+                    HStack {
+                        Image(systemName: "person")
+                            .font(.system(size: 14))
+                            .foregroundColor(.primary)
+                        
+                        if let servings = recipe.servings {
+                            Text("\(servings)")
+                                .font(.system(size: 14))
+                                .font(.headline)
+                                .foregroundColor(.primary)
                         }
                     }
-                }.resume()
+                }
             }
         }
+    
+        .onAppear {
+                   loadImage()
+               }
+           }
+           
+           private func loadImage() {
+               guard let imageUrlString = recipe.image,
+                     let imageUrl = URL(string: imageUrlString),
+                     !isLoading else { return }
+               
+               isLoading = true
+               
+               URLSession.shared.dataTask(with: imageUrl) { data, _, error in
+                   defer { isLoading = false }
+                   
+                   if let data = data, let image = UIImage(data: data) {
+                       DispatchQueue.main.async {
+                           self.recipeImage = image
+                       }
+                   } else {
+                       print("Failed to load image: \(error?.localizedDescription ?? "Unknown error")")
+                   }
+               }.resume()
+           }
+       }
 
 

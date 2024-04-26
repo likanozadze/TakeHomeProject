@@ -30,7 +30,7 @@ protocol NavigationCoordinatorDelegate: AnyObject {
 
 // MARK: - NavigationCoordinator
 
-class NavigationCoordinator: OnboardingViewDelegate, NavigationCoordinatorDelegate {
+class NavigationCoordinator: ObservableObject, OnboardingViewDelegate, NavigationCoordinatorDelegate {
     
     // MARK: Properties
     var navigationController: UINavigationController
@@ -43,6 +43,9 @@ class NavigationCoordinator: OnboardingViewDelegate, NavigationCoordinatorDelega
     private var categoryCollectionView = CategoryCollectionView()
     private var favoriteRecipeCollectionView = FavoriteRecipeCollectionView()
     private var favoriteRecipes: [Recipe] = []
+    private let window: UIWindow?
+    var shoppingListViewModel = ShoppingListViewModel.shared
+    
     
     private var state: AppState = .onboarding {
         didSet {
@@ -54,13 +57,14 @@ class NavigationCoordinator: OnboardingViewDelegate, NavigationCoordinatorDelega
     
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
+        self.window = nil
     }
     
     // MARK: Coordinator Methods
     
     func start() {
         let hasSeenOnboarding = UserDefaults.standard.bool(forKey: "hasSeenOnboarding")
-        state = hasSeenOnboarding ? .authenticated(user: User(id: "", username: "", email: "", recipes: nil, likedRecipes: nil)) : .onboarding
+        state = hasSeenOnboarding ? .authenticated(user: User(id: "", username: "", email: "", recipes: nil, likedRecipes: nil,  shoppingListString: nil)) : .onboarding
     }
     
     func checkAuthentication() {
@@ -137,6 +141,7 @@ class NavigationCoordinator: OnboardingViewDelegate, NavigationCoordinatorDelega
            let recipe = viewModel.recipe(at: indexPath) {
             let detailViewModel = RecipeDetailViewModel(recipe: recipe, selectedIngredient: recipe.extendedIngredients?[indexPath.row])
             let detailWrapper = RecipeDetailViewWrapper(viewModel: detailViewModel)
+                .environmentObject(shoppingListViewModel)
             
             let hostingController = UIHostingController(rootView: detailWrapper)
             navigationController.pushViewController(hostingController, animated: true)
@@ -146,10 +151,7 @@ class NavigationCoordinator: OnboardingViewDelegate, NavigationCoordinatorDelega
     func didSelectCategory(on cell: CategoryCollectionViewCell) {
         if let indexPath = categoryCollectionView.indexPath(for: cell) {
             let selectedTag = categoryData[indexPath.row].title.lowercased()
-            
-            
             let categoryRecipeViewController = CategoryRecipeViewController()
-            
             categoryRecipeViewController.selectedCategory = selectedTag
             categoryRecipeViewController.categoryViewModel.fetchRecipesByTag(selectedTag)
             categoryRecipeViewController.categoryViewModel.recipes = recipe
@@ -160,11 +162,10 @@ class NavigationCoordinator: OnboardingViewDelegate, NavigationCoordinatorDelega
     func didSelectRecipe(recipe: Recipe) {
         let detailViewModel = RecipeDetailViewModel(recipe: recipe, selectedIngredient: nil)
         let detailWrapper = RecipeDetailView(viewModel: detailViewModel)
-        
+            .environmentObject(shoppingListViewModel)
         let hostingController = UIHostingController(rootView: detailWrapper)
         navigationController.pushViewController(hostingController, animated: true)
     }
-    
     
     func didTapFavoriteButton(on cell: RecipeItemCollectionViewCell) {
         guard let indexPath = recipeCollectionView.indexPath(for: cell) else { return }
@@ -181,7 +182,7 @@ class NavigationCoordinator: OnboardingViewDelegate, NavigationCoordinatorDelega
                 cell.favoriteButton.isSelected = isFavorited
             case .failure(let error):
                 print("Failed to toggle favorite: \(error.localizedDescription)")
-
+                
             }
         }
     }

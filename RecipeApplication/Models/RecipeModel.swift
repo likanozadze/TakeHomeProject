@@ -18,7 +18,7 @@ struct RecipeResponse: Codable {
 // MARK: - Recipe
 struct Recipe: Codable {
     let id: Int?
-    let title: String
+    let title: String?
     let image: String?
     let readyInMinutes: Int?
     let servings: Int?
@@ -44,15 +44,23 @@ struct Recipe: Codable {
 }
 
 // MARK: - ExtendedIngredient
-struct ExtendedIngredient: Codable, Identifiable {
+struct ExtendedIngredient: Codable, Identifiable, Hashable {
     let id: Int
-    let image: String
+    var image: String?
     let name: String
     let original: String
     let originalName: String
     let amount: Double
     let unit: String
     let measures: Measures
+   
+    func hash(into hasher: inout Hasher) {
+           hasher.combine(id)
+       }
+
+       static func == (lhs: ExtendedIngredient, rhs: ExtendedIngredient) -> Bool {
+           return lhs.id == rhs.id
+       }
     
     init(id: Int, image: String, name: String, original: String, originalName: String, amount: Double, unit: String, measures: Measures) {
         self.id = id

@@ -4,7 +4,7 @@
 //
 //  Created by Lika Nozadze on 1/18/24.
 //
-//
+
 import UIKit
 import SwiftUI
 
@@ -18,33 +18,17 @@ final class FavoritesViewController: UIViewController, FavoriteRecipeCollectionV
     var selectedRecipes: [Recipe] = []
     private var favoriteRecipes: [Recipe] = []
     var coordinator: NavigationCoordinator?
-    
-    private let mainStackView: UIStackView = {
-        let stackView = UIStackView()
+
+    var shoppingListViewModel = ShoppingListViewModel()
+    private lazy var mainStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [favoriteRecipeCollectionView])
         stackView.axis = .vertical
         stackView.spacing = 10
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.isLayoutMarginsRelativeArrangement = true
         return stackView
     }()
-    
-    private let favoriteTitle: UILabel = {
-        let label = UILabel()
-        label.text = "Favorites ❤️‍🔥"
-        label.textColor = .testColorSet
-        label.numberOfLines = 2
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
-        return label
-    }()
-    
-    private let favoriteTitleStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.alignment = .leading
-        return stackView
-    }()
-    
+
     
     // MARK: - ViewLifeCycle
     override func viewDidLoad() {
@@ -70,12 +54,8 @@ final class FavoritesViewController: UIViewController, FavoriteRecipeCollectionV
     private func setup() {
         setupBackground()
         addSubviewsToView()
-        setupFavoriteTitleStackView()
         setupConstraints()
-        coordinator = NavigationCoordinator(navigationController: navigationController!)
-                coordinator?.delegate = self
         favoriteRecipeCollectionView.favoriteRecipeDelegate = self
-
         favoriteRecipeCollectionView.reloadData()
     }
     // MARK: - Private Methods
@@ -89,14 +69,9 @@ final class FavoritesViewController: UIViewController, FavoriteRecipeCollectionV
     
     private func addMainSubviews() {
         view.addSubview(mainStackView)
-        mainStackView.addArrangedSubview(favoriteTitleStackView)
-        mainStackView.addArrangedSubview(favoriteRecipeCollectionView)
-    
+ 
     }
-    private func setupFavoriteTitleStackView() {
-        favoriteTitleStackView.addArrangedSubview(favoriteTitle)
-    }
-    
+
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             mainStackView.topAnchor.constraint(equalTo:view.safeAreaLayoutGuide.topAnchor),
@@ -105,28 +80,15 @@ final class FavoritesViewController: UIViewController, FavoriteRecipeCollectionV
             mainStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
         
-        NSLayoutConstraint.activate([
-            favoriteTitleStackView.topAnchor.constraint(equalTo:mainStackView.topAnchor),
-            favoriteTitleStackView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
-            favoriteTitleStackView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor)
-        ])
- 
-        NSLayoutConstraint.activate([
-            favoriteRecipeCollectionView.topAnchor.constraint(equalTo:favoriteTitleStackView.bottomAnchor, constant: 30),
-            favoriteRecipeCollectionView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
-            favoriteRecipeCollectionView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor),
-            favoriteRecipeCollectionView.bottomAnchor.constraint(equalTo: mainStackView.bottomAnchor)
-        ])
     }
 
     private func showEmptyState() {
-        if children.contains(emptyStateViewController) { return }
         addChild(emptyStateViewController)
-        view.addSubview(emptyStateViewController.view)
         emptyStateViewController.view.frame = view.bounds
+        view.addSubview(emptyStateViewController.view)
         emptyStateViewController.didMove(toParent: self)
     }
-    
+
     private func hideEmptyState() {
         if children.contains(emptyStateViewController) {
             emptyStateViewController.willMove(toParent: nil)
@@ -189,6 +151,7 @@ extension FavoritesViewController: NavigationCoordinatorDelegate {
         
         let detailViewModel = RecipeDetailViewModel(recipe: recipe, selectedIngredient: nil)
         let detailWrapper = RecipeDetailView(viewModel: detailViewModel)
+            .environmentObject(shoppingListViewModel)
         let hostingController = UIHostingController(rootView: detailWrapper)
         navigationController?.pushViewController(hostingController, animated: true)
     }

@@ -17,8 +17,7 @@ class RecipeDetailViewModel: ObservableObject {
     @Published var extendedIngredients: [ExtendedIngredient] = []
     @Published var selectedIngredient: ExtendedIngredient?
     @Published var analyzedInstructions: [AnalyzedInstruction] = []
-    
-    
+
     // MARK: Private Properties
     private let apiKey = Configuration.apiKey
     private let baseURL = "https://api.spoonacular.com/recipes/"
@@ -30,10 +29,11 @@ class RecipeDetailViewModel: ObservableObject {
         self.recipe = recipe
         self.selectedIngredient = selectedIngredient
         fetchIngredientsFromCache()
-               fetchInstructionsFromCache()
+        fetchInstructionsFromCache()
         fetchIngredients()
         fetchInstructions()
     }
+    
     // MARK: Data Fetching
        func fetchIngredientsFromCache() {
            guard let recipeId = recipe.id else { return }
@@ -121,6 +121,7 @@ class RecipeDetailViewModel: ObservableObject {
     func cacheData(_ data: Data, forKey key: String) {
           cache.setObject(data as NSData, forKey: key as NSString)
       }
+   
   }
 
 

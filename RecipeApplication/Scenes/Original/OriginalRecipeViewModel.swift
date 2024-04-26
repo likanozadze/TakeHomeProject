@@ -97,8 +97,7 @@ final class OriginalRecipeViewModel: ObservableObject {
             }
         }
     }
-    
-    
+
     func getUserRecipes() async {
         do {
             guard let uid = Auth.auth().currentUser?.uid else { return }
@@ -120,30 +119,30 @@ final class OriginalRecipeViewModel: ObservableObject {
             ingredientsList.remove(at: index)
         }
     }
+
+        func deleteRecipe(recipeId: String) {
+            guard let userId = Auth.auth().currentUser?.uid else { return }
+            let db = Firestore.firestore()
+            let userRef = db.collection("users").document(userId)
     
-    func deleteRecipe(recipeId: String) {
-        guard let userId = Auth.auth().currentUser?.uid else { return }
-        let db = Firestore.firestore()
-        let userRef = db.collection("users").document(userId)
-        
-        userRef.getDocument { (document, error) in
-            if let document = document, document.exists {
-                let userData = document.data()
-                var recipes = userData?["recipes"] as? [[String: Any]] ?? []
-                
-                recipes = recipes.filter { $0["id"] as? String != recipeId }
-                
-                userRef.updateData(["recipes": recipes]) { error in
-                    if let error = error {
-                        print("Error updating document: \(error)")
-                    } else {
-                        print("Recipe removed successfully")
+            userRef.getDocument { (document, error) in
+                if let document = document, document.exists {
+                    let userData = document.data()
+                    var recipes = userData?["recipes"] as? [[String: Any]] ?? []
+    
+                    recipes = recipes.filter { $0["id"] as? String != recipeId }
+    
+                    userRef.updateData(["recipes": recipes]) { error in
+                        if let error = error {
+                            print("Error updating document: \(error)")
+                        } else {
+                            print("Recipe removed successfully")
+                        }
                     }
+                } else {
+                    print("User document not found")
                 }
-            } else {
-                print("User document not found")
             }
         }
     }
-}
-
+   

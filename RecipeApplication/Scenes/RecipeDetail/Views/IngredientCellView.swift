@@ -1,16 +1,18 @@
-////
-////  IngredientCellView.swift
-////  RecipeApplication
-////
-////  Created by Lika Nozadze on 1/30/24.
-////
 //
+//  IngredientCellView.swift
+//  RecipeApplication
+//
+//  Created by Lika Nozadze on 1/30/24.
+//
+
 import SwiftUI
 
 struct IngredientCellView: View {
     
     // MARK: Properties
-    var viewModel: RecipeDetailViewModel
+    
+    @ObservedObject var viewModel: RecipeDetailViewModel
+    @EnvironmentObject var shoppingListViewModel: ShoppingListViewModel
     var ingredients: [ExtendedIngredient]
     @Binding var shoppingList: [ExtendedIngredient]
     @State private var selectedIngredients: [Int: Bool] = [:]
@@ -19,8 +21,8 @@ struct IngredientCellView: View {
     var body: some View {
         ScrollView(showsIndicators: false) {
             VStack(alignment: .leading) {
-                ForEach(viewModel.extendedIngredients, id: \.id) { ingredient in
-                    
+                ForEach(viewModel.extendedIngredients.indices, id: \.self) { index in
+                    let ingredient = viewModel.extendedIngredients[index]
                     HStack {
                         Image(systemName: selectedIngredients[ingredient.id, default: false] ? "checkmark.square" : "square")
                             .foregroundColor(Color(red: 134/255, green: 191/255, blue: 62/255))
@@ -38,6 +40,7 @@ struct IngredientCellView: View {
                                 .font(.system(size: 16))
                                 .foregroundColor(.testColorSet)
                         }
+                        
                     }
                     .foregroundStyle(.clear)
                     .frame(height: 30)
@@ -46,8 +49,22 @@ struct IngredientCellView: View {
                         selectedIngredients[ingredient.id, default: false].toggle()
                     }
                     Divider().background(Color.gray.opacity(0.2))
+                    
+                    
                 }
             }
+            
+            ButtonView(text: "Add to Shopping List") {
+                let selectedIngredientsToAdd = viewModel.extendedIngredients.filter { ingredient in
+                    selectedIngredients[ingredient.id, default: false]
+                }
+                print("Ingredients selected to add:", selectedIngredientsToAdd)
+                
+                Task {
+                    await ShoppingListViewModel.shared.saveShoppingList(ingredients: selectedIngredientsToAdd)
+                }
+            }
+            .padding()
         }
     }
 }

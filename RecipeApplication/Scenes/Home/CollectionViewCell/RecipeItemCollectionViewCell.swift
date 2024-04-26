@@ -80,7 +80,6 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
         let button = UIButton(type: .system)
         button.tintColor = .red
         button.setImage(UIImage(systemName: "heart"), for: .normal)
-        //button.addTarget(target, action: #selector(favoriteButtonTapped(_:)), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -145,10 +144,7 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
             mainStackView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
             mainStackView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
             mainStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            
-            recipeImageView.widthAnchor.constraint(equalToConstant: 150),
-            recipeImageView.heightAnchor.constraint(equalToConstant: 150),
-            
+        
             favoriteButton.topAnchor.constraint(equalTo: mainStackView.topAnchor, constant: 16),
             favoriteButton.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor, constant: -16),
             favoriteButton.widthAnchor.constraint(equalToConstant: 28),

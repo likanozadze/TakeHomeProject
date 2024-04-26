@@ -83,9 +83,21 @@ class EmptyStateViewController: UIViewController {
     
     
     private func setupSubviews() {
+        view.addSubview(animationView)
         view.addSubview(emptyStateStackView)
         emptyStateStackView.addArrangedSubview(emptyStateTitleLabel)
         emptyStateStackView.addArrangedSubview(emptyStateDescriptionLabel)
+        print("Stack view is being added: \(emptyStateStackView)")
+    }
+    
+    private func setupEmptyHistoryAnimationView(_ animationName: String) {
+        animationView = .init(name: animationName)
+        animationView.contentMode = .scaleAspectFit
+        animationView.loopMode = .loop
+        animationView.animationSpeed = 0.5
+        animationView.translatesAutoresizingMaskIntoConstraints = false // Important!
+        view.addSubview(animationView)
+        animationView.play()
     }
     
     private func setupConstraints() {
@@ -93,24 +105,11 @@ class EmptyStateViewController: UIViewController {
             emptyStateStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             emptyStateStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             emptyStateStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 60),
+            
+            animationView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            animationView.bottomAnchor.constraint(equalTo: emptyStateStackView.topAnchor, constant: -20),
+            animationView.widthAnchor.constraint(lessThanOrEqualToConstant: 240),
+            animationView.heightAnchor.constraint(lessThanOrEqualToConstant: 240)
         ])
     }
-    
-    private func setupEmptyHistoryAnimationView(_ animationName: String) {
-        animationView = .init(name: animationName)
-        let animationViewSize = CGSize(width: 240, height: 240)
-        
-        animationView.frame = CGRect(
-            x: (view.frame.width - animationViewSize.width) / 2,
-            y: (view.frame.height - animationViewSize.height) / 2 - 120,
-            width: animationViewSize.width,
-            height: animationViewSize.height
-        )
-        animationView.contentMode = .scaleAspectFit
-        animationView.loopMode = .loop
-        animationView.animationSpeed = 0.5
-        view.addSubview(animationView)
-        animationView.play()
-    }
-    
 }

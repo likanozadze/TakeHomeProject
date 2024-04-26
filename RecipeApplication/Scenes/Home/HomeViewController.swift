@@ -21,7 +21,7 @@ final class HomeViewController: UIViewController, RecipeItemCollectionViewCellDe
     private var categoryCollectionView = CategoryCollectionView()
     private let recipeCollectionView = RecipeCollectionView()
     var coordinator: NavigationCoordinator?
-    
+
     // MARK: - UI Components
     private let mainStackView: UIStackView = {
         let stackView = UIStackView()
@@ -185,11 +185,9 @@ extension HomeViewController: UICollectionViewDelegate {
             if let recipe = viewModel.recipe(at: indexPath) {
                 let detailViewModel = RecipeDetailViewModel(recipe: recipe, selectedIngredient: recipe.extendedIngredients?[indexPath.row])
                 let detailWrapper = RecipeDetailViewWrapper(viewModel: detailViewModel)
-                
                 let hostingController = UIHostingController(rootView: detailWrapper)
                 navigationController?.pushViewController(hostingController, animated: true)
-            }
-            
+            }            
         } else {
             let selectedTag = categoryData[indexPath.row].title.lowercased()
             let categoryRecipeViewController = CategoryRecipeViewController()

@@ -11,15 +11,14 @@ struct RecipeDetailView: View {
     
     // MARK: - Properties
     @ObservedObject var viewModel: RecipeDetailViewModel
+    @EnvironmentObject var shoppingListViewModel: ShoppingListViewModel
     @State private var selectedSegment: String = "Ingredients"
-    @State private var shoppingList: [ExtendedIngredient] = []
-    
-    
+
     // MARK: - Initializer
     init(viewModel: RecipeDetailViewModel) {
-           self.viewModel = viewModel
-       }
-    
+        self.viewModel = viewModel
+    }
+
     // MARK: - Body
     var body: some View {
         VStack(spacing: 10) {
@@ -30,15 +29,16 @@ struct RecipeDetailView: View {
                 // MARK: - IngredientDetailView
                 IngredientDetailView(ingredient: selectedIngredient)
             } else {
+
                 // MARK: - PickerView
-                PickerView(selectedSegment: $selectedSegment)
+                PickerView(selectedSegment: $selectedSegment, filterOptions: ["Ingredients", "Instructions"])
                 if selectedSegment == "Ingredients" {
                     // MARK: - IngredientCellView
-                    IngredientCellView(viewModel: viewModel, ingredients: viewModel.extendedIngredients, shoppingList: $shoppingList)
+                    IngredientCellView(viewModel: viewModel, ingredients: viewModel.extendedIngredients, shoppingList: $shoppingListViewModel.shoppingList)
+
                 } else {
                     // MARK: - StepsSectionView
-                    StepsSectionView(steps: viewModel.analyzedInstructions)
-              
+                    StepsSectionView(steps: viewModel.analyzedInstructions)              
                 }
             }
         }
