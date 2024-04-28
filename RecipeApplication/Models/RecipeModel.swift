@@ -18,7 +18,7 @@ struct RecipeResponse: Codable {
 // MARK: - Recipe
 struct Recipe: Codable {
     let id: Int?
-    let title: String?
+    let title: String
     let image: String?
     let readyInMinutes: Int?
     let servings: Int?

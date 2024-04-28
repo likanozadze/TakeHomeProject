@@ -17,10 +17,11 @@ protocol RecipeListViewModelDelegate: AnyObject {
 final class HomeViewModel: ObservableObject {
     
     // MARK: - Properties
-
+    
     weak var delegate: RecipeListViewModelDelegate?
     private let networkManager: NetworkManager
     var recipes: [Recipe] = []
+    var filteredRecipes: [Recipe] = []
     
     // MARK: - Initialization
     
@@ -37,15 +38,15 @@ final class HomeViewModel: ObservableObject {
     // MARK: - Fetch Recipes
     
     func fetchRecipes() {
-        
-        if let savedRecipes = UserDefaults.standard.object(forKey: "recipes") as? Data {
-            let decoder = JSONDecoder()
-            if let loadedRecipes = try? decoder.decode([Recipe].self, from: savedRecipes) {
-                self.recipes = loadedRecipes
-                self.delegate?.recipesFetched(loadedRecipes)
-                return
-            }
-        }
+//        
+//        if let savedRecipes = UserDefaults.standard.object(forKey: "recipes") as? Data {
+//            let decoder = JSONDecoder()
+//            if let loadedRecipes = try? decoder.decode([Recipe].self, from: savedRecipes) {
+//                self.recipes = loadedRecipes
+//                self.delegate?.recipesFetched(loadedRecipes)
+//                return
+//            }
+//        }
         if let savedRecipes = UserDefaults.standard.object(forKey: "newRecipes") as? Data {
             let decoder = JSONDecoder()
             if let loadedRecipes = try? decoder.decode([Recipe].self, from: savedRecipes) {
@@ -54,6 +55,7 @@ final class HomeViewModel: ObservableObject {
                 return
             }
         }
+
         let baseURL = "https://api.spoonacular.com"
         let apiKey = Configuration.apiKey
         let endpoint = "/recipes/complexSearch"
@@ -75,15 +77,28 @@ final class HomeViewModel: ObservableObject {
                     self.recipes = fetchedRecipes.results 
                     self.delegate?.recipesFetched(fetchedRecipes.results)
                     
-                           let encoder = JSONEncoder()
-                           if let encoded = try? encoder.encode(fetchedRecipes.results) {
-                               UserDefaults.standard.set(encoded, forKey: "recipes")
-                           }
+                    let encoder = JSONEncoder()
+                    if let encoded = try? encoder.encode(fetchedRecipes.results) {
+                        UserDefaults.standard.set(encoded, forKey: "newRecipes")
+                    }
                 case .failure(let error):
                     self.delegate?.recipeFetchError(error)
                 }
             }
         )
+    }
+    
+    func searchRecipes(_ query: String?) {
+        guard let query = query, !query.isEmpty else {
+            filteredRecipes = recipes
+            delegate?.recipesFetched(filteredRecipes)
+            return
+        }
+        
+        filteredRecipes = recipes.filter { recipe in
+            recipe.title.lowercased().contains(query.lowercased())
+        }
+        delegate?.recipesFetched(filteredRecipes)
     }
 }
 extension HomeViewModel {
@@ -91,3 +106,5 @@ extension HomeViewModel {
         return recipes[indexPath.item]
     }
 }
+
+

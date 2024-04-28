@@ -35,16 +35,16 @@ final class CategoryViewModel {
     // MARK: Public Methods
     
     func fetchRecipesByTag(_ tag: String) {
-                if let savedRecipes = UserDefaults.standard.object(forKey: tag) as? Data {
-                           let decoder = JSONDecoder()
-                           if let loadedRecipes = try? decoder.decode([Recipe].self, from: savedRecipes) {
-                               self.recipes = loadedRecipes
-                               DispatchQueue.main.async {
-                                   self.delegate?.categoriesFetched(loadedRecipes)
-                               }
-                               return
-                           }
-                       }
+        if let savedRecipes = UserDefaults.standard.object(forKey: tag) as? Data {
+            let decoder = JSONDecoder()
+            if let loadedRecipes = try? decoder.decode([Recipe].self, from: savedRecipes) {
+                self.recipes = loadedRecipes
+                DispatchQueue.main.async {
+                    self.delegate?.categoriesFetched(loadedRecipes)
+                }
+                return
+            }
+        }
         
         
         let baseURL = "https://api.spoonacular.com"
@@ -52,7 +52,7 @@ final class CategoryViewModel {
         let endpoint = "/recipes/complexSearch"
         let parameters: [String: Any] = [
             "apiKey": apiKey,
-            "number": 20,
+            "number": 10,
             "type": tag.lowercased().replacingOccurrences(of: " ", with: "+")
         ]
         

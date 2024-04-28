@@ -30,6 +30,7 @@
 		9840619D2B5C5DA600A6BFAF /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9840619C2B5C5DA600A6BFAF /* LoginViewController.swift */; };
 		9840619F2B5C5DC100A6BFAF /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9840619E2B5C5DC100A6BFAF /* RegisterViewController.swift */; };
 		986D97B82BB48F3600AE20F5 /* Animation - 1711560559742.json in Resources */ = {isa = PBXBuildFile; fileRef = 986D97B72BB48F3600AE20F5 /* Animation - 1711560559742.json */; };
+		9875967C2BDC342400F76EEE /* RecipeSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9875967B2BDC342400F76EEE /* RecipeSearchBar.swift */; };
 		988DE7D72B5D2C0900FA0ABC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 988DE7D62B5D2C0900FA0ABC /* GoogleService-Info.plist */; };
 		988DE7E62B5D2D3200FA0ABC /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 988DE7E52B5D2D3200FA0ABC /* FirebaseAuth */; };
 		988DE7F22B5D2D3200FA0ABC /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 988DE7F12B5D2D3200FA0ABC /* FirebaseFirestore */; };
@@ -112,6 +113,7 @@
 		9840619C2B5C5DA600A6BFAF /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		9840619E2B5C5DC100A6BFAF /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		986D97B72BB48F3600AE20F5 /* Animation - 1711560559742.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Animation - 1711560559742.json"; sourceTree = "<group>"; };
+		9875967B2BDC342400F76EEE /* RecipeSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeSearchBar.swift; sourceTree = "<group>"; };
 		988DE7D62B5D2C0900FA0ABC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		988DE8142B5D323300FA0ABC /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		988DE8172B5D335600FA0ABC /* RegisterUserRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserRequest.swift; sourceTree = "<group>"; };
@@ -427,6 +429,7 @@
 				98D2DFEA2B5AE1BC0062B36C /* RAAlertView.swift */,
 				98E4E1F22B9238B800683A11 /* EmptyStateViewController.swift */,
 				98C9527C2BAC71B10011666C /* imagePicker.swift */,
+				9875967B2BDC342400F76EEE /* RecipeSearchBar.swift */,
 			);
 			path = ReusableComponents;
 			sourceTree = "<group>";
@@ -580,6 +583,7 @@
 				9804875E2B65274C00B88519 /* CategoryCollectionViewCell.swift in Sources */,
 				98D2DFE92B5AE1850062B36C /* RABodyLabel.swift in Sources */,
 				982DDEF22BC323B400D54477 /* ProfileView.swift in Sources */,
+				9875967C2BDC342400F76EEE /* RecipeSearchBar.swift in Sources */,
 				98A5658A2BAF4450009BC302 /* UserManager.swift in Sources */,
 				98C952732BAC52020011666C /* OriginalRecipeView.swift in Sources */,
 				98D26B362B71269900BAA30B /* CategoryRecipeTableView.swift in Sources */,

@@ -22,7 +22,16 @@ final class CategoryRecipeViewController: UIViewController, RecipeItemCollection
     var coordinator: NavigationCoordinator?
     weak var delegate: RecipeItemCollectionViewCellDelegate?
     
-        
+    private let recipeSearchBar = RecipeSearchBar()
+    
+    private let mainStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.isLayoutMarginsRelativeArrangement = true
+        return stackView
+    }()
+    
     // MARK: - ViewLifeCycle
     
     override func viewDidLoad() {
@@ -30,6 +39,7 @@ final class CategoryRecipeViewController: UIViewController, RecipeItemCollection
         setup()
         setupViewModelDelegate()
        viewModel.viewDidLoad()
+       recipeSearchBar.delegate = self
         categoryRecipeTableView.register(RecipeItemTableViewCell.self, forCellReuseIdentifier: "RecipeTableViewCell")
     
         coordinator = NavigationCoordinator(navigationController: navigationController!)
@@ -40,7 +50,6 @@ final class CategoryRecipeViewController: UIViewController, RecipeItemCollection
         if let selectedCategory = selectedCategory {
             categoryViewModel.delegate = self
             categoryViewModel.fetchRecipesByTag(selectedCategory)
-           
         }
     }
     
@@ -50,7 +59,6 @@ final class CategoryRecipeViewController: UIViewController, RecipeItemCollection
         setupBackground()
         addSubviewsToView()
         setupConstraints()
-   
     }
     
     // MARK: - Private Methods
@@ -64,17 +72,20 @@ final class CategoryRecipeViewController: UIViewController, RecipeItemCollection
     }
     
     private func addMainSubviews() {
-        view.addSubview(categoryRecipeTableView)
+        view.addSubview(mainStackView)
+        mainStackView.addArrangedSubview(recipeSearchBar)
+        mainStackView.addArrangedSubview(categoryRecipeTableView)
     }
     
     func setupConstraints() {
-        categoryRecipeTableView.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
-            categoryRecipeTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            categoryRecipeTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            categoryRecipeTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            categoryRecipeTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20)
+            mainStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            mainStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20)
         ])
+
     }
     private func setupViewModelDelegate() {
         viewModel.delegate = self
@@ -97,9 +108,6 @@ final class CategoryRecipeViewController: UIViewController, RecipeItemCollection
     }
 }
 
-
-
-
 // MARK: - UITableViewDataSource
 
 extension CategoryRecipeViewController: UITableViewDataSource {
@@ -111,7 +119,6 @@ extension CategoryRecipeViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeTableViewCell", for: indexPath) as? RecipeItemTableViewCell else {
             return UITableViewCell()
         }
-     //   cell.isUserInteractionEnabled = true
         cell.delegate = self
         cell.configure(with: recipe[indexPath.row])
         return cell
@@ -157,5 +164,24 @@ extension CategoryRecipeViewController: RecipeListViewModelDelegate {
     
     func recipeFetchError(_ error: Error) {
         print("Error fetching recipes: \(error.localizedDescription)")
+    }
+}
+
+extension CategoryRecipeViewController: RecipeSearchBarDelegate {
+    func didChangeSearchQuery(_ query: String?) {
+        viewModel.searchRecipes(query)
+    }
+}
+
+
+extension CategoryRecipeViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.isEmpty {
+          
+            categoryViewModel.fetchRecipesByTag(selectedCategory ?? "")
+        } else {
+     
+            viewModel.searchRecipes(searchText)
+        }
     }
 }
