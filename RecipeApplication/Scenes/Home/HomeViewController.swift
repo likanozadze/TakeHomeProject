@@ -145,7 +145,7 @@ final class HomeViewController: UIViewController, RecipeItemCollectionViewCellDe
             mainStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             
             
-            categoryCollectionView.heightAnchor.constraint(equalToConstant: 100),
+            categoryCollectionView.heightAnchor.constraint(equalToConstant: 120),
             categoryCollectionView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
             categoryCollectionView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor),
             
@@ -225,13 +225,13 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
         } else {
             
             let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
-            _ = flowLayout.sectionInset.left
-            
+            let totalSpace = flowLayout.sectionInset.left
+
             + flowLayout.sectionInset.right
             + flowLayout.minimumInteritemSpacing
-            
-            let width = 180
-            let height = 140
+
+            let width = (collectionView.bounds.width - totalSpace) / 2
+            let height = width * 0.5
             
             return CGSize(width: width, height: height)
         }

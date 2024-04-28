@@ -16,7 +16,7 @@ class CategoryCollectionViewCell: UICollectionViewCell {
         imageView.layer.cornerRadius = 8
         imageView.contentMode = .scaleAspectFill
         imageView.layer.masksToBounds = true
-
+        
         return imageView
     }()
     
@@ -27,7 +27,7 @@ class CategoryCollectionViewCell: UICollectionViewCell {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-
+    
     // MARK: - Initialization
     
     override init(frame: CGRect) {
@@ -61,11 +61,11 @@ class CategoryCollectionViewCell: UICollectionViewCell {
             categoryImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             categoryImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             categoryImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 1)
-            ])
+        ])
         NSLayoutConstraint.activate([
             
-        arrowButton.bottomAnchor.constraint(equalTo: categoryImageView.bottomAnchor, constant: -18),
-        arrowButton.trailingAnchor.constraint(equalTo: categoryImageView.trailingAnchor, constant: -12)
+            arrowButton.bottomAnchor.constraint(equalTo: categoryImageView.bottomAnchor, constant: -18),
+            arrowButton.trailingAnchor.constraint(equalTo: categoryImageView.trailingAnchor, constant: -12)
         ])
     }
     private func configureCellAppearance() {
@@ -77,8 +77,10 @@ class CategoryCollectionViewCell: UICollectionViewCell {
         contentView.layer.shadowOpacity = 0.2
         contentView.layer.shadowRadius = 8
         contentView.layer.shadowPath = UIBezierPath(roundedRect: contentView.bounds, cornerRadius: 8).cgPath
-        
+        contentView.layer.borderWidth = 1
+        contentView.layer.borderColor = UIColor.lightGray.cgColor
     }
+    
     func configure(with data: CategoryData) {
         self.categoryImageView.image = data.image
         
