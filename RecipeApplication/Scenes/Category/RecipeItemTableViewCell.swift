@@ -205,7 +205,8 @@ func convertToSecureURL(_ url: String?) -> String? {
             myString.insert(attachmentString, at: 0)
             readyInMinLabel.attributedText = myString
         } else {
-            readyInMinLabel.text = "N/A"
+            //readyInMinLabel.text = "N/A"
+            readyInMinLabel.text = recipe.readyInMinutes != nil ? "\(recipe.readyInMinutes!) min" : "N/A"
         }
 
         if let servingsCount = recipe.servings {

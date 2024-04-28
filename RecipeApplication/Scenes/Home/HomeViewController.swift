@@ -286,12 +286,12 @@ extension HomeViewController: RecipeSearchBarDelegate {
 
 extension HomeViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return filteredRecipes.count // Use filteredRecipes
+        return filteredRecipes.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeItemTableViewCell", for: indexPath) as! RecipeItemTableViewCell
-        cell.configure(with: filteredRecipes[indexPath.row]) // Use filteredRecipes
+        cell.configure(with: filteredRecipes[indexPath.row])
         return cell
     }
 }

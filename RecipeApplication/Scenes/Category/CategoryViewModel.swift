@@ -24,7 +24,7 @@ final class CategoryViewModel {
     weak var delegate: CategoryListViewModelDelegate?
     private let networkManager: NetworkManager
     var recipes: [Recipe] = []
-    
+    var filteredRecipes: [Recipe] = []
     
     // MARK: Initialization
     
@@ -34,17 +34,18 @@ final class CategoryViewModel {
     
     // MARK: Public Methods
     
-    func fetchRecipesByTag(_ tag: String) {
-        if let savedRecipes = UserDefaults.standard.object(forKey: tag) as? Data {
-            let decoder = JSONDecoder()
-            if let loadedRecipes = try? decoder.decode([Recipe].self, from: savedRecipes) {
-                self.recipes = loadedRecipes
-                DispatchQueue.main.async {
-                    self.delegate?.categoriesFetched(loadedRecipes)
-                }
-                return
-            }
-        }
+    func fetchRecipesByTag(_ tag: String) 
+    {
+//        if let savedRecipes = UserDefaults.standard.object(forKey: tag) as? Data {
+//            let decoder = JSONDecoder()
+//            if let loadedRecipes = try? decoder.decode([Recipe].self, from: savedRecipes) {
+              //  self.recipes = loadedRecipes
+//                DispatchQueue.main.async {
+//                    self.delegate?.categoriesFetched(loadedRecipes)
+//                }
+//                return
+//            }
+    //    }
         
         
         let baseURL = "https://api.spoonacular.com"
@@ -53,7 +54,8 @@ final class CategoryViewModel {
         let parameters: [String: Any] = [
             "apiKey": apiKey,
             "number": 10,
-            "type": tag.lowercased().replacingOccurrences(of: " ", with: "+")
+            "type": tag.lowercased().replacingOccurrences(of: " ", with: "+"),
+            "addRecipeInformation": true,
         ]
         
         networkManager.request(
@@ -82,6 +84,20 @@ final class CategoryViewModel {
             }
         )
     }
+    
+    func searchRecipes(_ query: String?) {
+        guard let query = query, !query.isEmpty else {
+            filteredRecipes = recipes
+            delegate?.categoriesFetched(filteredRecipes)
+            return
+        }
+        
+        filteredRecipes = recipes.filter { recipe in
+            recipe.title.lowercased().contains(query.lowercased())
+        }
+        delegate?.categoriesFetched(filteredRecipes)
+    }
+
 }
 
 // MARK: - CategoryViewModel Extension

@@ -21,7 +21,7 @@ final class CategoryRecipeViewController: UIViewController, RecipeItemCollection
     private var selectedRecipes: [Recipe] = []
     var coordinator: NavigationCoordinator?
     weak var delegate: RecipeItemCollectionViewCellDelegate?
-    
+    var filteredRecipes: [Recipe] = []
     private let recipeSearchBar = RecipeSearchBar()
     
     private let mainStackView: UIStackView = {
@@ -50,6 +50,7 @@ final class CategoryRecipeViewController: UIViewController, RecipeItemCollection
         if let selectedCategory = selectedCategory {
             categoryViewModel.delegate = self
             categoryViewModel.fetchRecipesByTag(selectedCategory)
+            recipeSearchBar.delegate = self
         }
     }
     
@@ -89,6 +90,9 @@ final class CategoryRecipeViewController: UIViewController, RecipeItemCollection
     }
     private func setupViewModelDelegate() {
         viewModel.delegate = self
+    }
+    private func addDelegate() {
+        recipeSearchBar.delegate = self
     }
 }
 
@@ -170,6 +174,7 @@ extension CategoryRecipeViewController: RecipeListViewModelDelegate {
 extension CategoryRecipeViewController: RecipeSearchBarDelegate {
     func didChangeSearchQuery(_ query: String?) {
         viewModel.searchRecipes(query)
+        
     }
 }
 
@@ -181,7 +186,7 @@ extension CategoryRecipeViewController: UISearchBarDelegate {
             categoryViewModel.fetchRecipesByTag(selectedCategory ?? "")
         } else {
      
-            viewModel.searchRecipes(searchText)
+            categoryViewModel.searchRecipes(searchText)
         }
     }
 }
