@@ -102,6 +102,7 @@ final class UserManager: ObservableObject {
             return []
         }
     }
+    
     func uploadProfileImage(userId: String, image: UIImage, completion: @escaping (Error?) -> Void) {
         print("User ID: \(userId)")
         if let user = Auth.auth().currentUser {

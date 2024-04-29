@@ -16,7 +16,7 @@ struct ProductView: View {
     var body: some View {
         
         VStack(alignment: .leading) {
-            Text(recipe.title ?? "Unknown Title")
+            Text(recipe.title)
                 .font(.system(size: 18))
                 .font(.headline)
                 .fontWeight(.bold)

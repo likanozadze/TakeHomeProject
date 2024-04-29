@@ -56,33 +56,11 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
     private let dishLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
-        label.textColor = UIColor(named: "textColor")
+        label.textColor = .darkGray
         label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
         return label
     }()
     
-    private let servingsLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .left
-        label.textColor = UIColor(named: "textColor")
-        label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
-        return label
-    }()
-    
-    private let readyInMinLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .left
-        label.textColor = UIColor(named: "textColor")
-        label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
-        return label
-    }()
-    internal let favoriteButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.tintColor = .red
-        button.setImage(UIImage(systemName: "heart"), for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
     private lazy var titleStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [recipeTitle, dishLabel])
         stackView.axis = .vertical
@@ -91,15 +69,77 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
-    private lazy var bottomStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [readyInMinLabel, servingsLabel])
+    
+    private let servingsLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.textColor = .systemGray
+        label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        return label
+    }()
+    
+    private let personSymbol = {
+        let imageView = UIImageView()
+        imageView.image = .init(systemName: "person")
+        imageView.tintColor = .systemGray2
+        imageView.widthAnchor.constraint(equalToConstant: 14).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: 14).isActive = true
+        imageView.clipsToBounds = true
+        return imageView
+    }()
+    
+    private let readyInMinLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.textColor = .systemGray
+        label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        return label
+    }()
+    
+    private let clockSymbol = {
+        let imageView = UIImageView()
+        imageView.image = .init(systemName: "alarm")
+        imageView.tintColor = .systemGray2
+        imageView.widthAnchor.constraint(equalToConstant: 14).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: 14).isActive = true
+        imageView.clipsToBounds = true
+        return imageView
+    }()
+    
+    private lazy var clockStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [clockSymbol, readyInMinLabel])
         stackView.axis = .horizontal
-        stackView.spacing = 5
+        stackView.spacing = 2
         stackView.distribution = .fill
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
     
+    internal let favoriteButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.tintColor = .red
+        button.setImage(UIImage(systemName: "heart"), for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    private lazy var servingsStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [personSymbol, servingsLabel])
+        stackView.axis = .horizontal
+        stackView.spacing = 2
+        stackView.distribution = .fill
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
+    private lazy var bottomStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [clockStackView, servingsStackView])
+        stackView.axis = .horizontal
+        stackView.spacing = 10
+        stackView.distribution = .fill
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
     
     // MARK: - Initialization
     
@@ -144,7 +184,7 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
             mainStackView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
             mainStackView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
             mainStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-        
+            
             favoriteButton.topAnchor.constraint(equalTo: mainStackView.topAnchor, constant: 16),
             favoriteButton.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor, constant: -16),
             favoriteButton.widthAnchor.constraint(equalToConstant: 28),
@@ -155,12 +195,12 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
     }
     @objc private func favoriteButtonTapped(_ sender: UIButton) {
         guard let recipe = recipe else { return }
-
+        
         sender.isSelected.toggle()
-
+        
         let actionTypeDescription: String = sender.isSelected ? "add" : "remove"
         let actionType: PersistenceActionType = sender.isSelected ? .add : .remove
-
+        
         PersistenceManager.updateWith(favorite: recipe, actionType: actionType) { error in
             if let error = error {
                 print("Error \(actionTypeDescription) recipe: \(error.rawValue)")
@@ -175,13 +215,13 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
                 }
             }
         }
-
+        
         if sender.isSelected {
             delegate?.didTapFavoriteButton(on: self)
         }
     }
-
-
+    
+    
     private func configureCellAppearance() {
         contentView.backgroundColor = .systemBackground
         contentView.layer.cornerRadius = 8
@@ -209,32 +249,21 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
         if let imageUrl = convertToSecureURL(recipe.image) {
             downloadImage(from: imageUrl)
         } else {
-            recipeImageView.image = UIImage(named: "placeholderImage")
+            recipeImageView.image = UIImage(named: "")
         }
-        
         if let readyInMinutes = recipe.readyInMinutes {
-            let attachment = NSTextAttachment()
-            attachment.image = UIImage(systemName: "clock")?.withTintColor(UIColor(named: "AccentColor") ?? .white)
-            let attachmentString = NSAttributedString(attachment: attachment)
-            let myString = NSMutableAttributedString(string: "\(readyInMinutes) min ")
-            myString.insert(attachmentString, at: 0)
-            readyInMinLabel.attributedText = myString
+            readyInMinLabel.text = "\(readyInMinutes)min"
         } else {
             readyInMinLabel.text = "N/A"
         }
         
-        if let servingsCount = recipe.servings {
-            if let servingsImage = UIImage(systemName: "person")?.withTintColor(UIColor(named: "AccentColor") ?? .white) {
-                
-                let servingsAttachment = NSTextAttachment(image: servingsImage)
-                
-                let attachmentString = NSAttributedString(attachment: servingsAttachment)
-                let servingsString = NSMutableAttributedString(string: "  \(servingsCount)")
-                servingsString.insert(attachmentString, at: 0)
-                
-                servingsLabel.attributedText = servingsString
-            }
+        if let servings = recipe.servings {
+            servingsLabel.text = "\(servings)"
+        } else {
+            
+            servingsLabel.text = "N/A"
         }
+        
         
         if let dishTypesArray = recipe.dishTypes {
             dishLabel.text = dishTypesArray[0]

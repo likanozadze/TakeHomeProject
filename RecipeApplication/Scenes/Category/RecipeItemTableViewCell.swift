@@ -13,7 +13,7 @@ class RecipeItemTableViewCell: UITableViewCell {
     // MARK: Properties
     var recipe: Recipe?
     weak var delegate: RecipeItemCollectionViewCellDelegate?
-
+    
     
     private let mainStackView: UIStackView = {
         let stackView = UIStackView()
@@ -46,7 +46,7 @@ class RecipeItemTableViewCell: UITableViewCell {
         let label = UILabel()
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = UIColor(named: "textColor")
+        label.textColor = .darkGray
         label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
         return label
     }()
@@ -55,18 +55,58 @@ class RecipeItemTableViewCell: UITableViewCell {
         let label = UILabel()
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = UIColor(named: "textColor")
+        label.textColor = .darkGray
         label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
         return label
     }()
+    
+    private let clockSymbol = {
+        let imageView = UIImageView()
+        imageView.image = .init(systemName: "alarm")
+        imageView.tintColor = .darkGray
+        imageView.widthAnchor.constraint(equalToConstant: 14).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: 14).isActive = true
+        imageView.clipsToBounds = true
+        return imageView
+    }()
+    
+    private lazy var clockStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [clockSymbol, readyInMinLabel])
+        stackView.axis = .horizontal
+        stackView.spacing = 2
+        stackView.distribution = .fill
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
     private let servingsLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = UIColor(named: "textColor")
+        label.textColor = .darkGray
         label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
         return label
     }()
+    private let personSymbol = {
+        let imageView = UIImageView()
+        imageView.image = .init(systemName: "person")
+        imageView.tintColor = .darkGray
+        imageView.widthAnchor.constraint(equalToConstant: 14).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: 14).isActive = true
+        imageView.clipsToBounds = true
+        return imageView
+    }()
+    
+    
+    private lazy var servingsStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [personSymbol, servingsLabel])
+        stackView.axis = .horizontal
+        stackView.spacing = 2
+        stackView.distribution = .fill
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
     
     internal let favoriteButton: UIButton = {
         let button = UIButton(type: .system)
@@ -86,45 +126,45 @@ class RecipeItemTableViewCell: UITableViewCell {
     }()
     
     private lazy var minutesAndServingsDetailsStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [readyInMinLabel, servingsLabel])
+        let stackView = UIStackView(arrangedSubviews: [clockStackView, servingsStackView])
         stackView.axis = .vertical
         stackView.distribution = .fillEqually
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
-
-
+    
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         addSubview()
         setupConstraints()
         configureCellAppearance()
     }
-
-required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-}
-
-// MARK: - CellLifeCycle
-override func prepareForReuse() {
-    super.prepareForReuse()
-    recipeImageView.image = nil
-    recipeTitle.text = nil
-    readyInMinLabel.text = nil
-    servingsLabel.text = nil
-    dishLabel.text = nil
-    favoriteButton.setImage(UIImage(systemName: "heart"), for: .normal)
-}
-
-// MARK: - Private Methods
-private func addSubview() {
-    contentView.addSubview(mainStackView)
-    mainStackView.addArrangedSubview(recipeImageView)
-    mainStackView.addArrangedSubview(detailsStackView)
-    contentView.addSubview(favoriteButton)
     
-}
-
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - CellLifeCycle
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        recipeImageView.image = nil
+        recipeTitle.text = nil
+        readyInMinLabel.text = nil
+        servingsLabel.text = nil
+        dishLabel.text = nil
+        favoriteButton.setImage(UIImage(systemName: "heart"), for: .normal)
+    }
+    
+    // MARK: - Private Methods
+    private func addSubview() {
+        contentView.addSubview(mainStackView)
+        mainStackView.addArrangedSubview(recipeImageView)
+        mainStackView.addArrangedSubview(detailsStackView)
+        contentView.addSubview(favoriteButton)
+        
+    }
+    
     private func setupConstraints() {
         
         NSLayoutConstraint.activate([
@@ -143,15 +183,15 @@ private func addSubview() {
             favoriteButton.heightAnchor.constraint(equalToConstant: 24),
         ])
     }
-
+    
     @objc private func favoriteButtonTapped(_ sender: UIButton) {
         guard let recipe = recipe else { return }
-
+        
         sender.isSelected.toggle()
-
+        
         let actionTypeDescription: String = sender.isSelected ? "add" : "remove"
         let actionType: PersistenceActionType = sender.isSelected ? .add : .remove
-
+        
         PersistenceManager.updateWith(favorite: recipe, actionType: actionType) { error in
             if let error = error {
                 print("Error \(actionTypeDescription) recipe: \(error.rawValue)")
@@ -167,89 +207,76 @@ private func addSubview() {
             }
         }
     }
-
-private func configureCellAppearance() {
-    contentView.backgroundColor = .systemBackground
-    contentView.layer.cornerRadius = 8
-    contentView.layer.masksToBounds = false
-    contentView.layer.shadowColor = UIColor.gray.cgColor
-    contentView.layer.shadowOffset = CGSize(width: 1, height: 2)
-    contentView.layer.shadowOpacity = 0.2
-    contentView.layer.shadowRadius = 8
-    contentView.layer.shadowPath = UIBezierPath(roundedRect: contentView.bounds, cornerRadius: 8).cgPath
-}
-
-// MARK: - Configuration
-func convertToSecureURL(_ url: String?) -> String? {
-    guard let url = url else {
-        return nil
+    
+    private func configureCellAppearance() {
+        contentView.backgroundColor = .systemBackground
+        contentView.layer.cornerRadius = 8
+        contentView.layer.masksToBounds = false
+        contentView.layer.shadowColor = UIColor.gray.cgColor
+        contentView.layer.shadowOffset = CGSize(width: 1, height: 2)
+        contentView.layer.shadowOpacity = 0.2
+        contentView.layer.shadowRadius = 8
+        contentView.layer.shadowPath = UIBezierPath(roundedRect: contentView.bounds, cornerRadius: 8).cgPath
     }
-    return url.replacingOccurrences(of: "http://", with: "https://")
-}
-
+    
+    // MARK: - Configuration
+    func convertToSecureURL(_ url: String?) -> String? {
+        guard let url = url else {
+            return nil
+        }
+        return url.replacingOccurrences(of: "http://", with: "https://")
+    }
+    
     func configure(with recipe: Recipe) {
         self.recipe = recipe
         recipeTitle.text = recipe.title
-
+        
         if let imageUrl = convertToSecureURL(recipe.image) {
             downloadImage(from: imageUrl)
         } else {
             recipeImageView.image = UIImage(named: "placeholderImage")
         }
-
+        
         if let readyInMinutes = recipe.readyInMinutes {
-            let attachment = NSTextAttachment()
-            attachment.image = UIImage(systemName: "clock")?.withTintColor(UIColor(named: "AccentColor") ?? .white)
-            let attachmentString = NSAttributedString(attachment: attachment)
-            let myString = NSMutableAttributedString(string: "\(readyInMinutes) min ")
-            myString.insert(attachmentString, at: 0)
-            readyInMinLabel.attributedText = myString
+            readyInMinLabel.text = "\(readyInMinutes)min"
         } else {
             readyInMinLabel.text = "N/A"
-         //   readyInMinLabel.text = recipe.readyInMinutes != nil ? "\(recipe.readyInMinutes!) min" : "N/A"
         }
-
-        if let servingsCount = recipe.servings {
-            if let servingsImage = UIImage(systemName: "person")?.withTintColor(UIColor(named: "AccentColor") ?? .white) {
-                let servingsAttachment = NSTextAttachment(image: servingsImage)
-                let attachmentString = NSAttributedString(attachment: servingsAttachment)
-                let servingsString = NSMutableAttributedString(string: "  \(servingsCount)")
-                servingsString.insert(attachmentString, at: 0)
-                servingsLabel.attributedText = servingsString
-            } else {
-                servingsLabel.text = "N/A"
-            }
+        
+        if let servings = recipe.servings {
+            servingsLabel.text = "\(servings)"
         } else {
+            
             servingsLabel.text = "N/A"
         }
-
+        
         if let dishTypesArray = recipe.dishTypes, !dishTypesArray.isEmpty {
             dishLabel.text = dishTypesArray[0]
         } else {
             dishLabel.text = "N/A"
         }
     }
-
-private func downloadImage (from url: String?) {
-    guard let urlString = url, let imageUrl = URL(string: urlString) else {
-        DispatchQueue.main.async {
-            self.recipeImageView.image = UIImage(named: "placeholderImage")
-        }
-        return
-    }
     
-    URLSession.shared.dataTask(with: imageUrl) { (data, response, error) in
-        guard let data = data, let image = UIImage(data: data) else {
+    private func downloadImage (from url: String?) {
+        guard let urlString = url, let imageUrl = URL(string: urlString) else {
             DispatchQueue.main.async {
                 self.recipeImageView.image = UIImage(named: "placeholderImage")
             }
             return
         }
         
-        DispatchQueue.main.async {
-            self.recipeImageView.image = image
-        }
-    }.resume()
-    
-}
+        URLSession.shared.dataTask(with: imageUrl) { (data, response, error) in
+            guard let data = data, let image = UIImage(data: data) else {
+                DispatchQueue.main.async {
+                    self.recipeImageView.image = UIImage(named: "placeholderImage")
+                }
+                return
+            }
+            
+            DispatchQueue.main.async {
+                self.recipeImageView.image = image
+            }
+        }.resume()
+        
+    }
 }

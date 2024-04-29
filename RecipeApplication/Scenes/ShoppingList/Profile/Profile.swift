@@ -113,8 +113,8 @@ struct ProfileView: View {
             
             do {
                 if let currentUserID = authService.currentUser?.id,
-                   let avatarImage = avatarImage { // Unwrap avatarImage safely
-                    try await userManager.uploadProfileImage(userId: currentUserID, image: avatarImage) { error in
+                   let avatarImage = avatarImage {
+                 userManager.uploadProfileImage(userId: currentUserID, image: avatarImage) { error in
                         if let error = error {
                             print("Error uploading profile image: \(error)")
                         } else {
@@ -124,8 +124,8 @@ struct ProfileView: View {
                 } else {
                     print("Error: Current user ID not found or avatarImage is nil")
                 }
-            } catch {
-                print("Error uploading profile image: \(error)")
+          //  } catch {
+            //    print("Error uploading profile image: \(error)")
             }
         }
         photosPickerItem = nil
