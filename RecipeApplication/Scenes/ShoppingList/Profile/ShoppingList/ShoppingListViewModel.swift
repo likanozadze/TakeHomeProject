@@ -2,7 +2,7 @@
 //  ShoppingListViewModel.swift
 //  RecipeApplication
 //
-//  Created by Lika Nozadze on 4/12/24.
+//  Created by Lika Nozadze on 4/29/24.
 //
 
 import Foundation
@@ -21,7 +21,7 @@ class ShoppingListViewModel: ObservableObject {
     
     
     init() {
-        print("ShoppingListViewModel initialized") 
+        print("ShoppingListViewModel initialized")
         setupFirestoreListener()
         Task { await loadShoppingList() }
     }

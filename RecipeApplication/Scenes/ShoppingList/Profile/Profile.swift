@@ -1,8 +1,9 @@
 //
-//  ProfileView.swift
+//  Profile.swift
 //  RecipeApplication
 //
-//  Created by Lika Nozadze on 4/7/24.
+//  Created by Lika Nozadze on 4/29/24.
+//
 
 import SwiftUI
 import PhotosUI
