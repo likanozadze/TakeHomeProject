@@ -29,19 +29,28 @@ final class HomeViewController: UIViewController, RecipeItemCollectionViewCellDe
     private let mainStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.spacing = 10
+        stackView.spacing = 20
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.isLayoutMarginsRelativeArrangement = true
         return stackView
     }()
-    
+    private let lableTitle: UILabel = {
+        let label = UILabel()
+        label.text = "What are you craving today?"
+        label.textColor = .testColorSet
+        label.numberOfLines = 2
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 22, weight: .bold)
+        return label
+    }()
+
     private let categoryTitle: UILabel = {
         let label = UILabel()
         label.text = "Categories"
         label.textColor = .testColorSet
         label.numberOfLines = 2
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        label.font = UIFont.systemFont(ofSize: 22, weight: .bold)
         return label
     }()
     
@@ -121,6 +130,7 @@ final class HomeViewController: UIViewController, RecipeItemCollectionViewCellDe
     private func addMainSubviews() {
         view.addSubview(mainStackView)
         view.addSubview(tableView)
+        mainStackView.addArrangedSubview(lableTitle)
         mainStackView.addArrangedSubview(recipeSearchBar)
         mainStackView.addArrangedSubview(categoryTitleStackView)
         mainStackView.addArrangedSubview(categoryCollectionView)

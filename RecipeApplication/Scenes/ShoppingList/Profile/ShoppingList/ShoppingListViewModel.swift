@@ -5,6 +5,7 @@
 //  Created by Lika Nozadze on 4/29/24.
 //
 
+
 import Foundation
 import Firebase
 import FirebaseFirestore
@@ -22,22 +23,9 @@ class ShoppingListViewModel: ObservableObject {
     
     init() {
         print("ShoppingListViewModel initialized")
-        setupFirestoreListener()
         Task { await loadShoppingList() }
     }
-    
-    private func setupFirestoreListener() {
-        
-        guard let userId = authService.userSession?.uid else { return }
-        Firestore.firestore().collection("users").document(userId)
-            .addSnapshotListener { snapshot, error in
-                if let error = error {
-                    print("Error setting up Firestore listener: \(error)")
-                } else if snapshot != nil {
-                    
-                }
-            }
-    }
+
     func saveShoppingList(ingredients: [ExtendedIngredient]) async {
         guard let currentUserId = authService.userSession?.uid else { return }
         do {
@@ -51,7 +39,7 @@ class ShoppingListViewModel: ObservableObject {
     func loadShoppingList() async {
         print("loadShoppingList called")
         defer { isLoading = false }
-        guard let currentUserId = authService.userSession?.uid else {
+        guard let currentUserId = AuthService.shared.currentUser?.id else {
             print("No current user ID")
             return
         }

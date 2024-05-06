@@ -1,4 +1,3 @@
-
 //
 //  NavigationCoordinator.swift
 //  RecipeApplication
@@ -41,32 +40,52 @@ class NavigationCoordinator: ObservableObject, OnboardingViewDelegate, Navigatio
     private let viewModel = HomeViewModel()
     private let categoryViewModel = CategoryViewModel()
     private var categoryCollectionView = CategoryCollectionView()
-    private var favoriteRecipeCollectionView = FavoriteRecipeCollectionView()
-    private var favoriteRecipes: [Recipe] = []
-    private let window: UIWindow?
     var shoppingListViewModel = ShoppingListViewModel.shared
     
     
-    private var state: AppState = .onboarding {
+    public var state: AppState = .onboarding {
         didSet {
+            print("State changed to \(state)")
             transitionTo(state)
         }
     }
     
     // MARK: Initialization
-    
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
-        self.window = nil
+        
     }
     
     // MARK: Coordinator Methods
     
     func start() {
         let hasSeenOnboarding = UserDefaults.standard.bool(forKey: "hasSeenOnboarding")
-        state = hasSeenOnboarding ? .authenticated(user: User(id: "", username: "", email: "", recipes: nil, likedRecipes: nil,  shoppingListString: nil)) : .onboarding
+        let didLogout = UserDefaults.standard.bool(forKey: "didLogout")
+        print("hasSeenOnboarding: \(hasSeenOnboarding), didLogout: \(didLogout)")
+        
+        if didLogout {
+            UserDefaults.standard.set(false, forKey: "didLogout")
+            state = .unauthenticated
+        } else if Auth.auth().currentUser != nil {
+            state = .authenticated(user: User(id: "", username: "", email: "", recipes: nil, likedRecipes: nil, shoppingListString: nil))
+        } else if !hasSeenOnboarding {
+            state = .onboarding
+        } else {
+            state = .unauthenticated
+        }
+        
+        Auth.auth().addStateDidChangeListener { [weak self] auth, user in
+            guard let self = self else { return }
+            if user == nil {
+                if didLogout && hasSeenOnboarding {
+                    self.state = .unauthenticated
+                } else {
+                    self.state = hasSeenOnboarding ? .unauthenticated : .onboarding
+                }
+            }
+        }
     }
-    
+
     func checkAuthentication() {
         if Auth.auth().currentUser == nil {
             presentLoginViewController()
@@ -74,6 +93,7 @@ class NavigationCoordinator: ObservableObject, OnboardingViewDelegate, Navigatio
             presentTabBarControllerOnMainThread()
         }
     }
+    
     
     // MARK: State Management Methods
     private func transitionTo(_ state: AppState) {
@@ -95,11 +115,14 @@ class NavigationCoordinator: ObservableObject, OnboardingViewDelegate, Navigatio
         navigationController.pushViewController(UIHostingController(rootView: onboardingView), animated: true)
     }
     
+    
     func didCompleteOnboarding() {
+        UserDefaults.standard.set(true, forKey: "hasSeenOnboarding")
         checkAuthentication()
     }
     
     func presentLoginViewController() {
+        print("Presenting LoginViewController")
         let loginViewController = LoginViewController()
         loginViewController.coordinator = self
         navigationController.pushViewController(loginViewController, animated: true)
@@ -112,23 +135,11 @@ class NavigationCoordinator: ObservableObject, OnboardingViewDelegate, Navigatio
         }
     }
     
-    
     func register() {
         let registerViewController = RegisterViewController()
         registerViewController.coordinator = self
         navigationController.pushViewController(registerViewController, animated: true)
     }
-    
-    public func logout() {
-        AuthService.shared.signOut { [weak self] error in
-            guard let self = self else { return }
-            if error != nil {
-            } else {
-                self.checkAuthentication()
-            }
-        }
-    }
-    
     
     func passSelectedRecipesToProfileVC(selectedRecipes: [Recipe]) {
         let profileVC = FavoritesViewController()

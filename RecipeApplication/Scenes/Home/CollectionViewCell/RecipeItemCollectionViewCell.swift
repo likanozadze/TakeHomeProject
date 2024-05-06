@@ -56,7 +56,7 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
     private let dishLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
-        label.textColor = .darkGray
+        label.textColor = UIColor(named: "CustomGray")
         label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
         return label
     }()
@@ -73,7 +73,7 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
     private let servingsLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
-        label.textColor = .systemGray
+        label.textColor = UIColor(named: "CustomGray")
         label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
         return label
     }()
@@ -81,7 +81,7 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
     private let personSymbol = {
         let imageView = UIImageView()
         imageView.image = .init(systemName: "person")
-        imageView.tintColor = .systemGray2
+        imageView.tintColor = UIColor(named: "CustomGray")
         imageView.widthAnchor.constraint(equalToConstant: 14).isActive = true
         imageView.heightAnchor.constraint(equalToConstant: 14).isActive = true
         imageView.clipsToBounds = true
@@ -91,7 +91,7 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
     private let readyInMinLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
-        label.textColor = .systemGray
+        label.textColor = UIColor(named: "CustomGray")
         label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
         return label
     }()
@@ -99,7 +99,7 @@ class RecipeItemCollectionViewCell: UICollectionViewCell {
     private let clockSymbol = {
         let imageView = UIImageView()
         imageView.image = .init(systemName: "alarm")
-        imageView.tintColor = .systemGray2
+        imageView.tintColor = UIColor(named: "CustomGray")
         imageView.widthAnchor.constraint(equalToConstant: 14).isActive = true
         imageView.heightAnchor.constraint(equalToConstant: 14).isActive = true
         imageView.clipsToBounds = true

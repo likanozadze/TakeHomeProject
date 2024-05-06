@@ -46,7 +46,7 @@ class RecipeItemTableViewCell: UITableViewCell {
         let label = UILabel()
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .darkGray
+        label.textColor = UIColor(named: "CustomGray")
         label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
         return label
     }()
@@ -55,7 +55,7 @@ class RecipeItemTableViewCell: UITableViewCell {
         let label = UILabel()
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .darkGray
+        label.textColor = UIColor(named: "CustomGray")
         label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
         return label
     }()
@@ -63,7 +63,7 @@ class RecipeItemTableViewCell: UITableViewCell {
     private let clockSymbol = {
         let imageView = UIImageView()
         imageView.image = .init(systemName: "alarm")
-        imageView.tintColor = .darkGray
+        imageView.tintColor = UIColor(named: "CustomGray")
         imageView.widthAnchor.constraint(equalToConstant: 14).isActive = true
         imageView.heightAnchor.constraint(equalToConstant: 14).isActive = true
         imageView.clipsToBounds = true
@@ -83,14 +83,14 @@ class RecipeItemTableViewCell: UITableViewCell {
         let label = UILabel()
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .darkGray
+        label.textColor = UIColor(named: "CustomGray")
         label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
         return label
     }()
     private let personSymbol = {
         let imageView = UIImageView()
         imageView.image = .init(systemName: "person")
-        imageView.tintColor = .darkGray
+        imageView.tintColor = UIColor(named: "CustomGray")
         imageView.widthAnchor.constraint(equalToConstant: 14).isActive = true
         imageView.heightAnchor.constraint(equalToConstant: 14).isActive = true
         imageView.clipsToBounds = true

@@ -59,6 +59,7 @@
 		98AE16372B59822100AF5528 /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98AE16362B59822100AF5528 /* CategoryViewController.swift */; };
 		98AE16392B59822E00AF5528 /* GenerateRecipeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98AE16382B59822E00AF5528 /* GenerateRecipeViewController.swift */; };
 		98B0992C2BB047730051E8C3 /* OriginalRecipeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B0992B2BB047730051E8C3 /* OriginalRecipeCell.swift */; };
+		98C023A82BE02C2D005A2D72 /* Animation - 1714418628932.json in Resources */ = {isa = PBXBuildFile; fileRef = 98C023A72BE02C2D005A2D72 /* Animation - 1714418628932.json */; };
 		98C152BE2B62C96E0028E72C /* RecipeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C152BD2B62C96E0028E72C /* RecipeModel.swift */; };
 		98C952732BAC52020011666C /* OriginalRecipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C952722BAC52020011666C /* OriginalRecipeView.swift */; };
 		98C952752BAC638F0011666C /* OriginalRecipeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C952742BAC638F0011666C /* OriginalRecipeViewModel.swift */; };
@@ -138,6 +139,7 @@
 		98AE16362B59822100AF5528 /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
 		98AE16382B59822E00AF5528 /* GenerateRecipeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateRecipeViewController.swift; sourceTree = "<group>"; };
 		98B0992B2BB047730051E8C3 /* OriginalRecipeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OriginalRecipeCell.swift; sourceTree = "<group>"; };
+		98C023A72BE02C2D005A2D72 /* Animation - 1714418628932.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Animation - 1714418628932.json"; sourceTree = "<group>"; };
 		98C152BD2B62C96E0028E72C /* RecipeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeModel.swift; sourceTree = "<group>"; };
 		98C952722BAC52020011666C /* OriginalRecipeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OriginalRecipeView.swift; sourceTree = "<group>"; };
 		98C952742BAC638F0011666C /* OriginalRecipeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OriginalRecipeViewModel.swift; sourceTree = "<group>"; };
@@ -278,6 +280,7 @@
 				98E4E1F42B92392300683A11 /* Animation - 1709293040117.json */,
 				9808EB162BB2FB8000D782B6 /* Animation - 1711457021878.json */,
 				986D97B72BB48F3600AE20F5 /* Animation - 1711560559742.json */,
+				98C023A72BE02C2D005A2D72 /* Animation - 1714418628932.json */,
 			);
 			path = Sounds;
 			sourceTree = "<group>";
@@ -566,6 +569,7 @@
 				986D97B82BB48F3600AE20F5 /* Animation - 1711560559742.json in Resources */,
 				98AE162D2B5981D100AF5528 /* LaunchScreen.storyboard in Resources */,
 				98AE162A2B5981D100AF5528 /* Assets.xcassets in Resources */,
+				98C023A82BE02C2D005A2D72 /* Animation - 1714418628932.json in Resources */,
 				98E4E1F52B92392300683A11 /* Animation - 1709293040117.json in Resources */,
 				9808EB172BB2FB8000D782B6 /* Animation - 1711457021878.json in Resources */,
 				984019AA2B6802060025D5D3 /* spinning_sound.mp3 in Resources */,
