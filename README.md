@@ -43,12 +43,11 @@ Spin the wheel for a fun and random recipe suggestion. The interactive nature of
 Save your own recipes to the Good Recipes App. Input ingredients, cooking instructions, time and  portions, then save them securely in your profile on Firebase.
 ![App Screenshot](https://github.com/likanozadze/TakeHomeProject/assets/145837358/28a5670e-1d23-4983-9201-f70475d80c5e)
 
-### Favorites
+### Shopping list and favorited recipes
 
-Save frequently used recipes for quick reference. Tapping heart button allows you to effortlessly save your favorite recipes with a single click and easily find desired one with search. Say goodbye to navigating through multiple pages or cluttering your browser with countless tabs. Liked recipes will be securely saved in your profile.
-
+Save frequently used recipes for quick reference. Tapping heart button allows you to effortlessly save your favorite recipes with a single click and easily find desired one with search. Liked recipes will be securely saved in your profile along with your saved ingredients for stress-free shopping trips. 
   
-- ![App Screenshot](https://i.ibb.co/rmfKZhw/Image-2-12-24-at-7-31-PM.jpg)
+![App Screenshot]((https://github.com/likanozadze/TakeHomeProject/assets/145837358/ecced6b4-941f-444a-96ca-6f48ae510ca8))
 
 
 Hope you enjoy our app!
