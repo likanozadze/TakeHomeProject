@@ -6,9 +6,10 @@ This project is a part of the iOS development Course at TBC IT Academy. The Good
 
 Browse Recipes: Search through recipes organized by categories.
 Authentication: Register or log in to access additional features.
-Favorited Recipes: Save your favorite recipes by tapping a heart button
 Generate Recipes: Spin the wheel for a fun and random recipe suggestion. Create Recipes: Save your own recipes all in one app
 Save Recipes: Save your own recipes.
+Shopping list: Add ingredients for later shopping trips.
+Favorited Recipes: Save your favorite recipes by tapping a heart button
 
 ### Onboarding Pages
 The onboarding pages serve as an introduction to the app, providing users with an overview of its features and functionalities. Through visually appealing slides, users can quickly familiarize themselves with the app's interface and understand how to make the most of its capabilities
@@ -29,9 +30,8 @@ With a vast collection of recipes organized into clear categories, users can eas
 
 
 ### Detailed Recipe Pages
-Each recipe is accompanied by detailed ingredient lists and step-by-step instructions, ensuring that users have all the information they need to recreate the dish successfully. From the preparation process to cooking techniques, the app provides comprehensive guidance to help users achieve culinary excellence in their own kitchens.
-![App Screenshot](https://i.ibb.co/djsqkXZ/Image-2-12-24-at-7-30-PM-2.jpg)
-
+Each recipe is accompanied by detailed ingredient lists and step-by-step instructions, allowing you to easily add ingredients to your shopping list for later trips. This ensures that you have all the information you need to recreate the dish successfully. From the preparation process to cooking techniques, the app provides comprehensive guidance to help you achieve culinary excellence in your own kitchen.
+![App Screenshot](https://github.com/likanozadze/TakeHomeProject/assets/145837358/fe6b5b1d-5a64-435a-a1cc-13feaf3d18b8)
 
 ### Generator
 
@@ -43,7 +43,9 @@ Spin the wheel for a fun and random recipe suggestion. The interactive nature of
 Save your own recipes to the Good Recipes App. Input ingredients, cooking instructions, time and  portions, then save them securely in your profile on Firebase.
 
 
-### Favorites: Save frequently used recipes for quick reference. Tapping heart button allows you to effortlessly save your favorite recipes with a single click and easily find desired one with search. Say goodbye to navigating through multiple pages or cluttering your browser with countless tabs. Liked recipes will be securely saved in your profile.
+### Favorites
+
+Save frequently used recipes for quick reference. Tapping heart button allows you to effortlessly save your favorite recipes with a single click and easily find desired one with search. Say goodbye to navigating through multiple pages or cluttering your browser with countless tabs. Liked recipes will be securely saved in your profile.
 
   
 - ![App Screenshot](https://i.ibb.co/rmfKZhw/Image-2-12-24-at-7-31-PM.jpg)
