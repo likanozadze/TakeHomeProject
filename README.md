@@ -41,7 +41,7 @@ Spin the wheel for a fun and random recipe suggestion. The interactive nature of
 ### Save 
 
 Save your own recipes to the Good Recipes App. Input ingredients, cooking instructions, time and  portions, then save them securely in your profile on Firebase.
-
+![App Screenshot](https://github.com/likanozadze/TakeHomeProject/assets/145837358/28a5670e-1d23-4983-9201-f70475d80c5e)
 
 ### Favorites
 
