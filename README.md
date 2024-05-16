@@ -25,7 +25,7 @@ To unlock extra features and enjoy personalized content, users need to either si
 ### Categorized Recipes
 With a vast collection of recipes organized into clear categories, users can easily find the perfect dish for any occasion or craving. Whether they're looking for breakfast ideas, dinner recipes, or desserts, the app offers a diverse selection of options to suit every taste and preference. The intuitive navigation makes browsing for recipes a seamless and enjoyable experience.
 
-![App Screenshot](https://ibb.co/Zf738F4/Image-cat.jpg)
+![App Screenshot](https://github.com/likanozadze/TakeHomeProject/assets/145837358/f1238ac3-7b2b-4520-808f-67c6e79c06cb)
 
 
 ### Detailed Recipe Pages
