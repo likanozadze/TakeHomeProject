@@ -4,12 +4,12 @@ This project is a part of the iOS development Course at TBC IT Academy. The Good
 
 ## Features
 
-Browse Recipes: Search through recipes organized by categories.
-Authentication: Register or log in to access additional features.
-Generate Recipes: Spin the wheel for a fun and random recipe suggestion. Create Recipes: Save your own recipes all in one app
-Save Recipes: Save your own recipes.
-Shopping list: Add ingredients for later shopping trips.
-Favorited Recipes: Save your favorite recipes by tapping a heart button
+- Browse Recipes: Search through recipes organized by categories.
+- Authentication: Register or log in to access additional features.
+- Generate Recipes: Spin the wheel for a fun and random recipe suggestion. Create Recipes: Save your own recipes all in one app
+- Save Recipes: Save your own recipes.
+- Shopping list: Add ingredients for later shopping trips.
+- Favorited Recipes: Save your favorite recipes by tapping a heart button
 
 ### Onboarding Pages
 The onboarding pages serve as an introduction to the app, providing users with an overview of its features and functionalities. Through visually appealing slides, users can quickly familiarize themselves with the app's interface and understand how to make the most of its capabilities
