@@ -38,9 +38,10 @@ Each recipe is accompanied by detailed ingredient lists and step-by-step instruc
 Spin the wheel for a fun and random recipe suggestion. The interactive nature of the Generator feature makes it not only practical but also entertaining. Users can enjoy the thrill of spinning the wheel and eagerly anticipate the recipe that will be revealed, adding an element of fun to the cooking process.
 ![App Screenshot](https://i.ibb.co/JkFWjKj/Image-2-12-24-at-7-30-PM-1.jpg)
 
-### Save 
+### Save original recipes
 
 Save your own recipes to the Good Recipes App. Input ingredients, cooking instructions, time and  portions, then save them securely in your profile on Firebase.
+
 ![App Screenshot](https://github.com/likanozadze/TakeHomeProject/assets/145837358/28a5670e-1d23-4983-9201-f70475d80c5e)
 
 ### Shopping list and favorited recipes
@@ -49,6 +50,6 @@ Save frequently used recipes for quick reference. Tapping heart button allows yo
   
 ![App Screenshot](https://github.com/likanozadze/TakeHomeProject/assets/145837358/ecced6b4-941f-444a-96ca-6f48ae510ca8)
 
+### Clone the project
 
-Hope you enjoy our app!
-🍳👩‍🍳👨‍🍳
+git clone https://github.com/likanozadze/TakeHomeProject.git
