@@ -47,7 +47,7 @@ Save your own recipes to the Good Recipes App. Input ingredients, cooking instru
 
 Save frequently used recipes for quick reference. Tapping heart button allows you to effortlessly save your favorite recipes with a single click and easily find desired one with search. Liked recipes will be securely saved in your profile along with your saved ingredients for stress-free shopping trips. 
   
-![App Screenshot]((https://github.com/likanozadze/TakeHomeProject/assets/145837358/ecced6b4-941f-444a-96ca-6f48ae510ca8))
+![App Screenshot](https://github.com/likanozadze/TakeHomeProject/assets/145837358/ecced6b4-941f-444a-96ca-6f48ae510ca8)
 
 
 Hope you enjoy our app!
