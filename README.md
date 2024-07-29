@@ -40,6 +40,7 @@ Each recipe is accompanied by detailed ingredient lists and step-by-step instruc
 ## Generator
 
 Spin the wheel for a fun and random recipe suggestion. The interactive nature of the Generator feature makes it not only practical but also entertaining. Users can enjoy the thrill of spinning the wheel and eagerly anticipate the recipe that will be revealed, adding an element of fun to the cooking process.
+
 ![Simulator Screen Recording - iPhone 15 - 2024-07-29 at 14 30 25](https://github.com/user-attachments/assets/8402913d-fa2f-4bf2-b20a-8f3b075c2418)
 
 
