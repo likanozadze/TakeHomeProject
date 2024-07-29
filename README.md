@@ -2,6 +2,8 @@
 
 This project is a part of the iOS development Course at TBC IT Academy. The Good Recipes App is designed to empower home cooks and make home cooking easier. With a focus on intuitive navigation and comprehensive instructions, the app offers a seamless cooking experience for users of all skill levels. With a combination of SwiftUI and UIKit frameworks, the app supports both dark and light modes, ensuring an optimal viewing experience for every user.
 
+![iPhone 15 Pro-2](https://github.com/user-attachments/assets/68fe00e6-13ab-4afd-91e4-8c59a369be52)
+
 ## Features
 
 - Browse Recipes: Search through recipes organized by categories.
