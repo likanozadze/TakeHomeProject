@@ -47,6 +47,7 @@ Spin the wheel for a fun and random recipe suggestion. The interactive nature of
 ## Save original recipes
 
 Save your own recipes to the Good Recipes App. Input ingredients, cooking instructions, time and  portions, then save them securely in your profile on Firebase.
+
 ![Simulator Screen Recording - iPhone 15 - 2024-07-29 at 14 35 06](https://github.com/user-attachments/assets/b748a208-25aa-4746-b004-c31cb8f7fba6)
 
 
